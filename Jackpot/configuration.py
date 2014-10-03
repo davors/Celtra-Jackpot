@@ -1,0 +1,2 @@
+TEST = 1
+N_CASES = 10

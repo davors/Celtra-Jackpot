@@ -22,7 +22,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="configuration.py" />
+    <Compile Include="fileIO.py" />
     <Compile Include="Jackpot.py" />
+    <Compile Include="webClient.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="readme.txt" />
