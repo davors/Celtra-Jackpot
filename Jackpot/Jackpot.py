@@ -1,7 +1,7 @@
 import configuration
 from fileIO import *
 
-for c in range(2,configuration.N_CASES+1):
+for c in range(1,configuration.N_CASES+1):
     machines=getNumMachines(c)
     pulls=getNumPulls(c)
     reps=1

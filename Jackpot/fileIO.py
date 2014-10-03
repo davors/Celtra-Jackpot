@@ -1,10 +1,11 @@
 from webClient import *
 import sys
+from time import sleep
 def writeDataToFile(case, machines, pulls, reps):
     fileName='case_'+ format(case,'02')+'_'+format(machines,'02')+'m_'+format(pulls,'05')+'p.txt'
     try:
         f=open(fileName,'w')
-        f.write(str(case)+'\t'+str(machines)+'\t'+str(pulls)+str(reps)+' \n')
+        f.write(str(case)+'\t'+str(machines)+'\t'+str(pulls)+'\t'+str(reps)+'\n')
         
         for pull in range(1,pulls+1):
             m=1

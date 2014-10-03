@@ -8,7 +8,7 @@ def getNumMachines(case):
         numMachines = response.read()
         if numMachines != 'ERR':
             return int(numMachines)
-    except URLError as e:
+    except urllib2.URLError as e:
         print e.reason
         return -1
     return -1
@@ -20,7 +20,7 @@ def getNumPulls(case):
         numPulls = response.read()
         if numPulls != 'ERR':
             return int(numPulls)
-    except URLError as e:
+    except urllib2.URLError as e:
         print e.reason
         return -1
     return -2
@@ -32,7 +32,7 @@ def getMachineResponse(case, machine, pull):
         pullResponse = response.read()
         if pullResponse != 'ERR':
             return int(pullResponse)
-    except HTTPError as e:
+    except urllib2.URLError as e:
         print e.reason
         return -1
     return -2
