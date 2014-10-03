@@ -1,28 +1,38 @@
 import urllib2
-
+import urllib
 
 
 def getNumMachines(case):
-    response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/machines')
-    numMachines = response.read()
-    if numMachines != 'ERR':
-        return int(numMachines)
-
+    try:
+        response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/machines')
+        numMachines = response.read()
+        if numMachines != 'ERR':
+            return int(numMachines)
+    except URLError as e:
+        print e.reason
+        return -1
     return -1
 
 
 def getNumPulls(case):
-    response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/pulls')
-    numPulls = response.read()
-    if numPulls != 'ERR':
-        return int(numPulls)
-
-    return -1
+    try:
+        response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/pulls')
+        numPulls = response.read()
+        if numPulls != 'ERR':
+            return int(numPulls)
+    except URLError as e:
+        print e.reason
+        return -1
+    return -2
    
    
 def getMachineResponse(case, machine, pull):
-    response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/' + str(machine) + '/' + str(pull))
-    pullResponse = response.read()
-    if pullResponse != 'ERR':
-        return int(pullResponse)
-    return -1
+    try:
+        response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/' + str(machine) + '/' + str(pull))
+        pullResponse = response.read()
+        if pullResponse != 'ERR':
+            return int(pullResponse)
+    except HTTPError as e:
+        print e.reason
+        return -1
+    return -2
