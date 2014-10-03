@@ -24,5 +24,8 @@
   <ItemGroup>
     <Compile Include="Jackpot.py" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>
