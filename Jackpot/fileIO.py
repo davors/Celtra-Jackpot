@@ -6,18 +6,20 @@ def writeDataToFile(case, machines, pulls, reps):
     try:
         f=open(fileName,'w')
         f.write(str(case)+'\t'+str(machines)+'\t'+str(pulls)+'\t'+str(reps)+'\n')
-        
-        for pull in range(1,pulls+1):
-            m=1
-            while m<=machines:
-                r=getMachineResponse(case, m, pull)
-                if r==-1:
-                    continue
-                else:
-                    f.write(str(r)+'\t')
-                    m=m+1
-            f.write('\n')
-        print 'Test case '+str(case)+' written to file '+fileName 
+        for rep in range (1,reps+1):
+            for pull in range(1,pulls+1):
+                m=1
+                while m<=machines:
+                    r=getMachineResponse(case, m, pull)
+                    if r==-1:
+                        continue
+                    else:
+                        f.write(str(r)+'\t')
+                        m=m+1
+                f.write('\n')
+                p=(pull*(m-1)*rep*100)/(reps*pulls*machines)
+                print 'Fetching test case '+str(case)+' [%d %%]\r'%p,
+        print '\nTest case '+str(case)+' written to file '+fileName+'\n' 
     except:
         print "Unexpected error:" + str(sys.exc_info())
         print 'Error writing to file: ' + fileName
