@@ -1,7 +1,7 @@
 import urllib2
 import urllib
 
-
+#get number of machines available in the case
 def getNumMachines(case):
     try:
         response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/machines')
@@ -14,7 +14,7 @@ def getNumMachines(case):
         return -1
     return -1
 
-
+#get number of pulls available in the case
 def getNumPulls(case):
     try:
         response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/pulls')
@@ -27,7 +27,7 @@ def getNumPulls(case):
         return -1
     return -2
    
-   
+#pull the machine and get response   
 def getMachineResponse(case, machine, pull):
     try:
         response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/' + str(machine) + '/' + str(pull))
