@@ -1,6 +1,6 @@
 from webClient import *
 import sys
-from time import sleep
+from time import clock
 
 
 #   File format used for storing test cases
@@ -22,6 +22,8 @@ def writeDataToFile(case, machines, pulls, reps):
         #write header
         f.write(str(case)+'\t'+str(machines)+'\t'+str(pulls)+'\t'+str(reps)+'\n')
         s=connect()
+        ts=clock()
+        pps=0
         for rep in range (1,reps+1):
             for pull in range(1,pulls+1):
                 m=1
@@ -36,8 +38,11 @@ def writeDataToFile(case, machines, pulls, reps):
                         m=m+1
                 f.write('\n')
                 #progress bar
+                if pull%50==0:
+                    td=clock()-ts;
+                    pps=machines*pull*rep/td
                 p=(pull*(m-1)*rep*100)/(reps*pulls*machines)
-                print 'Fetching test case '+str(case)+' [%d %%]\r'%p,
+                print 'Fetching test case '+str(case)+' at %6.2f pulls per second [%d %%]\r' %(pps, p),
         print '\nTest case '+str(case)+' written to file '+fileName+'\n' 
     except:
         print "Unexpected error:" + str(sys.exc_info())

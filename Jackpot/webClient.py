@@ -49,13 +49,13 @@ def getMachineResponse(s, case, machine, pull):
             if data != 'ERR':
                 return int(data[-1])
     except:
-        disconnect()
+        disconnect(s)
         connect()
         return -1
     return -2
 
 
-##pull the machine and get response   
+#pull the machine and get response   
 #def getMachineResponse(case, machine, pull):
 #    try:
 #        response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/' + str(machine) + '/' + str(pull))
