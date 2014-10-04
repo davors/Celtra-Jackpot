@@ -16,7 +16,7 @@ def SampleAnalyzer(fileName):
     writeAnalyzedDataToFile(case, machines, pulls, repeats, avg_data)
 
 def writeAnalyzedDataToFile(case, machines, pulls, repeats, avg_data):
-    fileName='averaged__case_'+ format(case,'02')+'_m'+format(machines,'02')+'_p'+format(pulls,'05')+'_r'+format(repeats,'05')+'.txt'
+    fileName='averaged__case_'+ format(case,'02')+'_'+format(machines,'02')+'m_'+format(pulls,'05')+'p_'+format(repeats,'05')+'r.txt'
     try:
         f=open(fileName,'w')
         f.write(str(case)+'\t'+str(machines)+'\t'+str(pulls)+'\t'+str(repeats)+'\n')
