@@ -21,14 +21,15 @@ def writeDataToFile(case, machines, pulls, reps):
         f=open(fileName,'w')
         #write header
         f.write(str(case)+'\t'+str(machines)+'\t'+str(pulls)+'\t'+str(reps)+'\n')
+        s=connect()
         for rep in range (1,reps+1):
             for pull in range(1,pulls+1):
                 m=1
                 while m<=machines:
                     #fetch data from server
-                    r=getMachineResponse(case, m, pull)
-                    if r==-1:
-                        #try again if response invalil or timeout occurs
+                    r=getMachineResponse(s, case, m, pull)
+                    if r<0:
+                        #try again if response invalid or timeout occurs
                         continue
                     else:
                         f.write(str(r)+'\t')
@@ -41,6 +42,7 @@ def writeDataToFile(case, machines, pulls, reps):
     except:
         print "Unexpected error:" + str(sys.exc_info())
         print 'Error writing to file: ' + fileName
+    disconnect(s)
     f.close()
 
 #Load data from file into list

@@ -4,3 +4,6 @@ TEST = 1
 
 #number of test cases
 N_CASES = 10
+
+#server
+server='celtra-jackpot.com'

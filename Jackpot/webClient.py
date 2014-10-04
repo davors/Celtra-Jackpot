@@ -1,5 +1,7 @@
 import urllib2
 import urllib
+import socket
+from configuration import server
 
 #get number of machines available in the case
 def getNumMachines(case):
@@ -27,15 +29,41 @@ def getNumPulls(case):
         return -1
     return -2
    
-#pull the machine and get response   
-def getMachineResponse(case, machine, pull):
+def connect():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((server, 80))
+    return s
+
+def disconnect(s):
+    s.close()
+
+
+def getMachineResponse(s, case, machine, pull):
+    args=str(case)+'/'+str(machine)+'/'+str(pull)
     try:
-        response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/' + str(machine) + '/' + str(pull))
-        pullResponse = response.read()
-        if pullResponse != 'ERR':
-            return int(pullResponse)
-    except urllib2.URLError as e:
-        #print e.reason
-        #print '\n'
+        s.send("GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n" % (args, server))
+        data = s.recv(1024)
+        if data:
+            data.split("\n\r")
+            data=data[-1]
+            if data != 'ERR':
+                return int(data[-1])
+    except:
+        disconnect()
+        connect()
         return -1
     return -2
+
+
+##pull the machine and get response   
+#def getMachineResponse(case, machine, pull):
+#    try:
+#        response = urllib2.urlopen('http://celtra-jackpot.com/' + str(case) + '/' + str(machine) + '/' + str(pull))
+#        pullResponse = response.read()
+#        if pullResponse != 'ERR':
+#            return int(pullResponse)
+#    except urllib2.URLError as e:
+#        #print e.reason
+#        #print '\n'
+#        return -1
+#    return -2
