@@ -1,10 +1,10 @@
 import configuration
 from fileIO import *
 
-for c in range(1,configuration.N_CASES+1):
+for c in range(3,configuration.N_CASES+1):
     machines=getNumMachines(c)
     pulls=getNumPulls(c)
-    reps=1
+    reps=1000
     
     #if c<=5: 
     #    reps=20000/pulls
