@@ -1,0 +1,26 @@
+														
+														
+binary distribution sampling accuracy, required number of repeats to achive an 95% confidence interval of...
+	//20000, 95% confidence that true value deviates less by 1%
+	//5000,  95% confidence that true value deviates less by 2%
+	//1200,  95% confidence that true value deviates less by 4%
+	//750,   95% confidence that true value deviates less by 5% (default setting)
+	//200,	 95% confidence that true value deviates less by 10%
+	
+	
+//calculate the confidence, that two samples belong to different normal distributions
+confidence_normal_dist1 =
+	sqrt(
+		(sample2_num_repeats)
+		* (sample1 - sample2) * (sample1 - sample2)
+		/ (sample2 * (1-sample2) + 0.00001)	// + 0.00001 only to avoid division by 0
+		/ 2.0 //optional
+	);
+//calculate the confidence, that the last two scores belong to different normal distributions
+confidence_normal_dist2 =
+	sqrt(
+		(sample1_num_repeats)
+		* (sample1 - sample2) * (sample1 - sample2)
+		/ (sample1 * (1-sample1) + 0.00001)	// + 0.00001 only to avoid division by 0
+		/ 2.0 //optional
+	);
