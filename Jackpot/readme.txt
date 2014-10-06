@@ -24,3 +24,18 @@ confidence_normal_dist2 =
 		/ (sample1 * (1-sample1) + 0.00001)	// + 0.00001 only to avoid division by 0
 		/ 2.0 //optional
 	);
+
+	Possible algorithms:
+	UCB1
+	UCB1-TUNED
+	Epsilon_n GREEDY 
+	http://lane.compbio.cmu.edu/courses/slides_ucb.pdf
+	http://www.cs.mcgill.ca/~vkules/bandits.pdf
+	http://www.cs.cmu.edu/~deepay/mywww/papers/nips08-mortal.pdf
+	http://hal.inria.fr/docs/00/16/40/33/PDF/cap07.pdf
+
+
+
+
+
+
