@@ -2,6 +2,8 @@
 ## Reads output from repeated samples and produces a single output file for each case
 ##
 
+from fileIO import *
+
 def SampleAnalyzer(fileName):
     (case,machines,pulls,repeats,data) = loadDataFromFile(fileName)
 
