@@ -50,7 +50,7 @@ def getMachineResponse(s, case, machine, pull):
                 return int(data[-1])
     except:
         disconnect(s)
-        connect()
+        s.connect((server,80))
         return -1
     return -2
 

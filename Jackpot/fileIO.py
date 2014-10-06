@@ -2,7 +2,6 @@ from webClient import *
 import sys
 from time import clock
 
-
 #   File format used for storing test cases
 #   In header: <case> <machines> <pulls> <repeats>
 #   In body: <m1p1> <m2p1>  ... <mnp1>
@@ -39,7 +38,7 @@ def writeDataToFile(case, machines, pulls, reps):
                 f.write('\n')
                 #progress bar
                 if pull%50==0:
-                    td=clock()-ts;
+                    td=clock()-ts
                     pps=machines*pull*rep/td
                 p=(pull*(m-1)*rep*100)/(reps*pulls*machines)
                 print 'Fetching test case '+str(case)+' at %6.2f pulls per second [%d %%]\r' %(pps, p),
@@ -53,6 +52,7 @@ def writeDataToFile(case, machines, pulls, reps):
 #Load data from file into list
 def loadDataFromFile(fileName):
     try:
+        print 'Reading file '+fileName
         f=open(fileName,'r')
         #read header
         line=f.readline()
@@ -61,16 +61,19 @@ def loadDataFromFile(fileName):
         machines=int(line[1])
         pulls=int(line[2])
         reps=int(line[3])
-
+        print 'Case: '+str(case)+'\nMachines: '+str(machines)+'\nPulls: '+str(pulls)+'\nRepeats: '+str(reps)
+        data = [[-1]*pulls]*machines
         #read line by line
-        for rep in range (1,reps+1):
-            for pull in range(0,pulls):
-                line=f.readline()
-                line=line.split()
-                for m in range(0,machines):
-                    data[m][pull]=int(line[m])
+        pull=0
+        for line in f:
+            row=line.split()
+            for m in range(0,machines):
+                data[m][pull]=row[m]
+            pull=pull+1
     except:
+        print "Unexpected error:" + str(sys.exc_info())
         print 'Error reading file: ' + fileName
         return None
     f.close()
+    print 'File '+fileName+' succesfully read'
     return (case, machines, pulls, reps, data)
