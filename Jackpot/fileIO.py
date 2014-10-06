@@ -62,13 +62,14 @@ def loadDataFromFile(fileName):
         pulls=int(line[2])
         reps=int(line[3])
         print 'Case: '+str(case)+'\nMachines: '+str(machines)+'\nPulls: '+str(pulls)+'\nRepeats: '+str(reps)
-        data = [[-1]*pulls]*machines
+        data = [[-1 for col in range(reps*pulls)] for row in range (machines)]
+
         #read line by line
         pull=0
         for line in f:
             row=line.split()
             for m in range(0,machines):
-                data[m][pull]=row[m]
+                data[m][pull]=int(row[m])
             pull=pull+1
     except:
         print "Unexpected error:" + str(sys.exc_info())

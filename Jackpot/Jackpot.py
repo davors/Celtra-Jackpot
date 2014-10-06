@@ -1,5 +1,6 @@
 import configuration
 from fileIO import *
+from SampleAnalyzer import *
 
 #for c in range(1,configuration.N_CASES+1):
 #    machines=getNumMachines(c)
@@ -13,5 +14,9 @@ from fileIO import *
 #    if configuration.TEST==1:
 #        writeDataToFile(c,machines,pulls,reps)
 
-(case, machines, pulls, reps, data)=loadDataFromFile('case_01_02m_00500p.txt')
-print str(case)    
+#(case, machines, pulls, reps, data)=loadDataFromFile('case_01_02m_00500p.txt')
+#print str(case)    
+
+
+#SampleAnalyzer('case_06_02m_01000p_1000r.txt')
+#SampleAnalyzer('case_06_02m_01000p_1000r.txt')
