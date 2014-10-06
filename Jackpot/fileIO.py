@@ -39,7 +39,7 @@ def writeDataToFile(case, machines, pulls, reps):
                 f.write('\n')
                 #progress bar
                 if pull%50==0:
-                    td=clock()-ts;
+                    td=clock()-ts
                     pps=machines*pull*rep/td
                 p=(pull*(m-1)*rep*100)/(reps*pulls*machines)
                 print 'Fetching test case '+str(case)+' at %6.2f pulls per second [%d %%]\r' %(pps, p),
