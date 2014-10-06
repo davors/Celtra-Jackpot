@@ -62,7 +62,8 @@ def loadDataFromFile(fileName):
         pulls=int(line[2])
         reps=int(line[3])
         print 'Case: '+str(case)+'\nMachines: '+str(machines)+'\nPulls: '+str(pulls)+'\nRepeats: '+str(reps)
-        data = [[-1]*reps*pulls]*machines
+        data = [[-1 for col in range(reps*pulls)] for row in range (machines)]
+
         #read line by line
         pull=0
         for line in f:
