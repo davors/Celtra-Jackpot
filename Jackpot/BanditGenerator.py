@@ -7,15 +7,23 @@ class BanditGenerator() :
         for i in range(len(self.intervals)-1, -1, -1) :
             if p >= self.intervals[i] :
                 if random.random() < self.probabilities[i] :
-                    return 1
+                    return 1.0
                 else :
-                    return 0
+                    return 0.0
 
     def prob(self,p) :
         for i in range(len(self.intervals)-1, -1, -1) :
             if p >= self.intervals[i] :
                 return self.probabilities[i]
 
+    def calcFullReward(self, max_pulls) :
+        fullReward = 0.0
+        endInterval = max_pulls
+        for i in range(len(self.intervals)-1, -1, -1) :
+            if(endInterval >= self.intervals[i]) :
+                fullReward += self.probabilities[i] * (endInterval - self.intervals[i])
+            endInterval = self.intervals[i]
+        return fullReward
 
 class BanditTestCase() :
     
@@ -23,7 +31,8 @@ class BanditTestCase() :
 
     numBandits = 0
     maxPulls = 0
-    maximumReward = 0
+    maximumReward = 0.0
+    randomReward = 0.0
 
     bandits = []
 
@@ -66,4 +75,14 @@ class BanditTestCase() :
 
         return self.maximumReward
 
+    def calcRandomReward(self) :
+        if self.onlineUrl :
+            return -1
+
+        self.randomReward = 0.0
+        for b in range(self.numBandits) :
+            self.randomReward += self.bandits[b].calcFullReward(self.maxPulls)
+        self.randomReward /= self.numBandits
+
+        return self.randomReward
 

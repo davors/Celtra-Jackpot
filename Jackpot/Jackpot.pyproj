@@ -25,6 +25,8 @@
     <Compile Include="BanditGenerator.py" />
     <Compile Include="changePointDetection.py" />
     <Compile Include="configuration.py" />
+    <Compile Include="ConstructCases.py" />
+    <Compile Include="evaluation.py" />
     <Compile Include="fileIO.py" />
     <Compile Include="Jackpot.py" />
     <Compile Include="machine.py" />
