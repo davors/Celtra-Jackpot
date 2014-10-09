@@ -1,40 +1,45 @@
 
 class machine(object):
-    id=0
-    N=0
+
     R=[]
-    Nlast=0
-    mR=0
-    sR=0
-    totalReward=0
-    totalN=0
+    pulls=0
+    pulls_total=0
+    #self.last_pull=0
+    #self.last_reset=0
+    mean=0
+    sum=0
+    sum_total=0
+    id=0
+    moving_sum=[]
+
         
-    def __init__(self,id,max_pulls):
+    def __init__(self,id):
         self.R=[]
-        self.N=0
-        self.Nlast=0
-        self.mR=0
-        self.sR=0
-        self.totalReward=0
+        self.pulls=0
+        self.pulls_total=0
+        #self.last_pull=0
+        #self.last_reset=0
+        self.mean=0
+        self.sum=0
+        self.sum_total=0
         self.id=id
+        self.moving_sum=[]
 
-    def pull(self,r):
+    def update(self,r):
         self.R.append(r)
-        self.N=self.N+1
-        self.Nlast=self.Nlast+1
-        self.sR=self.sR+r
-        self.totalReward=self.totalReward+r
-        self.mR=float(self.sR)/self.N
-        self.totalN=self.totalN+1
+        self.pulls=self.pulls+1
+        self.pulls_total=self.pulls_total+1
+        self.sum=self.sum+r
+        self.sum_total=self.sum_total+r
+        self.mean=float(self.sum)/self.pulls
+        
 
-    def resetState(self):
-        self.Nlast=self.N
-        self.N=0
-        self.R=[]
-        self.Nlast=0
-        self.mR=0
-        self.sR=0
-        return 0
+    def resetState(self,index,new_pulls):
+        self.sum=self.moving_sum[index]
+        self.pulls=new_pulls
+        self.mean=float(self.sum)/self.pulls
+        self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
+        
 
 
 

@@ -15,7 +15,7 @@ def UCBT():
 
 
 def EGreedy(M, E):
-    Avg=[m.mR for m in M]
+    Avg=[m.mean for m in M]
     maxM=Avg.index(max(Avg))
     P=[float(E)/len(M)]*len(M)
     P[maxM]=1-E+E/len(M)
