@@ -35,7 +35,6 @@ class machine(object):
         
 
     def resetState(self,index,new_pulls):
-        self.R=[]
         self.sum=self.moving_sum[index]
         self.pulls=new_pulls
         self.mean=float(self.sum)/self.pulls
