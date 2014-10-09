@@ -45,8 +45,8 @@ def evaluation_artificial_cases(case_list, repeats) :
     cases[case].bandits = [BanditGenerator() for count in xrange(cases[case].numBandits)]
     cases[case].bandits[0].intervals = [0,500]
     cases[case].bandits[1].intervals = [0,500]
-    cases[case].bandits[0].probabilities = [0.5,0.1]
-    cases[case].bandits[1].probabilities = [0.1,0.5]
+    cases[case].bandits[0].probabilities = [0.2,0.1]
+    cases[case].bandits[1].probabilities = [0.1,0.2]
 
     #compute maximal possible sum of rewards
     summedMaxRewards = 0.0
@@ -68,7 +68,7 @@ def evaluation_artificial_cases(case_list, repeats) :
     for r in xrange(repeats) :
         last_avg_results = 0
         for c in xrange(0,num_cases) :
-            last_result = single_case_evaluation(cases[case], 0)
+            last_result = single_case_evaluation(cases[case], 1)
 
             #store results
             avg_results[c] += (1.0/(r+1.0))*(last_result - avg_results[c])
@@ -98,7 +98,8 @@ def single_case_evaluation(case, print_output = 1) :
     for p in range(0,case.maxPulls) :
 
         #choose bandit/machine
-        selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
+        #selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
+        selected_machine = UCBT(machines, p - total_rejected_pulls, UCB1_parC)
         #selected_machine = EGreedy(machines,epsilon_soft)
 
         #get reward
@@ -108,21 +109,22 @@ def single_case_evaluation(case, print_output = 1) :
         selected_machine.update(last_reward)
 
         #change point detection
+        #rejected_pulls=0
         rejected_pulls = checkChange(change_point_threshold, selected_machine)
         total_rejected_pulls = total_rejected_pulls + rejected_pulls
         if rejected_pulls > 0 :
             if print_output :
-                print 'Global pull  at change point:'+str(i)
+                print 'Global pull  at change point:'+str(p)
 
     #sum of collected reward
     total_reward = 0
     for m in machines:
         total_reward = total_reward + m.sum_total
-        if print_output :
-            print 'Machine '+str(m.id)+' Total reward: '+str(m.sum_total)+' Total pulls: '+str(m.pulls_total)+' Average reward: '+str(m.mean)
+    #    if print_output :
+    #        print 'Machine '+str(m.id)+' Total reward: '+str(m.sum_total)+' Total pulls: '+str(m.pulls_total)+' Average reward: '+str(m.mean)
 
-    if print_output:
-        print 'Total reward: '+str(totalReward)+' maximum possible reward: '+str(maxReward)
+    #if print_output:
+    #    print 'Total reward: '+str(totalReward)+' maximum possible reward: '+str(maxReward)
 
     return total_reward
 
