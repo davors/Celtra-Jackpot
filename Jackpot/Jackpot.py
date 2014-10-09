@@ -19,12 +19,12 @@ M=[machine(m+1) for m in range(machines)]
 
 pulls=1000
 for i in range(0,500):
-    data[0][i]=random.random()<0.6
-    data[1][i]=random.random()<0.4
+    data[0][i]=int(random.random()<0.9)
+    data[1][i]=int(random.random()<0.1)
 
 for i in range(500,1000):
-    data[0][i]=random.random()<0.4
-    data[1][i]=random.random()<0.6
+    data[0][i]=int(random.random()<0.1)
+    data[1][i]=int(random.random()<0.9)
 
 for i in range(0,pulls):
     sM=EGreedy(M,0.1)
@@ -33,8 +33,8 @@ for i in range(0,pulls):
     sM=checkChange(2.5,sM)
 totalReward=0
 for m in M:
-    totalReward=totalReward+m.totalReward
-    print 'Machine '+str(m.id)+' Total reward: '+str(m.total_sum)+' Total pulls: '+str(m.total_pulls)+' Average reward: '+str(m.mean)
+    totalReward=totalReward+m.sum_total
+    print 'Machine '+str(m.id)+' Total reward: '+str(m.sum_total)+' Total pulls: '+str(m.pulls_total)+' Average reward: '+str(m.mean)
 
 print 'Total reward: '+str(totalReward)
 

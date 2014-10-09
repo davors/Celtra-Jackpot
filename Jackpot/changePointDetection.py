@@ -37,7 +37,7 @@ def checkChange(Tsh, m):
         m.moving_sum=[0.0 for s in tp]
     for t in range(0,len(tp)):
         s=tp[t]
-        if s<m.pulls_total-m.pulls:
+        if s<m.pulls:
             m.moving_sum[t]=m.moving_sum[t]-m.R[-(s+1)]
         m.moving_sum[t]=m.moving_sum[t]+m.R[-1]
         if s>m.pulls:
@@ -46,7 +46,7 @@ def checkChange(Tsh, m):
         #print str(Z)
         # 95 % confidence interval
         if Z>=Tsh:
-            print 'checkChange triggered at: '+str((Z,m.pulls))
+            print 'checkChange triggered at: '+str((Z,m.id,m.pulls))
             m.resetState(t,s)
     return m
             
@@ -57,7 +57,7 @@ def checkChange(Tsh, m):
 def testIfDistDiff(X,Y,Nx,Ny):
     try:
         Z=abs(((float(X)/Nx)-(float(Y)/Ny))/sqrt((float(X)+float(Y))/(float(Nx)+float(Ny))*(1.0-(float(X)+float(Y))/(float(Nx)+float(Ny)))*(1.0/float(Nx)+1.0/Ny)))
-    except ZeroDivisionError:
+    except:
         Z=0.0
     return Z
 
