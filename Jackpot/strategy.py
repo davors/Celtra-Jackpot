@@ -1,14 +1,12 @@
 #Different strategies for tackling the problem
 import random
-import machine
-import math
-from sys import maxfloat
+from math import *
 
 #the UCB algorithm by Auer et al., 2002
 def UCB1(actions, all_pulls, parC = 1.0):
     
     selectedAction = None
-    bestVal = -maxfloat
+    bestVal = -1e30000
 
     #find best action among all available
     for a in actions :

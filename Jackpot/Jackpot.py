@@ -44,6 +44,7 @@ maxReward = testcases[case].calcMaxReward()
 M=[machine(m) for m in range(testcases[case].numBandits)]
 total_rejected=0
 for i in range(0,testcases[0].maxPulls):
+    #sM=UCB1(M, i-total_rejected, 1.0)
     sM=EGreedy(M,0.1)
     r=testcases[case].pullBandit(sM.id,i)
     sM.update(r)

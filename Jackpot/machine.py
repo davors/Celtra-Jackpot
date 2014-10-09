@@ -11,6 +11,12 @@ class machine(object):
     sum_total=0
     id=0
     moving_sum=[]
+    variance=0
+    def __var__(self,pulls):
+
+
+
+        return var
 
         
     def __init__(self,id):
@@ -24,6 +30,7 @@ class machine(object):
         self.sum_total=0
         self.id=id
         self.moving_sum=[]
+        self.variance=0
 
     def update(self,r):
         self.R.append(r)
