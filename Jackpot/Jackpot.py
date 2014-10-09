@@ -18,20 +18,18 @@ from strategy import *
 M=[machine(m+1,pulls) for m in range(machines)]
 
 for i in range(0,500):
-    data[0][i]=random.random()<0.9
-    data[1][i]=random.random()<0.1
+    data[0][i]=random.random()<0.4
+    data[1][i]=random.random()<0.3
 
 for i in range(500,1000):
-    data[0][i]=random.random()<0.1
-    data[1][i]=random.random()<0.9
+    data[0][i]=random.random()<0.3
+    data[1][i]=random.random()<0.4
 
 for i in range(1,pulls+1):
     sM=EGreedy(M,0.1)
     r=data[sM.id-1][sM.totalN]
-    sM.pull(r)
-    if i%100==0:
-        for m in M:
-            m.resetState()
+    sM.update(r)
+    sM=checkChange(2.5,sM,data)
 
 totalReward=0
 for m in M:
