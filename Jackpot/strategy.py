@@ -1,7 +1,11 @@
 #Different strategies for tackling the problem
 import random
 
-def UCB1():
+def UCB1(machines, parC):
+    #outputM = None
+    #for m in machines:
+    #    ...
+        
     return 0
 
 

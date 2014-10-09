@@ -4,6 +4,8 @@ from fileIO import *
 from SampleAnalyzer import *
 from machine import *
 from strategy import *
+from BanditGenerator import *
+
 #for c in range(1,configuration.N_CASES+1):
 #    machines=getNumMachines(c)
 #    pulls=getNumPulls(c)
@@ -59,6 +61,22 @@ print 'Total reward: '+str(totalReward)
 
 #print str(case)    
 
+
+
+
+
+### TOM ###
+
+#testcases = [BanditTestCase() for count in xrange(configuration.N_CASES)]
+
+#testcases[0].numBandits = 2
+#testcases[0].maxPulls = 500
+#testcases[0].bandits = [BanditGenerator() for count in xrange(testcases[0].numBandits)]
+#testcases[0].bandits[0].intervals = [0,250]
+#testcases[0].bandits[1].intervals = [0,250]
+#testcases[0].bandits[0].probabilities = [0.1,0.5]
+#testcases[0].bandits[1].probabilities = [0.5,0.4]
+#maxR = testcases[0].calcMaxReward()
 
 #SampleAnalyzer('case_06_02m_01000p_1000r.txt')
 #SampleAnalyzer('case_06_02m_01000p_1000r.txt')
