@@ -1,14 +1,17 @@
 
 class machine(object):
-    id=0
-    N=0
+
     R=[]
-    movingR=[]
-    Nlast=0
-    mR=0
-    sR=0
-    totalReward=0
-    totalN=0
+    pulls=0
+    pulls_total=0
+    #self.last_pull=0
+    #self.last_reset=0
+    mean=0
+    sum=0
+    sum_total=0
+    id=0
+    moving_sum=[]
+
         
     def __init__(self,id):
         self.R=[]
