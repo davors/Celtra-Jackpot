@@ -44,14 +44,15 @@ maxReward = testcases[case].calcMaxReward()
 M=[machine(m) for m in range(testcases[case].numBandits)]
 total_rejected=0
 for i in range(0,testcases[0].maxPulls):
-    #sM=UCB1(M, i-total_rejected, 1.0)
-    sM=EGreedy(M,0.1)
+    sM=UCBT(M, i-total_rejected, 1.0)
+    sM=UCB1(M, i-total_rejected, 1.0)
+    #sM=EGreedy(M,0.1)
     r=testcases[case].pullBandit(sM.id,i)
     sM.update(r)
-    rejected=checkChange(2.5,sM)
+    rejected=checkChange(100,sM)
     total_rejected=total_rejected+rejected
     if rejected>0:
-        print 'Global pull  at change point:'+str(i)
+        print 'Change point at global pull: '+str(i)
 
 totalReward=0
 for m in M:
