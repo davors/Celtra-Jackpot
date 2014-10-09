@@ -47,7 +47,7 @@ def checkChange(Tsh, m):
         #print str(Z)
         # 95 % confidence interval
         if Z>=Tsh:
-            print 'checkChange triggered at: '+str((Z,m.id,m.pulls))
+            #print 'checkChange triggered at: '+str((Z,m.id,m.pulls))
             rejected=m.resetState(t,s)
     return rejected
             
