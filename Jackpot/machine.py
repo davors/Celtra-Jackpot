@@ -35,10 +35,12 @@ class machine(object):
         
 
     def resetState(self,index,new_pulls):
+        p_tmp=self.pulls-new_pulls
         self.sum=self.moving_sum[index]
         self.pulls=new_pulls
         self.mean=float(self.sum)/self.pulls
         self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
+        return  p_tmp
         
 
 

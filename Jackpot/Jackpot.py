@@ -16,29 +16,48 @@ from BanditGenerator import *
 #    #    reps=20000
 #    if configuration.TEST==1:
 #        writeDataToFile(c,machines,pulls,reps)
-(case, machines, pulls, reps, data)=loadDataFromFile('case_06_02m_01000p.txt')
-M=[machine(m+1) for m in range(machines)]
+#(case, machines, pulls, reps, data)=loadDataFromFile('case_06_02m_01000p.txt')
+#M=[machine(m+1) for m in range(machines)]
 
-pulls=1000
-for i in range(0,500):
-    data[0][i]=int(random.random()<0.9)
-    data[1][i]=int(random.random()<0.1)
+#pulls=1000
+#for i in range(0,500):
+#    data[0][i]=int(random.random()<0.6)
+#    data[1][i]=int(random.random()<0.4)
 
-for i in range(500,1000):
-    data[0][i]=int(random.random()<0.1)
-    data[1][i]=int(random.random()<0.9)
+#for i in range(500,1000):
+#    data[0][i]=int(random.random()<0.4)
+#    data[1][i]=int(random.random()<0.6)
 
-for i in range(0,pulls):
+testcases = [BanditTestCase() for count in xrange(configuration.N_CASES)]
+
+case=0
+
+testcases[case].numBandits = 2
+testcases[case].maxPulls = 1000
+testcases[case].bandits = [BanditGenerator() for count in xrange(testcases[case].numBandits)]
+testcases[case].bandits[0].intervals = [0,500]
+testcases[case].bandits[1].intervals = [0,500]
+testcases[case].bandits[0].probabilities = [0.5,0.1]
+testcases[case].bandits[1].probabilities = [0.1,0.5]
+maxReward = testcases[case].calcMaxReward()
+
+M=[machine(m) for m in range(testcases[case].numBandits)]
+total_rejected=0
+for i in range(0,testcases[0].maxPulls):
     sM=EGreedy(M,0.1)
-    r=data[sM.id-1][i]
+    r=testcases[case].pullBandit(sM.id,i)
     sM.update(r)
-    sM=checkChange(2.5,sM)
+    rejected=checkChange(2.5,sM)
+    total_rejected=total_rejected+rejected
+    if rejected>0:
+        print 'Global pull  at change point:'+str(i)
+
 totalReward=0
 for m in M:
     totalReward=totalReward+m.sum_total
     print 'Machine '+str(m.id)+' Total reward: '+str(m.sum_total)+' Total pulls: '+str(m.pulls_total)+' Average reward: '+str(m.mean)
 
-print 'Total reward: '+str(totalReward)
+print 'Total reward: '+str(totalReward)+' maximum possible reward: '+str(maxReward)
 
 #Y=[]
 #X=0

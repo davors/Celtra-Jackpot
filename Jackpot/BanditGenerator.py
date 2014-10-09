@@ -1,3 +1,4 @@
+import random
 class BanditGenerator() :
     intervals = [0]
     probabilities = [0.5]
@@ -5,7 +6,7 @@ class BanditGenerator() :
     def pull(self,p) :
         for i in range(len(self.intervals)-1, -1, -1) :
             if p >= self.intervals[i] :
-                if rand() <= self.probabilities[i] :
+                if random.random() < self.probabilities[i] :
                     return 1
                 else :
                     return 0
@@ -31,7 +32,7 @@ class BanditTestCase() :
 
     def pullBandit(self,bandit_id,pull_id) :
         if not self.onlineUrl :
-            reward = self.bandits[bandit_id].pull[pull_id]
+            reward = self.bandits[bandit_id].pull(pull_id)
         else :
             reward = -1 #getMachineResponse(url,bandit_id,pull_id)
         return reward
