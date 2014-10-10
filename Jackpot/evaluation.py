@@ -18,7 +18,7 @@ change_point_detectors = [
     'HenkyPenky'
     ]
 
-def evaluation_single_case(case, suppress_output = 0) :      
+def evaluation_single_case(case, suppress_output = 0, input_params = []) :      
     
     #algorithm selection
     selection_algorithm = 0
@@ -90,7 +90,7 @@ def evaluation_single_case(case, suppress_output = 0) :
     return total_reward
 
 
-def evaluation_batch_cases(cases, repeats) :
+def evaluation_batch_cases(cases, repeats, input_params = []) :
 
     #define metrics output format
     metrics_labels = ["        SumR","      Regret","  Optimality [%]"]
@@ -157,3 +157,4 @@ def evaluation_batch_cases(cases, repeats) :
             print (metrics_out[i]) % (avg_metrics[i]),
         print ''
         
+    return (avg_metrics, metrics)

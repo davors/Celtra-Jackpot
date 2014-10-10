@@ -46,9 +46,9 @@ def constructTestCases(suppress_output = 0) :
             [   3   ,  3000    ,    [   [0, 1500, 2250] , [0, 1500, 2250], [0] ]   ,
                                     [   [0.2, 0.0, 0.2] , [0.15, 0.3, 0.0] , [0.1] ]   ] ,
 
-            #Celtra testcase 9 --- NEED ADDITIONAL MEASUREMENTS
+            #Celtra testcase 9
             [   4   ,  30000    ,   [   [0, 12000] , [0], [0, 12000], [0] ]   ,
-                                    [   [0.0, 0.030] , [0], [0.0, 0.035] , [0] ]   ] ,
+                                    [   [0.0, 0.020] , [0], [0.0, 0.023] , [0] ]   ] ,
 
             #Celtra testcase 10 --- NEED ADDITIONAL MEASUEREMENTS (currently is just noise)
             [  10   ,  30000   ,    [     [0] ,     [0] ,     [0] ,     [0] ,     [0] ,     [0] ,     [0] ,     [0] ,     [0] ,     [0] ]   ,
@@ -66,7 +66,7 @@ def constructTestCases(suppress_output = 0) :
     total_num_cases = len(generate_cases)
     
     if(not suppress_output) :
-        print ('constructTestCases(): generating %d specified cases ' % total_num_cases),
+        print ('constructTestCases(): generating %d specified cases ... ' % total_num_cases),
 
     cases = [BanditTestCase() for count in xrange(total_num_cases)]
     for c in xrange(total_num_cases) :
@@ -78,10 +78,8 @@ def constructTestCases(suppress_output = 0) :
             cases[c].bandits[b].probabilities = generate_cases[c][3][b]
         cases[c].calcMaxReward()
         cases[c].calcRandomReward()
-        if(not suppress_output) :
-            print '.',
 
     if(not suppress_output) :
-        print ' DONE'
+        print 'DONE'
 
     return cases

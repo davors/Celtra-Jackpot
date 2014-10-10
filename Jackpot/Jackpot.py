@@ -36,6 +36,12 @@ test_all = [ allCases[i] for i in xrange(len(allCases)) ]
 evaluation_batch_cases(test_all, 100)
 #evaluation_batch_cases([allCases[1]], 100)
 
+#SampleAnalyzer('case_06_02m_01000p_1000r.txt')
+#SampleAnalyzer('case_09_04m_30000p_00024r.txt')
+
+
+
+
 
 #Y=[]
 #X=0
@@ -57,23 +63,3 @@ evaluation_batch_cases(test_all, 100)
     #    break
 
 #print str(case)    
-
-
-
-
-
-### TOM ###
-
-#testcases = [BanditTestCase() for count in xrange(configuration.N_CASES)]
-
-#testcases[0].numBandits = 2
-#testcases[0].maxPulls = 500
-#testcases[0].bandits = [BanditGenerator() for count in xrange(testcases[0].numBandits)]
-#testcases[0].bandits[0].intervals = [0,250]
-#testcases[0].bandits[1].intervals = [0,250]
-#testcases[0].bandits[0].probabilities = [0.1,0.5]
-#testcases[0].bandits[1].probabilities = [0.5,0.4]
-#maxR = testcases[0].calcMaxReward()
-
-#SampleAnalyzer('case_06_02m_01000p_1000r.txt')
-#SampleAnalyzer('case_06_02m_01000p_1000r.txt')
