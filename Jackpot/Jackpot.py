@@ -28,11 +28,12 @@ from ConstructCases import *
 
 allCases = constructTestCases()
 
-test_01_05 = [ allCases[i] for i in [0, 1, 2, 3, 4] ]
-test_06_10 = [ allCases[i] for i in [5, 6, 7, 8, 9] ]
-test_01_10 = [ allCases[i] for i in xrange(10) ]
+#test_01_05 = [ allCases[i] for i in [0, 1, 2, 3, 4] ]
+#test_06_10 = [ allCases[i] for i in [5, 6, 7, 8, 9] ]
+#test_01_10 = [ allCases[i] for i in xrange(10) ]
+test_all = [ allCases[i] for i in xrange(len(allCases)) ]
 
-evaluation_batch_cases(test_01_10, 100)
+evaluation_batch_cases(test_all, 100)
 #evaluation_batch_cases([allCases[1]], 100)
 
 
