@@ -74,7 +74,8 @@ def evaluation_single_case(case, print_output = 1) :
     
     #learning parameters
     UCB1_parC = 1.0
-    epsilon_soft = 0.1
+    epsilon_soft = 0.001
+    SoftMax_tao = 0.01
     change_point_threshold = 2.5
 
     #init memory structures
@@ -88,8 +89,9 @@ def evaluation_single_case(case, print_output = 1) :
 
         #choose bandit/machine
         #selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
-        selected_machine = UCBT(machines, p - total_rejected_pulls, UCB1_parC)
+        #selected_machine = UCBT(machines, p - total_rejected_pulls, UCB1_parC)
         #selected_machine = EGreedy(machines,epsilon_soft)
+        selected_machine = SoftMax(machines,SoftMax_tao)
 
         #get reward
         last_reward = case.pullBandit(selected_machine.id, p)
@@ -98,7 +100,8 @@ def evaluation_single_case(case, print_output = 1) :
         selected_machine.update(last_reward)
 
         #change point detection
-        rejected_pulls = checkChange(change_point_threshold, selected_machine)
+        rejected_pulls=0
+        #rejected_pulls = checkChange(change_point_threshold, selected_machine)
         total_rejected_pulls = total_rejected_pulls + rejected_pulls
         if rejected_pulls > 0 :
             if print_output :
