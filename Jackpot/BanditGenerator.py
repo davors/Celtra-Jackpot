@@ -1,7 +1,7 @@
 import random
 class BanditGenerator() :
-    intervals = [0]
-    probabilities = [0.5]
+    intervals = None
+    probabilities = None
 
     def pull(self,p) :
         for i in range(len(self.intervals)-1, -1, -1) :
@@ -27,56 +27,62 @@ class BanditGenerator() :
 
 class BanditTestCase() :
     
-    onlineUrl = ''
+    onlineUrl = None
 
-    numBandits = 0
-    maxPulls = 0
-    maximumReward = 0.0
-    randomReward = 0.0
+    numBandits = None
+    maxPulls = None
+    maximumReward = None
+    randomReward = None
 
     bandits = []
 
-    def __init__(self, url = '') :
+    def __init__(self, url = None) :
         self.onlineUrl = url
 
     def pullBandit(self,bandit_id,pull_id) :
-        if not self.onlineUrl :
+        if (self.onlineUrl is None) :
             reward = self.bandits[bandit_id].pull(pull_id)
         else :
             reward = -1 #getMachineResponse(url,bandit_id,pull_id)
         return reward
 
     def getNumBandits(self) :
-        if not self.onlineUrl :
+        if (self.onlineUrl is None) :
             return self.numBandits
         else :
             #self.numBandits = getNumMachines(url)
             return -1 
 
     def getMaxPulls(self) :
-        if not self.onlineUrl :
+        if (self.onlineUrl is None) :
             return self.maxPulls
         else :
             #self.maxPulls = getNumPulls(url)
             return -1
 
     def calcMaxReward(self) :
-        if self.onlineUrl :
+        if not (self.onlineUrl is None) :
             return -1
 
+        all_intervals = []
+        for b in range(self.numBandits) :
+            all_intervals += self.bandits[b].intervals
+        all_intervals = sorted(set(all_intervals))
+        all_intervals = all_intervals + [self.maxPulls]
+
         self.maximumReward = 0.0
-        for p in range(self.maxPulls) :
-            max = 0.0
+        for i in range(len(all_intervals)-1) :
+            best_reward = 0.0
             for b in range(self.numBandits) :
-                prob = self.bandits[b].prob(p)
-                if(prob > max) :
-                    max = prob
-            self.maximumReward = self.maximumReward + max
+                prob = self.bandits[b].prob(all_intervals[i])
+                if(prob > best_reward) :
+                    best_reward = prob
+            self.maximumReward += best_reward * (all_intervals[i+1] - all_intervals[i])
 
         return self.maximumReward
 
     def calcRandomReward(self) :
-        if self.onlineUrl :
+        if not (self.onlineUrl is None) :
             return -1
 
         self.randomReward = 0.0

@@ -27,7 +27,7 @@ def UCB1(actions, all_pulls, parC = 1.0):
 
             #break ties sequentially randomly
             elif UCBvalue == bestVal :
-                if selectedAction is not None :
+                if not (selectedAction is None) :
                     if random.random() < 0.5 :
                         selectedAction = a
                 else :
@@ -61,7 +61,7 @@ def UCBT(actions, all_pulls, parC = 1.0):
 
             #break ties sequentially randomly
             elif UCBvalue == bestVal :
-                if selectedAction is not None :
+                if not (selectedAction is None) :
                     if random.random() < 0.5 :
                         selectedAction = a
                 else :
