@@ -13,6 +13,7 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F84B3456-AC12-4BA3-99AB-2D0DD9212BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F84B3456-AC12-4BA3-99AB-2D0DD9212BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F84B3456-AC12-4BA3-99AB-2D0DD9212BCF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{F84B3456-AC12-4BA3-99AB-2D0DD9212BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F84B3456-AC12-4BA3-99AB-2D0DD9212BCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
