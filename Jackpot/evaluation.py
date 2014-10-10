@@ -12,15 +12,11 @@ def evaluation_batch_cases(cases, repeats) :
     num_cases = len(cases)
 
     #compute maximal possible sum of rewards and random policy performance
-    maxRewards = [0.0 for x in xrange(num_cases)]
-    randomRewards = [0.0 for x in xrange(num_cases)]
     summedMaxRewards = 0.0
     summedRandomRewards = 0.0
     for c in xrange(0,num_cases) :
-        maxRewards[c] = cases[c].calcMaxReward()
-        randomRewards[c] = cases[c].calcRandomReward()
-        summedMaxRewards += maxRewards[c]
-        summedRandomRewards += randomRewards[c]
+        summedMaxRewards += cases[c].maximumReward
+        summedRandomRewards += cases[c].randomReward
 
     #init performance metrics
     num_metrics = 3
