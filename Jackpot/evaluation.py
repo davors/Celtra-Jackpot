@@ -91,7 +91,8 @@ def evaluation_single_case(case, print_output = 1) :
     for p in range(0,case.maxPulls) :
 
         #choose bandit/machine
-        selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
+        #selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
+        selected_machine = UCBT(machines, p - total_rejected_pulls, UCB1_parC)
         #selected_machine = EGreedy(machines,epsilon_soft)
 
         #get reward

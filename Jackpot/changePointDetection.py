@@ -12,7 +12,7 @@ from math import *
 #PHt=Mt-mt=max(PH(t-1)-rt+rat-delta,0)
 
 #Treshold 80
-def HankeyPankeyTest(Tsh,mt, Mt,X, Y, N):
+def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
     delta=0.005
     if N==0:
         HP=0.0
@@ -30,8 +30,8 @@ def HankeyPankeyTest(Tsh,mt, Mt,X, Y, N):
 
 
 
-def checkChange(Tsh, m):
-    # tp=range(3,10) + range(10,100,10) + range(100,1000,100)
+def checkChange(treshold, m):
+    #tp=range(10,100,10) + range(100,1000,100)
     tp=[50] 
     rejected=0
     if m.moving_sum==[]:
@@ -46,7 +46,7 @@ def checkChange(Tsh, m):
         Z=testIfDistDiff(m.sum,m.moving_sum[t],m.pulls,s)
         #print str(Z)
         # 95 % confidence interval
-        if Z>=Tsh:
+        if Z>=treshold:
             #print 'checkChange triggered at: '+str((Z,m.id,m.pulls))
             rejected=m.resetState(t,s)
     return rejected
