@@ -36,6 +36,7 @@ def evaluation_single_case(case, suppress_output = 0) :
     UCB1_parC = 1.0
     epsilon_soft = 0.1
     change_point_threshold = 2.5
+    softMax_tao = 0.01
 
     #init memory structures
     machines = [machine(m) for m in range(case.numBandits)]
@@ -49,11 +50,11 @@ def evaluation_single_case(case, suppress_output = 0) :
 
         #choose bandit/machine
         if  selection_algorithm == 0:
-            selected_machine = machines[random.randint(0,case.numBandits-1)]
+            selected_machine = machines[random.randint(0,case.numBandits - 1)]
         elif selection_algorithm == 1 :
             selected_machine = EGreedy(machines,epsilon_soft)
         elif selection_algorithm == 2 :
-            todo
+            selected_machine = softMax(machines, softMax_tao)
         elif selection_algorithm == 3 :
             selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
         elif selection_algorithm == 4 :
@@ -71,7 +72,7 @@ def evaluation_single_case(case, suppress_output = 0) :
             total_rejected_pulls = total_rejected_pulls + rejected_pulls
             if rejected_pulls > 0 :
                 if not suppress_output :
-                    print 'Global pull  at change point:'+str(i)
+                    print 'Global pull  at change point:' + str(i)
 
         elif change_point_algorithm == 2:
             todo
