@@ -2,6 +2,93 @@ from changePointDetection import *
 from machine import *
 from strategy import *
 
+# ------------------------------------- #
+
+selection_algorithms = [
+    'random',
+    'epsilonGreedy'
+    'softMax',
+    'UCB1',
+    'UCBtuned'
+    ]
+
+change_point_detectors = [
+    'none',
+    'DavorTom',
+    'HenkyPenky'
+    ]
+
+def evaluation_single_case(case, suppress_output = 0) :      
+    
+    #algorithm selection
+    selection_algorithm = 0
+        # 0 'random'
+        # 1 'epsilonGreedy
+        # 2 'softMax'
+        # 3 'UCB1'
+        # 4 'UCBtuned'
+    change_point_algorithm = 'none'
+        # 0 'none'
+        # 1 'DavorTom'
+        # 2 'HenkyPenky'
+
+    #learning parameters
+    UCB1_parC = 1.0
+    epsilon_soft = 0.1
+    change_point_threshold = 2.5
+
+    #init memory structures
+    machines = [machine(m) for m in range(case.numBandits)]
+
+    #init global variables
+    total_rejected_pulls = 0
+    rejected_pulls = 0
+
+    #execute play
+    for p in range(0,case.maxPulls) :
+
+        #choose bandit/machine
+        if  selection_algorithm == 0:
+            selected_machine = machines[random.randint(0,case.numBandits-1)]
+        elif selection_algorithm == 1 :
+            selected_machine = EGreedy(machines,epsilon_soft)
+        elif selection_algorithm == 2 :
+            todo
+        elif selection_algorithm == 3 :
+            selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
+        elif selection_algorithm == 4 :
+            selected_machine = UCBT(machines, p - total_rejected_pulls, UCB1_parC)
+        
+        #get reward
+        last_reward = case.pullBandit(selected_machine.id, p)
+
+        #update statistics
+        selected_machine.update(last_reward)
+
+        #change point detection
+        if change_point_algorithm == 1 :
+            rejected_pulls = checkChange(change_point_threshold, selected_machine)
+            total_rejected_pulls = total_rejected_pulls + rejected_pulls
+            if rejected_pulls > 0 :
+                if not suppress_output :
+                    print 'Global pull  at change point:'+str(i)
+
+        elif change_point_algorithm == 2:
+            todo
+
+    #sum of collected reward
+    total_reward = 0.0
+    for m in machines:
+        total_reward = total_reward + m.sum_total
+        if not suppress_output:
+            print 'Machine '+str(m.id)+' Total reward: '+str(m.sum_total)+' Total pulls: '+str(m.pulls_total)+' Average reward: '+str(machines.mean)
+
+    if not suppress_output:
+        print 'Total reward: '+str(total_reward)+' maximum possible reward: '+str(case.maximumReward)
+
+    return total_reward
+
+
 def evaluation_batch_cases(cases, repeats) :
 
     #define metrics output format
@@ -69,88 +156,3 @@ def evaluation_batch_cases(cases, repeats) :
             print (metrics_out[i]) % (avg_metrics[i]),
         print ''
         
-# ------------------------------------- #
-
-selection_algorithms = [
-    'random',
-    'epsilonGreedy'
-    'softMax',
-    'UCB1',
-    'UCBtuned'
-    ]
-
-change_point_detectors = [
-    'none',
-    'DavorTom',
-    'HenkyPenky'
-    ]
-
-def evaluation_single_case(case, suppress_output = 0) :      
-    
-    #algorithm selection
-    selection_algorithm = 0
-        # 0 'random'
-        # 1 'epsilonGreedy
-        # 2 'softMax'
-        # 3 'UCB1'
-        # 4 'UCBtuned'
-    change_point_algorithm = 'none'
-        # 0 'none'
-        # 1 'DavorTom'
-        # 2 'HenkyPenky'
-
-    #learning parameters
-    UCB1_parC = 1.0
-    epsilon_soft = 0.1
-    change_point_threshold = 2.5
-
-    #init memory structures
-    machines = [machine(m) for m in range(case.numBandits)]
-
-    #init global variables
-    total_rejected_pulls = 0
-    rejected_pulls = 0
-
-    #execute play
-    for p in range(0,case.maxPulls) :
-
-        #choose bandit/machine
-        if selection_algorithm == 0:
-            selected_machine = machines[random.randint(0,case.numBandits-1)]
-        elif selection_algorithm == 1 :
-            selected_machine = EGreedy(machines,epsilon_soft)
-        elif selection_algorithm == 2 :
-            todo
-        elif selection_algorithm == 3 :
-            selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
-        elif selection_algorithm == 4 :
-            selected_machine = UCBT(machines, p - total_rejected_pulls, UCB1_parC)
-        
-        #get reward
-        last_reward = case.pullBandit(selected_machine.id, p)
-
-        #update statistics
-        selected_machine.update(last_reward)
-
-        #change point detection
-        if change_point_algorithm == 1 :
-            rejected_pulls = checkChange(change_point_threshold, selected_machine)
-            total_rejected_pulls = total_rejected_pulls + rejected_pulls
-            if rejected_pulls > 0 :
-                if not suppress_output :
-                    print 'Global pull  at change point:'+str(i)
-
-        elif change_point_algorithm == 2:
-            todo
-
-    #sum of collected reward
-    total_reward = 0.0
-    for m in machines:
-        total_reward = total_reward + m.sum_total
-        if not suppress_output:
-            print 'Machine '+str(m.id)+' Total reward: '+str(m.sum_total)+' Total pulls: '+str(m.pulls_total)+' Average reward: '+str(machines.mean)
-
-    if not suppress_output:
-        print 'Total reward: '+str(total_reward)+' maximum possible reward: '+str(case.maximumReward)
-
-    return total_reward
