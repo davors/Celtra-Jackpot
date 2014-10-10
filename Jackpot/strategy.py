@@ -71,6 +71,19 @@ def UCBT(actions, all_pulls, parC = 1.0):
     return 0
 
 
+def SoftMax(M, tao):
+    Avg=[m.mean for m in M]
+    s=sum(Avg)
+    E=[exp((a/s)/tao) for a in Avg]
+    E_sum=sum(E)
+    P=[e/E_sum for e in E]
+    sp=0;
+    for i in range(0,len(P)):
+        sp=sp+P[i]
+        if random.random()<sp:
+           return (M[i])
+
+    return 0
 
 def EGreedy(M, E):
     Avg=[m.mean for m in M]
