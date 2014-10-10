@@ -1,6 +1,6 @@
 from BanditGenerator import *
 
-def constructTestCases() :
+def constructTestCases(suppress_output = 0) :
 
     #-- user defined cases/bandits --#
     #instructions:
@@ -61,6 +61,10 @@ def constructTestCases() :
     #-- automatic generation --#
 
     total_num_cases = len(all_cases)
+    
+    if(not suppress_output) :
+        print ('constructTestCases(): generating %d specified cases ' % total_num_cases),
+
     cases = [BanditTestCase() for count in xrange(total_num_cases)]
     for c in xrange(total_num_cases) :
         cases[c].numBandits = all_cases[c][0]
@@ -69,5 +73,12 @@ def constructTestCases() :
         for b in xrange(cases[c].numBandits) :
             cases[c].bandits[b].intervals = all_cases[c][2][b]
             cases[c].bandits[b].probabilities = all_cases[c][3][b]
+        cases[c].calcMaxReward()
+        cases[c].calcRandomReward()
+        if(not suppress_output) :
+            print '.',
+
+    if(not suppress_output) :
+        print ' DONE'
 
     return cases
