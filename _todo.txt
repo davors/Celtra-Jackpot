@@ -1,0 +1,16 @@
+- dej na print output rezultate po casih
+- èe tega nismo že: implementacija neke znane/uveljavljene metode
+	* temeljito preišèi èlanke kaj je bilo na zadnje raziskovano (aktualne objave) in to implemenitraj, èe ni preveè zahtevno
+	* ali dovolj je npr. da izboljšamo UCB1 ali UCB1tuned z našo metodo changePointDetection?
+	* kaj toèno so uporabili pri HenkyPenky?? lahko s tisitm primerjamo?
+- napiši proceduro za preizkus veè vrednosti parametrov (da roèno optimiziramo)
+- napiši proceudro za avtomatsko optimizacijo parametrov
+	* uèeèi avtomat
+	* genetski algoritem
+	* ... ?
+- izmeri kako dobro deluje kateri algoritem (pri optimiziranih parametrih)
+	* z razliènimi changePointDetection
+	* skupaj 4*3 = 12 optimizacij in meritev
+	* ali definiramo še kakšne lastne testcase??
+- preizkusi "_ideje.txt"
+	* predvsem nameri razliène naèine za reset UCBjev ko je change point detectan
