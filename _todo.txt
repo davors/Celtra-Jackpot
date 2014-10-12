@@ -8,6 +8,7 @@
 	* uèeèi avtomat
 	* genetski algoritem
 	* ... ?
+- implementiraj razliène RESET algorithms v changePointDetection()
 - izmeri kako dobro deluje kateri algoritem (pri optimiziranih parametrih)
 	* z razliènimi changePointDetection
 	* skupaj 4*3 = 12 optimizacij in meritev

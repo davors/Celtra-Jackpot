@@ -30,7 +30,7 @@ def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
 
 
 
-def checkChange(treshold, m):
+def checkChange(treshold, m, reset_algorithm):
     #tp=range(10,100,10) + range(100,1000,100)
     tp=[50] 
     rejected=0

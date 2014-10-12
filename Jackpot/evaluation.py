@@ -4,6 +4,7 @@ from strategy import *
 
 # ------------------------------------- #
 
+#put this in "configuration"
 selection_algorithms = [
     'random',
     'epsilonGreedy'
@@ -17,26 +18,32 @@ change_point_detectors = [
     'DavorTom',
     'HenkyPenky'
     ]
+reset_algorithms = [
+    'TODO'
+    ]
+#---
 
-def evaluation_single_case(case, suppress_output = 0, input_params = []) :      
+def evaluation_single_case(case, suppress_output = 0, selected_algorithms = [4, 1, 0], input_params = [1.0, 0.1, 2.5, 0.01], function_approximator = None) :      
     
     #algorithm selection
-    selection_algorithm = 0
+    selection_algorithm = selected_algorithms[0]
         # 0 'random'
         # 1 'epsilonGreedy
         # 2 'softMax'
         # 3 'UCB1'
-        # 4 'UCBtuned'
-    change_point_algorithm = 'none'
+        # 4 'UCBtuned' (default)
+    change_point_algorithm = selected_algorithms[1]
         # 0 'none'
-        # 1 'DavorTom'
+        # 1 'DavorTom' (default)
         # 2 'HenkyPenky'
+    reset_algorithm = selected_algorithms[2]
+        #TODO
 
     #learning parameters
-    UCB1_parC = 1.0
-    epsilon_soft = 0.1
-    change_point_threshold = 2.5
-    softMax_tao = 0.01
+    UCB1_parC = input_params[0]
+    epsilon_soft = input_params[1]
+    change_point_threshold = input_params[2]
+    softMax_tao = input_params[3]
 
     #init memory structures
     machines = [machine(m) for m in range(case.numBandits)]
@@ -47,6 +54,16 @@ def evaluation_single_case(case, suppress_output = 0, input_params = []) :
 
     #execute play
     for p in range(0,case.maxPulls) :
+
+        if not (function_approximator is None) :
+            approximator_input1 = case.numBandits
+            approximator_input2 = case.maxPulls - total_rejected_pulls
+            approximator_input3 = p
+            approximator_input4 = p - total_rejected_pulls
+            UCB1_parC = function_approximator(approximator_input1, approximator_input2, approximator_input3, approximator_input4)
+            epsilon_soft = function_approximator(approximator_input1, approximator_input2, approximator_input3, approximator_input4)
+            change_point_threshold = function_approximator(approximator_input1, approximator_input2, approximator_input3, approximator_input4)
+            softMax_tao = function_approximator(approximator_input1, approximator_input2, approximator_input3, approximator_input4)
 
         #choose bandit/machine
         if  selection_algorithm == 0:
@@ -68,7 +85,8 @@ def evaluation_single_case(case, suppress_output = 0, input_params = []) :
 
         #change point detection
         if change_point_algorithm == 1 :
-            rejected_pulls = checkChange(change_point_threshold, selected_machine)
+            rejected_pulls = checkChange(change_point_threshold, selected_machine, reset_algorithm)
+            #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine
             total_rejected_pulls = total_rejected_pulls + rejected_pulls
             if rejected_pulls > 0 :
                 if not suppress_output :
