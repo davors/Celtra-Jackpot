@@ -1,49 +1,29 @@
+from configuration import *
 from changePointDetection import *
 from machine import *
 from strategy import *
 
 # ------------------------------------- #
 
-#put this in "configuration"
-selection_algorithms = [
-    'random',
-    'epsilonGreedy'
-    'softMax',
-    'UCB1',
-    'UCBtuned'
-    ]
 
-change_point_detectors = [
-    'none',
-    'DavorTom',
-    'HenkyPenky'
-    ]
-reset_algorithms = [
-    'TODO'
-    ]
-#---
-
-def evaluation_single_case(case, suppress_output = 0, selected_algorithms = [4, 1, 0], input_params = [1.0, 0.1, 2.5, 0.01], function_approximator = None) :      
+def evaluation_single_case(
+    case, 
+    suppress_output, 
+    selected_algorithms,
+    input_params,
+    function_approximator
+    ) :      
     
     #algorithm selection
     selection_algorithm = selected_algorithms[0]
-        # 0 'random'
-        # 1 'epsilonGreedy
-        # 2 'softMax'
-        # 3 'UCB1'
-        # 4 'UCBtuned' (default)
     change_point_algorithm = selected_algorithms[1]
-        # 0 'none'
-        # 1 'DavorTom' (default)
-        # 2 'HenkyPenky'
     reset_algorithm = selected_algorithms[2]
-        #TODO
 
     #learning parameters
-    UCB1_parC = input_params[0]
-    epsilon_soft = input_params[1]
-    change_point_threshold = input_params[2]
-    softMax_tao = input_params[3]
+    epsilon_soft = input_params[0]
+    softMax_tao = input_params[1]
+    UCB1_parC = input_params[2]
+    change_point_threshold = input_params[3]
 
     #init memory structures
     machines = [machine(m) for m in range(case.numBandits)]
@@ -55,7 +35,7 @@ def evaluation_single_case(case, suppress_output = 0, selected_algorithms = [4, 
     #execute play
     for p in range(0,case.maxPulls) :
 
-        if not (function_approximator is None) :
+        if not (function_approximator == GLODEF_FUNCTION_APPROX_NONE) :
             approximator_input1 = case.numBandits
             approximator_input2 = case.maxPulls - total_rejected_pulls
             approximator_input3 = p
@@ -66,15 +46,15 @@ def evaluation_single_case(case, suppress_output = 0, selected_algorithms = [4, 
             softMax_tao = function_approximator(approximator_input1, approximator_input2, approximator_input3, approximator_input4)
 
         #choose bandit/machine
-        if  selection_algorithm == 0:
+        if  selection_algorithm == GLODEF_SELECTION_RANDOM:
             selected_machine = machines[random.randint(0,case.numBandits - 1)]
-        elif selection_algorithm == 1 :
+        elif selection_algorithm == GLODEF_SELECTION_EGREEDY :
             selected_machine = EGreedy(machines,epsilon_soft)
-        elif selection_algorithm == 2 :
+        elif selection_algorithm == GLODEF_SELECTION_SOFTMAX :
             selected_machine = softMax(machines, softMax_tao)
-        elif selection_algorithm == 3 :
+        elif selection_algorithm == GLODEF_SELECTION_UCB1 :
             selected_machine = UCB1(machines, p - total_rejected_pulls, UCB1_parC)
-        elif selection_algorithm == 4 :
+        elif selection_algorithm == GLODEF_SELECTION_UCB1TUNED :
             selected_machine = UCBT(machines, p - total_rejected_pulls, UCB1_parC)
         
         #get reward
@@ -84,7 +64,7 @@ def evaluation_single_case(case, suppress_output = 0, selected_algorithms = [4, 
         selected_machine.update(last_reward)
 
         #change point detection
-        if change_point_algorithm == 1 :
+        if change_point_algorithm == GLODEF_CHANGEPOINT_DAVORTOM :
             rejected_pulls = checkChange(change_point_threshold, selected_machine, reset_algorithm)
             #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine
             total_rejected_pulls = total_rejected_pulls + rejected_pulls
@@ -92,7 +72,8 @@ def evaluation_single_case(case, suppress_output = 0, selected_algorithms = [4, 
                 if not suppress_output :
                     print 'Global pull  at change point:' + str(i)
 
-        elif change_point_algorithm == 2:
+        elif change_point_algorithm == GLODEF_CHANGEPOINT_HENKYPENKY :
+            #todo henky penky
             todo
 
     #sum of collected reward
@@ -108,7 +89,14 @@ def evaluation_single_case(case, suppress_output = 0, selected_algorithms = [4, 
     return total_reward
 
 
-def evaluation_batch_cases(cases, repeats, input_params = []) :
+def evaluation_batch_cases(
+    cases,
+    repeats,
+    suppress_output = 0, 
+    selected_algorithms = [DEFAULT_SELECTION_ALGORITHM, DEFAULT_CHANGEPOINT_ALGORITHM, DEFAULT_RESET_ALGORITHM], 
+    input_params = [DEFAULT_PAR_EGREEDY_E, DEFAULT_PAR_SOFTMAX_T, DEFAULT_PAR_UCB1_C, DEFAULT_PAR_CHANGEPOINT_THR], 
+    function_approximator = GLODEF_FUNCTION_APPROX_NONE
+    ) :
 
     #define metrics output format
     metrics_labels = ["        SumR","      Regret","  Optimality [%]"]
@@ -136,17 +124,27 @@ def evaluation_batch_cases(cases, repeats, input_params = []) :
     new_metrics = [0.0 for x in xrange(num_metrics)]
 
     #user output
-    print 'Procedure evaluation_artificial_cases()'
-    #print 'Case list: ' + case_list
-    print 'Total cases: ' + str(num_cases)
-    print 'Maximum summed reward: ' + str(summedMaxRewards)
-    print 'Random reward: ' + str(summedRandomRewards)
-    print 'Total repeats: ' + str(repeats)
-    print ''
-    print 'rep    ',
-    for i in xrange(num_metrics):
-        print metrics_labels[i],
-    print ''
+    if not suppress_output :
+        print 'Procedure evaluation_artificial_cases()'
+        print 'Settings: %s , %s , %s , %s' % (
+            GLO_labels_selection_algorithms[selected_algorithms[0]], 
+            GLO_labels_change_point_detectors[selected_algorithms[1]], 
+            GLO_labels_reset_algorithms[selected_algorithms[2]], 
+            GLO_labels_function_approx[function_approximator] 
+            )
+        print 'Param values %f %f %f %f' % (input_params[0], input_params[1], input_params[2], input_params[3])
+        print 'Case list: ',
+        for i in xrange(num_cases) :
+            print '%d ' % cases[i].ID
+        print 'Total cases: ' + str(num_cases)
+        print 'Maximum summed reward: ' + str(summedMaxRewards)
+        print 'Random reward: ' + str(summedRandomRewards)
+        print 'Total repeats: ' + str(repeats)
+        print ''
+        print 'rep    ',
+        for i in xrange(num_metrics):
+            print metrics_labels[i],
+        print ''
 
     #evaluate all cases
     for r in xrange(repeats) :
@@ -157,7 +155,7 @@ def evaluation_batch_cases(cases, repeats, input_params = []) :
         
         for c in xrange(0,num_cases) :
             #execute bandit game (case)
-            new_result = evaluation_single_case(cases[c], 1)
+            new_result = evaluation_single_case(cases[c], 1, selected_algorithms, input_params, function_approximator)
 
             #update results by different metrics
             new_metrics[0] = new_result
@@ -169,10 +167,16 @@ def evaluation_batch_cases(cases, repeats, input_params = []) :
 
         #calculate overall performance
         new_avg_metrics[2] /= num_cases
-        print ('%5d  ') % r,
+        if not suppress_output :
+            print ('%5d  ') % r,
         for i in xrange(num_metrics):
             avg_metrics[i]  += (1.0/(r+1.0))*(new_avg_metrics[i] - avg_metrics[i])
-            print (metrics_out[i]) % (avg_metrics[i]),
-        print ''
+            if not suppress_output :
+                print (metrics_out[i]) % (avg_metrics[i]),
+        if not suppress_output :
+            print ''
         
+    #returns
+    #   measurements averaged over all cases
+    #   measurements for each case individually
     return (avg_metrics, metrics)

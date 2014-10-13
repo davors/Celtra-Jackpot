@@ -32,10 +32,14 @@
     <Compile Include="changePointDetection.py" />
     <Compile Include="configuration.py" />
     <Compile Include="ConstructCases.py" />
+    <Compile Include="CrossTest.py" />
     <Compile Include="evaluation.py" />
     <Compile Include="fileIO.py" />
+    <Compile Include="FunctionApprox.py" />
+    <Compile Include="GlobalDefines.py" />
     <Compile Include="Jackpot.py" />
     <Compile Include="machine.py" />
+    <Compile Include="Optimization.py" />
     <Compile Include="SampleAnalyzer.py" />
     <Compile Include="strategy.py" />
     <Compile Include="webClient.py" />

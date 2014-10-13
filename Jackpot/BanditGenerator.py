@@ -1,4 +1,6 @@
+from configuration import *
 import random
+
 class BanditGenerator() :
     intervals = None
     probabilities = None
@@ -27,6 +29,8 @@ class BanditGenerator() :
 
 class BanditTestCase() :
     
+    ID = -1
+
     onlineUrl = None
 
     numBandits = None

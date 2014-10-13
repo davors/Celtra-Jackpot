@@ -70,6 +70,7 @@ def constructTestCases(suppress_output = 0) :
 
     cases = [BanditTestCase() for count in xrange(total_num_cases)]
     for c in xrange(total_num_cases) :
+        cases[c].ID = c
         cases[c].numBandits = generate_cases[c][0]
         cases[c].maxPulls = generate_cases[c][1]
         cases[c].bandits = [BanditGenerator() for count in xrange(cases[c].numBandits)]

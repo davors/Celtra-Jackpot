@@ -1,8 +1,39 @@
-import configuration
+#-- imports --#
+from configuration import *
 from fileIO import *
 from SampleAnalyzer import *
 from evaluation import *
 from ConstructCases import *
+
+#-- main program procedure (user code) --#
+
+allCases = constructTestCases()
+
+#test_01_05 = [ allCases[i] for i in [0, 1, 2, 3, 4] ]
+#test_06_10 = [ allCases[i] for i in [5, 6, 7, 8, 9] ]
+#test_01_10 = [ allCases[i] for i in xrange(10) ]
+test_all = [ allCases[i] for i in xrange(len(allCases)) ]
+
+evaluation_batch_cases([allCases[9]], 100)
+#evaluation_batch_cases([allCases[1]], 100)
+
+#SampleAnalyzer('case_06_02m_01000p_1000r.txt')
+#SampleAnalyzer('case_09_04m_30000p_00024r.txt')
+
+##TODO
+#Optimize(
+#    test_all,
+#    GLODEF_OPTIMIZATION_ANNEALING,
+#    [],
+#    10,
+#    DEFAULT_FITNESS_METRIC,
+#    [DEFAULT_SELECTION_ALGORITHM, DEFAULT_CHANGEPOINT_ALGORITHM, DEFAULT_RESET_ALGORITHM], 
+#    DEFAULT_FUNCTION_APPROXIMATOR
+#    )
+
+
+
+#### -------- OLD ---------- ###
 
 #for c in range(1,configuration.N_CASES+1):
 #    machines=getNumMachines(c)
@@ -25,23 +56,6 @@ from ConstructCases import *
 #for i in range(500,1000):
 #    data[0][i]=int(random.random()<0.4)
 #    data[1][i]=int(random.random()<0.6)
-
-allCases = constructTestCases()
-
-#test_01_05 = [ allCases[i] for i in [0, 1, 2, 3, 4] ]
-#test_06_10 = [ allCases[i] for i in [5, 6, 7, 8, 9] ]
-#test_01_10 = [ allCases[i] for i in xrange(10) ]
-test_all = [ allCases[i] for i in xrange(len(allCases)) ]
-
-evaluation_batch_cases([allCases[9]], 100)
-#evaluation_batch_cases([allCases[1]], 100)
-
-#SampleAnalyzer('case_06_02m_01000p_1000r.txt')
-#SampleAnalyzer('case_09_04m_30000p_00024r.txt')
-
-
-
-
 
 #Y=[]
 #X=0

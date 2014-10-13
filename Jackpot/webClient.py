@@ -1,7 +1,7 @@
 import urllib2
 import urllib
 import socket
-from configuration import server
+from configuration import *
 
 #get number of machines available in the case
 def getNumMachines(case):

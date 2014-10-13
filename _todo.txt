@@ -1,4 +1,5 @@
 - dej na print output rezultate po casih
+	* dej da vse zapisuje še v datoteko z datumom
 - èe tega nismo že: implementacija neke znane/uveljavljene metode
 	* temeljito preišèi èlanke kaj je bilo na zadnje raziskovano (aktualne objave) in to implemenitraj, èe ni preveè zahtevno
 	* ali dovolj je npr. da izboljšamo UCB1 ali UCB1tuned z našo metodo changePointDetection?
