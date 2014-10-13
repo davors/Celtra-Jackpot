@@ -135,7 +135,8 @@ def evaluation_batch_cases(
         print 'Param values %f %f %f %f' % (input_params[0], input_params[1], input_params[2], input_params[3])
         print 'Case list: ',
         for i in xrange(num_cases) :
-            print '%d ' % cases[i].ID
+            print '%d ' % cases[i].ID,
+        print ''
         print 'Total cases: ' + str(num_cases)
         print 'Maximum summed reward: ' + str(summedMaxRewards)
         print 'Random reward: ' + str(summedRandomRewards)
