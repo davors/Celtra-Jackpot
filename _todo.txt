@@ -1,3 +1,6 @@
+Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
+--------------------------------------------------------------
+
 - dej na print output rezultate po casih
 	* dej da vse zapisuje še v datoteko z datumom
 - èe tega nismo že: implementacija neke znane/uveljavljene metode

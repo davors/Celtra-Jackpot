@@ -1,3 +1,6 @@
+Ta dokument vsebuje možne ideje in nadaljnje delo, èe nam ostane še kaj èasa
+----------------------------------------------------------------------------
+
 - ko change point detection zazna spremembo se stanje nekako resetira:
 	*tisti bandit B, ki je sprožil reset se nastavi na število vzorcev N kolikor jih je bilo v moving average
 	*ostale bandite pa je potrebno resetirat na drugaèno število - potrebno je gledat ne absolutno po številu potegov, ampak po èasu (koliko potegov je bilo vsakega bandita od toèke v preteklosti, ko je moving average naredil N vozrcev bandita B)
@@ -13,4 +16,4 @@
 	*glede na izmerjene rezulate po posameznih primerih ugotovi ali se splaèa sploh uporabit kaj drugega kot UCB1tuned
 	*èe ja, potem naredi nek "voting system" na primer treh algoritmov, kjer se izbere tisti machine/akcija, ki ima najveè glasov, sicer pa èe imajo vsi enako naj prevlada npr. UCB1tuned
 	
-- (lahko je popolnoma mimo...) v primeru, ko imaš ogromno nièel in le nekaj enic, smatraš, da ti stroj vraèa povpreèno vrednost vseh preteklih rewardov (delaš dejansko prediction), ali je to smiselno ?? kaj bi se zgodilo?
+- (lahko je popolnoma mimo...) v primeru, ko imaš ogromno nièel in le nekaj enic, smatraš, da ti stroj vraèa povpreèno vrednost vseh preteklih rewardov (delaš dejansko prediction), ali je to smiselno ?? kaj bi se zgodilo?7

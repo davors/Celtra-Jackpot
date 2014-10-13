@@ -1,5 +1,3 @@
-														
-														
 binary distribution sampling accuracy, required number of repeats to achive an 95% confidence interval of...
 	//20000, 95% confidence that true value deviates less by 1%
 	//5000,  95% confidence that true value deviates less by 2%
@@ -29,13 +27,3 @@ confidence_normal_dist2 =
 	UCB1
 	UCB1-TUNED
 	Epsilon_n GREEDY 
-	http://lane.compbio.cmu.edu/courses/slides_ucb.pdf
-	http://www.cs.mcgill.ca/~vkules/bandits.pdf
-	http://www.cs.cmu.edu/~deepay/mywww/papers/nips08-mortal.pdf
-	http://hal.inria.fr/docs/00/16/40/33/PDF/cap07.pdf
-
-
-
-
-
-
