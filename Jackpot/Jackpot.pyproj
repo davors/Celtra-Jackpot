@@ -30,22 +30,22 @@
   <ItemGroup>
     <Compile Include="BanditGenerator.py" />
     <Compile Include="changePointDetection.py" />
+    <Compile Include="Config.py" />
     <Compile Include="configuration.py" />
-    <Compile Include="ConstructCases.py" />
+    <Compile Include="Config_testCases.py" />
     <Compile Include="CrossTest.py" />
-    <Compile Include="evaluation.py" />
+    <Compile Include="Evaluator.py" />
     <Compile Include="fileIO.py" />
     <Compile Include="FunctionApprox.py" />
     <Compile Include="GlobalDefines.py" />
     <Compile Include="Jackpot.py" />
+    <Compile Include="Jackpot_init.py" />
+    <Compile Include="MABsolver.py" />
     <Compile Include="machine.py" />
     <Compile Include="Optimization.py" />
     <Compile Include="SampleAnalyzer.py" />
     <Compile Include="strategy.py" />
     <Compile Include="webClient.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

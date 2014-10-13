@@ -1,10 +1,11 @@
-from configuration import *
 import random
 
+# Generator of a single one-armed bandit
 class BanditGenerator() :
     intervals = None
     probabilities = None
 
+    # single pull - returns 0 or 1 regarding the pull number and generators internal probability
     def pull(self,p) :
         for i in range(len(self.intervals)-1, -1, -1) :
             if p >= self.intervals[i] :
@@ -13,11 +14,13 @@ class BanditGenerator() :
                 else :
                     return 0.0
 
+    # returns the exact internal probability at a specified pull number
     def prob(self,p) :
         for i in range(len(self.intervals)-1, -1, -1) :
             if p >= self.intervals[i] :
                 return self.probabilities[i]
 
+    # calculates the maximal achieveable reward in a given ammount of pulls
     def calcFullReward(self, max_pulls) :
         fullReward = 0.0
         endInterval = max_pulls
@@ -27,6 +30,8 @@ class BanditGenerator() :
             endInterval = self.intervals[i]
         return fullReward
 
+# A multi-armed bandit test case
+# may be bound to an online-server by specifying the URL or to an internal bandit generator
 class BanditTestCase() :
     
     ID = -1
@@ -40,9 +45,11 @@ class BanditTestCase() :
 
     bandits = []
 
+    # if URL is given at init, then the test case requests data from the given online server
     def __init__(self, url = None) :
         self.onlineUrl = url
 
+    # pull a specified one-armed bandit
     def pullBandit(self,bandit_id,pull_id) :
         if (self.onlineUrl is None) :
             reward = self.bandits[bandit_id].pull(pull_id)
@@ -50,6 +57,7 @@ class BanditTestCase() :
             reward = -1 #getMachineResponse(url,bandit_id,pull_id)
         return reward
 
+    # inquire about the number of bandits in the test case
     def getNumBandits(self) :
         if (self.onlineUrl is None) :
             return self.numBandits
@@ -57,6 +65,7 @@ class BanditTestCase() :
             #self.numBandits = getNumMachines(url)
             return -1 
 
+    # inquire about the total number of pulls in the test case
     def getMaxPulls(self) :
         if (self.onlineUrl is None) :
             return self.maxPulls
@@ -64,6 +73,7 @@ class BanditTestCase() :
             #self.maxPulls = getNumPulls(url)
             return -1
 
+    # calculate maximum achievable reward for the test case
     def calcMaxReward(self) :
         if not (self.onlineUrl is None) :
             return -1
@@ -85,6 +95,7 @@ class BanditTestCase() :
 
         return self.maximumReward
 
+    # calculate random-policy reward for the test case
     def calcRandomReward(self) :
         if not (self.onlineUrl is None) :
             return -1
@@ -96,3 +107,31 @@ class BanditTestCase() :
 
         return self.randomReward
 
+# A batch of multi-armed bandit scenarios
+class BanditTestBatch() :
+
+    list = None
+    num = None
+    sumMaxRewards = None
+    sumRandomRewards = None
+
+    # initialize and calculate the maximum achievable reward and random-policy reward for the test batch
+    def __init__(self, allCases, indices) :
+        self.list = [ allCases[i] for i in indices ]
+        self.num = len(indices)
+
+        # compute maximal possible sum of rewards and random policy performance
+        self.sumMaxRewards = 0.0
+        self.sumRandomRewards = 0.0
+        for c in xrange(0, self.num) :
+            self.sumMaxRewards += self.list[c].maximumReward
+            self.sumRandomRewards += self.list[c].randomReward
+
+    def info(self) :
+        print 'BanditTestBatch: casesID: ',
+        for i in xrange(self.num) :
+            print '%d ' % self.list[i].ID,
+        print ''
+        print 'BanditTestBatch: numCases: %d' % self.num
+        print 'BanditTestBatch: maxim sum reward: %.1f' % self.sumMaxRewards
+        print 'BanditTestBatch: random reward: %.1f' % self.sumRandomRewards

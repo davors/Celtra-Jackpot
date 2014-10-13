@@ -24,7 +24,7 @@ def Optimize(
             print '%f' % optimization_algorithm_params[i],
         print ''
         print 'Eval per sample: %d' % evaluations_per_sample
-        print 'Strategy Settings: %s , %s , %s' % (GLO_labels_selection_algorithms[strategy_settings[0]], GLO_labels_change_point_detectors[strategy_settings[1]], GLO_labels_reset_algorithms[strategy_settings[2]])
+        print 'Strategy Settings: %s , %s , %s' % (GLO_labels_selection_policies[strategy_settings[0]], GLO_labels_change_point_detectors[strategy_settings[1]], GLO_labels_reset_algorithms[strategy_settings[2]])
         print 'Function approximator: %s' % GLO_labels_function_approx[function_approximator]
         print 'Strategy param values %f %f %f %f' % (strategy_settings[0], strategy_settings[1], strategy_settings[2], strategy_settings[3])
         print 'Case list: ',

@@ -4,11 +4,14 @@ GLODEF_SELECTION_RANDOM = 0
 GLODEF_SELECTION_EGREEDY = 1
 GLODEF_SELECTION_SOFTMAX = 2
 GLODEF_SELECTION_UCB1 = 3
-GLODEF_SELECTION_UCB1TUNED = 4
+GLODEF_SELECTION_UCBTUNED = 4
 
 GLODEF_CHANGEPOINT_NONE = 0
 GLODEF_CHANGEPOINT_DAVORTOM = 1
 GLODEF_CHANGEPOINT_HENKYPENKY = 2
+
+GLODEF_CHANGEPOINT_TEST_DAVOR = 0
+GLODEF_CHANGEPOINT_TEST_TOM = 1
 
 #TODO !!!
 GLODEF_RESET_ALGORITHM_TODO = 0
@@ -26,7 +29,7 @@ GLODEF_FUNCTION_APPROX_DIRECT = 1
 GLODEF_FUNCTION_APPROX_LINEAR = 2
 GLODEF_FUNCTION_APPROX_NEURAL = 3
 
-GLO_labels_selection_algorithms = [
+GLO_labels_selection_policies = [
     'random',
     'epsilonGreedy',
     'softMax',
@@ -35,10 +38,16 @@ GLO_labels_selection_algorithms = [
     ]
 
 GLO_labels_change_point_detectors = [
-    'CP: Disabled',
-    'DavorTom',
-    'HenkyPenky'
+    'CP Disabled',
+    'CP DavorTom',
+    'CP HenkyPenky'
     ]
+
+GLO_labels_change_point_test = [
+    'CPT Davor',
+    'CPT Tom'
+    ]
+
 GLO_labels_reset_algorithms = [
     'Reset: TODO'
     ]
