@@ -1,4 +1,8 @@
+Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
+--------------------------------------------------------------
+
 - dej na print output rezultate po casih
+	* dej da vse zapisuje še v datoteko z datumom
 - èe tega nismo že: implementacija neke znane/uveljavljene metode
 	* temeljito preišèi èlanke kaj je bilo na zadnje raziskovano (aktualne objave) in to implemenitraj, èe ni preveè zahtevno
 	* ali dovolj je npr. da izboljšamo UCB1 ali UCB1tuned z našo metodo changePointDetection?
@@ -8,6 +12,7 @@
 	* uèeèi avtomat
 	* genetski algoritem
 	* ... ?
+- implementiraj razliène RESET algorithms v changePointDetection()
 - izmeri kako dobro deluje kateri algoritem (pri optimiziranih parametrih)
 	* z razliènimi changePointDetection
 	* skupaj 4*3 = 12 optimizacij in meritev

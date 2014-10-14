@@ -1,0 +1,22 @@
+Ta dokument vsebuje povezave na relevantne èlanke, algoritme in rezultate
+-------------------------------------------------------------------------
+
+Non-stationary multi-armed bandit
+
+2014 http://www8.gsb.columbia.edu/cbs-directory/sites/cbs-directory/files/publications/Non-stationary%20MAB%20submission.pdf
+2014 http://iieng.org/siteadmin/upload/3042E0114570.pdf
+2013 http://jmlr.org/proceedings/papers/v28/karnin13.pdf
+2010 http://link.springer.com/chapter/10.1007%2F978-3-642-13033-5_21
+2008 http://arxiv.org/pdf/0805.3415.pdf
+2008 http://www.cs.cmu.edu/~deepay/mywww/papers/nips08-mortal.pdf
+2008 http://www.sciencedirect.com/science/article/pii/S0096300307007448
+2007 http://lane.compbio.cmu.edu/courses/slides_ucb.pdf
+2007 http://hal.inria.fr/docs/00/16/40/33/PDF/cap07.pdf
+2007 http://www.win.tue.nl/~aboer/sdt/Koulouriotis.pdf
+
+Overview
+2000 http://www.cs.mcgill.ca/~vkules/bandits.pdf
+
+Change-point detection
+
+Statistical test

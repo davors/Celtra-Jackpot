@@ -1,7 +1,7 @@
 #
 # Statistical tests to determine if the machine changed
 #
-
+from configuration import *
 from math import *
 
 #rat=kumulativen povprecen reward na avtomat v t potezah
@@ -30,7 +30,7 @@ def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
 
 
 
-def checkChange(treshold, m):
+def checkChange(treshold, m, reset_algorithm):
     #tp=range(10,100,10) + range(100,1000,100)
     tp=[50] 
     rejected=0
@@ -48,6 +48,8 @@ def checkChange(treshold, m):
         # 95 % confidence interval
         if Z>=treshold:
             #print 'checkChange triggered at: '+str((Z,m.id,m.pulls))
+            #!TODO implement diferent kinds of RESET TECHNIQUES
+            #if(reset_algorithm == _GLODEF_RESET_ALGORITHM_TODO) : ...
             rejected=m.resetState(t,s)
     return rejected
             

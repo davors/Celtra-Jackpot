@@ -1,3 +1,4 @@
+from configuration import *
 
 class machine(object):
 

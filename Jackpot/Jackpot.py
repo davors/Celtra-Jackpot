@@ -1,9 +1,49 @@
-import configuration
+#-- imports --#
+from configuration import *
 from fileIO import *
 from SampleAnalyzer import *
-from evaluation import *
-from ConstructCases import *
+from Jackpot_init import *
+from MABsolver import *
+from Evaluator import *
 
+#-- main program procedure (user code) --#
+
+allCases = constructTestCases(GLODEF_ALLCASES_DEFINES)
+
+#Celtra's test batches
+testBatch_01_05 = BanditTestBatch( allCases, [0, 1, 2, 3, 4] )
+testBatch_06_10 = BanditTestBatch( allCases, [5, 6, 7, 8, 9] )
+testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )
+testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) )
+
+testSolver = MABsolver()
+evaluateBatch(testSolver, testBatch_Complete, 100, 0)
+
+#test_01_05 = [ allCases[i] for i in [0, 1, 2, 3, 4] ]
+#test_06_10 = [ allCases[i] for i in [5, 6, 7, 8, 9] ]
+#test_01_10 = [ allCases[i] for i in xrange(10) ]
+#test_all = [ allCases[i] for i in xrange(len(allCases)) ]
+
+#evaluation_batch_cases(test_all, 100)
+#evaluation_batch_cases([allCases[1]], 100)
+
+#SampleAnalyzer('case_06_02m_01000p_1000r.txt')
+#SampleAnalyzer('case_09_04m_30000p_00024r.txt')
+
+##TODO
+#Optimize(
+#    test_all,
+#    GLODEF_OPTIMIZATION_ANNEALING,
+#    [],
+#    10,
+#    DEFAULT_FITNESS_METRIC,
+#    [DEFAULT_SELECTION_POLICY, DEFAULT_CHANGEPOINT_DETECTOR, DEFAULT_RESET_ALGORITHM], 
+#    DEFAULT_FUNCTION_APPROXIMATOR
+#    )
+
+
+
+#### -------- OLD ---------- ###
 
 #for c in range(1,configuration.N_CASES+1):
 #    machines=getNumMachines(c)

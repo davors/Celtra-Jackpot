@@ -1,4 +1,0 @@
-Celtra-Jackpot
-==============
-
-testTom
