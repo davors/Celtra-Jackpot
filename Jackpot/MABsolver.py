@@ -172,7 +172,7 @@ class MABsolver() :
     # update stats and detect change point (if enabled)
     def update(self, machine_id, reward, suppress_output = 0) :
 
-        self.machines[machine_id].update(reward)
+        self.machines[machine_id].update(reward, self.pulls)
 
         # change point detection
         rejected_pulls = 0

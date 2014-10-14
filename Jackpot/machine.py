@@ -1,8 +1,9 @@
 from configuration import *
-
+import bisect
 class machine(object):
 
     R=[]
+    P=[]
     pulls=0
     pulls_total=0
     #self.last_pull=0
@@ -32,6 +33,7 @@ class machine(object):
         
     def __init__(self,id):
         self.R=[]
+        self.P=[]
         self.pulls=0
         self.pulls_total=0
         #self.last_pull=0
@@ -45,8 +47,9 @@ class machine(object):
         self.variance=0.0
         __M2__=0.0
 
-    def update(self,r):
+    def update(self,r,p):
         self.R.append(r)
+        self.P.append(p)
         self.pulls=self.pulls+1
         self.pulls_total=self.pulls_total+1
         self.sum=self.sum+r
@@ -56,15 +59,31 @@ class machine(object):
         
 
     def resetState(self,index,new_pulls):
-        p_tmp=self.pulls-new_pulls
-        self.sum=self.moving_sum[index]
+        if index!=-2:
+            if new_pulls>self.pulls:
+                new_pulls=self.pulls
+            p_tmp=self.pulls-new_pulls
+            if index!=-1:
+                self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
+                self.sum=self.moving_sum[index]
+            else:
+                self.moving_sum[:]=[0.0]*len(self.moving_sum[index:])
+                self.sum=0.0
+        else:
+            index=bisect.bisect(self.P,new_pulls)
+            if index>0:
+                new_pulls=len(R[index-1:])
+                self.sum=sum(R[index-1:])
+            else: 
+                new_pulls=0
+                self.sum=0
+
         self.pulls=new_pulls
         self.mean2=float(self.sum)/self.pulls
         self.mean=0.0;
         self.variance=0.0
         self.__M2__=0.0
         self.__varmean__(self.pulls)
-        self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
         return  p_tmp
         
 
