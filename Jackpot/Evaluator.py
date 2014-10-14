@@ -1,4 +1,4 @@
-from configuration import *
+from Config import *
 from MABsolver import *
 from BanditGenerator import *
 
@@ -28,7 +28,6 @@ def evaluateBatch(
     solver,
     batch,
     repeats,
-    results,
     suppress_output = 0
     ) :
 
@@ -81,7 +80,7 @@ def evaluateBatch(
         #calculate overall performance
         new_avg_metrics[2] /= batch.num
         if not suppress_output :
-            print ('%5d  ') % r,
+            print ('%5d  ') % (r+1),
         for i in xrange(num_metrics):
             avg_metrics[i]  += (1.0/(r+1.0))*(new_avg_metrics[i] - avg_metrics[i])
             if not suppress_output :
@@ -93,3 +92,4 @@ def evaluateBatch(
     #   measurements averaged over all cases
     #   measurements for each case individually
     return (avg_metrics, metrics)
+
