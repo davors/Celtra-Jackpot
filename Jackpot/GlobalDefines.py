@@ -24,15 +24,14 @@ GLODEF_FITNESS_SUMREWARDS = 0
 GLODEF_FITNESS_REGRET = 1
 GLODEF_FITNESS_OPTIMALITY = 2
 
-GLODEF_FUNCTION_APPROX_NONE = 0
-GLODEF_FUNCTION_APPROX_DIRECT = 1
-GLODEF_FUNCTION_APPROX_LINEAR = 2
-GLODEF_FUNCTION_APPROX_NEURAL = 3
+GLODEF_PARAM_FUNCTION_DIRECT = 0
+GLODEF_PARAM_FUNCTION_LINEAR = 1
+GLODEF_PARAM_FUNCTION_NEURAL = 2
 
 GLO_labels_selection_policies = [
-    'random',
-    'epsilonGreedy',
-    'softMax',
+    'Random',
+    'EpsGreedy',
+    'SoftMax',
     'UCB1',
     'UCBtuned'
     ]
@@ -53,8 +52,8 @@ GLO_labels_reset_algorithms = [
     ]
 
 GLO_labels_optimization = [
-    "simulated annealing",
-    "genetic algorithm"
+    "Simulated Annealing",
+    "Genetic"
     ]
 
 GLO_labels_metrics = [
@@ -63,10 +62,9 @@ GLO_labels_metrics = [
     "Optimality [%%]"
     ]
 
-GLO_labels_function_approx = [
-    "Aprox: disabled",
-    "Aprox: Direct",
-    "Aprox: Linear",
-    "Aprox: Neural"
+GLO_labels_param_function = [
+    "ParFunc: Direct",
+    "ParFunc: Linear",
+    "ParFunc: Neural"
     ]
 
