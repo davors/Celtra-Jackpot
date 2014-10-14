@@ -18,10 +18,26 @@ change_point_detectors = [
     'HenkyPenky'
     ]
 
-def evaluation_single_case(case, suppress_output = 0, input_params = []) :      
+def frange(start, stop = None, step = 1):
+    """frange generates a set of floating point values over the 
+    range [start, stop) with step size step
+
+    frange([start,] stop [, step ])"""
+
+    if stop is None:
+        for x in _xrange(int(ceil(start))):
+            yield x
+    else:
+        # create a generator expression for the index values
+        indices = (i for i in xrange(0, int((stop-start)/step)))  
+        # yield results
+        for i in indices:
+            yield start + step*i
+
+
+def evaluation_single_case(case, suppress_output = 0, selection_algorithm = 0, input_params = []) :      
     
     #algorithm selection
-    selection_algorithm = 0
         # 0 'random'
         # 1 'epsilonGreedy
         # 2 'softMax'
@@ -33,12 +49,18 @@ def evaluation_single_case(case, suppress_output = 0, input_params = []) :
         # 2 'HenkyPenky'
 
     #learning parameters
-    UCB1_parC = 1.0
-    epsilon_soft = 0.1
-    change_point_threshold = 2.5
-    softMax_tao = 0.01
-
-    #init memory structures
+    if input_params==[]:
+        UCB1_parC = 1 
+        epsilon_soft = 0.1
+        change_point_threshold = 2.5
+        softMax_tao = 0.01
+    else:
+        UCB1_parC = input_params[0] 
+        epsilon_soft = input_params[0]
+        change_point_threshold = 2.5
+        softMax_tao = input_params[0]
+    
+        #init memory structures
     machines = [machine(m) for m in range(case.numBandits)]
 
     #init global variables
@@ -90,7 +112,7 @@ def evaluation_single_case(case, suppress_output = 0, input_params = []) :
     return total_reward
 
 
-def evaluation_batch_cases(cases, repeats, input_params = []) :
+def evaluation_batch_cases(cases, repeats, selection_algorithm = 0, input_params = []) :
 
     #define metrics output format
     metrics_labels = ["        SumR","      Regret","  Optimality [%]"]
@@ -139,7 +161,7 @@ def evaluation_batch_cases(cases, repeats, input_params = []) :
         
         for c in xrange(0,num_cases) :
             #execute bandit game (case)
-            new_result = evaluation_single_case(cases[c], 1)
+            new_result = evaluation_single_case(cases[c], 1, selection_algorithm, input_params)
 
             #update results by different metrics
             new_metrics[0] = new_result
