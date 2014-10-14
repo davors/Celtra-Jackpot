@@ -106,7 +106,6 @@ class MABsolver():
 
         # change point detection
         rejected_pulls = 0
-
         if self.config.changePointDetector == GLODEF_CHANGEPOINT_DAVORTOM :
             rejected_pulls = checkChange(self.change_point_threshold, self.machines,machine_id, self.config.resetAlgorithm)
             #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine

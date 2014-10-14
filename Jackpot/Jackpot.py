@@ -92,13 +92,14 @@ test_01_05 = [ allCases[i] for i in [0, 1, 2, 3, 4] ]
 #test_01_10 = [ allCases[i] for i in xrange(10) ]
 #test_all = [ allCases[i] for i in xrange(len(allCases)) ]
 
-params=list(frange(0,2,0.2))
-best=findBestParams(test_01_05,50,3,params,0)
-print 'Best param value: '+str(best)
-raw_input("Press Enter to continue...")
+#params=list(frange(0,2,0.2))
+#best=findBestParams(test_01_05,50,3,params,0)
+#print 'Best param value: '+str(best)
+#raw_input("Press Enter to continue...")
 
-#evaluation_batch_cases(test_all, 100)
+evaluation_batch_cases(test_all, 10)
 #evaluation_batch_cases([allCases[1]], 100)
+#evaluation_bactch_cases([allCases[5]],1)
 
 #SampleAnalyzer('case_06_02m_01000p_1000r.txt')
 #SampleAnalyzer('case_09_04m_30000p_00024r.txt')
