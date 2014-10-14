@@ -52,21 +52,24 @@ def UCBT(actions, all_pulls, parC = 1.0):
 
         #if all actions already explored, calculate their values
         else :
-            #UCBvalue = a.mean + parC*sqrt(2.0*log(all_pulls)/a.pulls)   #the UCB1 equation
-            V = a.variance+sqrt(2.0*log(all_pulls)/a.pulls)
-            UCBvalue = a.mean + parC * sqrt((log(all_pulls)/a.pulls)*min(1.0/4.0,V))
-            #find action with highest value
-            if UCBvalue >= bestVal :
-                bestVal = UCBvalue
-                selectedAction = a
-
-            #break ties sequentially randomly
-            elif UCBvalue == bestVal :
-                if not (selectedAction is None) :
-                    if random.random() < 0.5 :
-                        selectedAction = a
-                else :
+            try:
+                #UCBvalue = a.mean + parC*sqrt(2.0*log(all_pulls)/a.pulls)   #the UCB1 equation
+                V = a.variance+sqrt(2.0*log(all_pulls)/a.pulls)
+                UCBvalue = a.mean + parC * sqrt((log(all_pulls)/a.pulls)*min(1.0/4.0,V))
+                #find action with highest value
+                if UCBvalue >= bestVal :
+                    bestVal = UCBvalue
                     selectedAction = a
+
+                #break ties sequentially randomly
+                elif UCBvalue == bestVal :
+                    if not (selectedAction is None) :
+                        if random.random() < 0.5 :
+                            selectedAction = a
+                    else :
+                        selectedAction = a
+            except:
+                print 'lol'
 
     return selectedAction
     return 0

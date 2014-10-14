@@ -54,15 +54,16 @@ class machine(object):
         self.pulls_total=self.pulls_total+1
         self.sum=self.sum+r
         self.sum_total=self.sum_total+r
-        self.mean2=float(self.sum)/self.pulls
+        #self.mean2=float(self.sum)/self.pulls
         self.__varmean__(1)
         
 
     def resetState(self,index,new_pulls):
         if index!=-2:
+            p_tmp=self.pulls-new_pulls
             if new_pulls>self.pulls:
                 new_pulls=self.pulls
-            p_tmp=self.pulls-new_pulls
+                
             if index!=-1:
                 self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
                 self.sum=self.moving_sum[index]
@@ -72,14 +73,15 @@ class machine(object):
         else:
             index=bisect.bisect(self.P,new_pulls)
             if index>0:
-                new_pulls=len(R[index-1:])
-                self.sum=sum(R[index-1:])
+                new_pulls=len(self.R[index-1:])
+                self.sum=sum(self.R[index-1:])
             else: 
                 new_pulls=0
                 self.sum=0
-
+            p_tmp=self.pulls-new_pulls
+        
         self.pulls=new_pulls
-        self.mean2=float(self.sum)/self.pulls
+        #self.mean2=float(self.sum)/self.pulls
         self.mean=0.0;
         self.variance=0.0
         self.__M2__=0.0
