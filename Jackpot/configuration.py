@@ -40,13 +40,19 @@ DEFAULT_FITNESS_METRIC = GLODEF_FITNESS_SUMREWARDS
     #GLODEF_FITNESS_REGRET = 1
     #GLODEF_FITNESS_OPTIMALITY = 2
 
-DEFAULT_FUNCTION_APPROXIMATOR = GLODEF_FUNCTION_APPROX_NONE
-    #GLODEF_FUNCTION_APPROX_NONE = None
-    #GLODEF_FUNCTION_APPROX_DIRECT = 1
-    #GLODEF_FUNCTION_APPROX_LINEAR = 2
-    #GLODEF_FUNCTION_APPROX_NEURAL = 3
+DEFAULT_PARAM_FUNCTIONS = GLODEF_PARAM_FUNCTION_DIRECT
+    #GLODEF_PARAM_FUNCTION_DIRECT = 0
+    #GLODEF_PARAM_FUNCTION_LINEAR = 1
+    #GLODEF_PARAM_FUNCTION_NEURAL = 2
 
-DEFAULT_PAR_EGREEDY_E = 0.1
-DEFAULT_PAR_SOFTMAX_T = 0.01
-DEFAULT_PAR_UCB1_C = 1.0
-DEFAULT_PAR_CHANGEPOINT_THR = 2.5
+DEFAULT_SOLVER_NUMPARAMS = 4
+    # one parameter for selection algorithm, three parameters for change point detector
+DEFAULT_PARAM_NUMINPUTS = 0
+    # number of parameter function internal weights (stored values) are number of inputs + 1
+
+DEFAULT_PAR_EGREEDY_E = 0.1         # epsilon-greedy parameter: Epsilon
+DEFAULT_PAR_SOFTMAX_T = 0.01        # softMax parameter: tau
+DEFAULT_PAR_UCB1_C = 1.0            # UCB parameter: C
+DEFAULT_PAR_CHANGEPOINT_THR = 2.5   # change point detector parameter: Z-Threshold
+DEFAULT_PAR_CHANGEPOINT_INT = 0.2   # change point detector parameter: interval shrink (e.g., 0.2 translates interval [0,1] to [0.2,0.8]
+DEFAULT_PAR_CHANGEPOINT_NUM = 5     # change point detector parameter: lowest number of moving average samples that may trigger reset

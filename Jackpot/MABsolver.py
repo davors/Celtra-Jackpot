@@ -3,47 +3,118 @@ from machine import *
 from strategy import *
 from changePointDetection import *
 
+
+class ParamFunction() :
+
+    function = None
+    weights = None
+    numInputs = None
+    lastInputs = None
+    lastOutput = None
+
+    def __init__(
+        self,
+        function = DEFAULT_PARAM_FUNCTIONS,
+        numInputs = DEFAULT_PARAM_NUMINPUTS,
+        weightValue = 0.0
+        ) :
+
+        self.function = function
+        self.numInputs = numInputs
+        self.weights = [weightValue] * (self.numInputs + 1)
+
+    def updateInputs(self, newInputs, calcOutputs = 0) :
+        self.lastInputs = newInputs
+        if calcOutputs == 1 :
+            self.getValue()
+
+    def getValue(self) :
+        if  (self.function == GLODEF_PARAM_FUNCTION_DIRECT) :
+            self.lastOutput = self.weights[0]
+        elif(self.function == GLODEF_PARAM_FUNCTION_LINEAR) :
+            self.lastOutput = self.weights[0]
+            for i in xrange(self.numInputs) :
+                self.lastOutput += (self.weights[i]+1) * self.lastInputs[i]
+        elif(self.function == GLODEF_PARAM_FUNCTION_NEURAL) :
+            #TODO
+            todo
+
+        return self.lastOutput
+
 # configuration structure for MABsolver
-class MABsolver_config():
+class MABsolver_config() :
 
     selectionPolicy = None
     changePointDetector = None
     changePointTest = None
-    resetAlgorithm = None
+    resetAlgorithm = None    
     params = None
-    approximator = None
 
-    def __init__(self, 
+    def __init__(
+        self, 
         selectionPolicy = DEFAULT_SELECTION_POLICY, 
         changePointDetector = DEFAULT_CHANGEPOINT_DETECTOR, 
         changePointTest = DEFAULT_CHANGEPOINT_TEST,
         resetAlgorithm = DEFAULT_RESET_ALGORITHM,
-        params = [DEFAULT_PAR_EGREEDY_E, DEFAULT_PAR_SOFTMAX_T, DEFAULT_PAR_UCB1_C, DEFAULT_PAR_CHANGEPOINT_THR],
-        approximator = GLODEF_FUNCTION_APPROX_NONE
+        paramFunctions = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS,
+        paramNumInputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS,
+        paramValues = None
         ) :
 
         self.selectionPolicy = selectionPolicy
         self.changePointDetector = changePointDetector
         self.resetAlgorithm = resetAlgorithm
         self.changePointTest = changePointTest
-        self.params = params
-        self.approximator = approximator
+
+        lenF = len(paramFunctions)
+        lenI = len(paramNumInputs)
+        if not(lenF == lenI) :
+            print 'MABsolver_config(): ERROR_INIT: params configuration not equal length'
+            return
+
+        if paramValues is None :
+            
+            paramValues = [0.0 , DEFAULT_PAR_CHANGEPOINT_THR, DEFAULT_PAR_CHANGEPOINT_INT, DEFAULT_PAR_CHANGEPOINT_NUM]
+
+            if   selectionPolicy == GLODEF_SELECTION_EGREEDY :  paramValues[0] = DEFAULT_PAR_EGREEDY_E
+            elif selectionPolicy == GLODEF_SELECTION_SOFTMAX :  paramValues[0] = DEFAULT_PAR_SOFTMAX_T
+            elif selectionPolicy == GLODEF_SELECTION_UCB1 :     paramValues[0] = DEFAULT_PAR_UCB1_C
+            elif selectionPolicy == GLODEF_SELECTION_UCBTUNED : paramValues[0] = DEFAULT_PAR_UCB1_C
+
+            self.params = [ParamFunction(paramFunctions[i], paramNumInputs[i], paramValues[i]) for i in xrange(lenF)]
+
+        else :
+            lenV = len(paramValues)
+            if not(lenV == lenI):
+                print 'MABsolver_config(): ERROR_INIT: params configuration not equal length'
+            self.params = [ParamFunction(paramFunctions[i], paramNumInputs[i], paramValues[i]) for i in xrange(lenF)]
 
     def info(self) :
-        print 'MABsolver_config: algorithms: %s , %s , %s , %s , %s' % (
+        print 'MABsolver_config: algorithms: %s , %s , %s , %s' % (
             GLO_labels_selection_policies[self.selectionPolicy], 
             GLO_labels_change_point_detectors[self.changePointDetector], 
             GLO_labels_change_point_test[self.changePointTest],
-            GLO_labels_reset_algorithms[self.changePointTest], 
-            GLO_labels_function_approx[self.approximator] 
+            GLO_labels_reset_algorithms[self.changePointTest]
             )
-        print 'MABsolver_config: params:    ',
+
+        print 'MABsolver_config: params: types: ',
         for i in range(len(self.params)) :
-            print '%f ' % self.params[i],
-        print '' 
+            print '%s ' % GLO_labels_param_function[self.params[i].function],
+        print ''
+        print 'MABsolver_config: params: numInputs: ',
+        for i in range(len(self.params)) :
+            print '%d ' % self.params[i].numInputs,
+        print ''
+        print 'MABsolver_config: params: weights: ',
+        for i in range(len(self.params)) :
+            print '[ ',
+            for j in range(self.params[i].numInputs + 1) :
+                print '%f ' % self.params[i].weights[j],
+            print '] ',
+        print ''
 
 # The Multi-Armed-Bandit (MAB) solver structure
-class MABsolver():
+class MABsolver() :
 
     config = None
     machines = None
@@ -51,11 +122,6 @@ class MABsolver():
 
     pulls = None
     total_rejected_pulls = None
-
-    epsilon_soft = None
-    softMax_tao = None
-    UCB1_parC = None
-    change_point_threshold = None
 
     # initialization
     def __init__(
@@ -65,11 +131,12 @@ class MABsolver():
         changePointDetector = DEFAULT_CHANGEPOINT_DETECTOR, 
         changePointTest = DEFAULT_CHANGEPOINT_TEST,
         resetAlgorithm = DEFAULT_RESET_ALGORITHM,
-        params = [DEFAULT_PAR_EGREEDY_E, DEFAULT_PAR_SOFTMAX_T, DEFAULT_PAR_UCB1_C, DEFAULT_PAR_CHANGEPOINT_THR],
-        approximator = GLODEF_FUNCTION_APPROX_NONE
+        paramTypes = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS,
+        paramNumInputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS,
+        paramValues = None
         ) :
         
-        self.config = MABsolver_config(selectionPolicy, changePointDetector, changePointTest, resetAlgorithm, params, approximator)
+        self.config = MABsolver_config(selectionPolicy, changePointDetector, changePointTest, resetAlgorithm, paramTypes, paramNumInputs, paramValues)
         self.resetState(num_bandits)
 
     # reset memory structures (preparation for new testcase)
@@ -88,11 +155,14 @@ class MABsolver():
     # select a bandit from available stats
     def selectBandit(self, increase_pulls = 1) :
 
+        #exploration_weight = self.config.params[0].getValue()
+        exploration_weight = self.config.params[0].weights[0]
+
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]
-        elif self.config.selectionPolicy == GLODEF_SELECTION_EGREEDY :  selected_machine = EGreedy(self.machines, self.epsilon_soft)
-        elif self.config.selectionPolicy == GLODEF_SELECTION_SOFTMAX :  selected_machine = softMax(self.machines, self.softMax_tao)
-        elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, self.UCB1_parC)
-        elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, self.UCB1_parC)
+        elif self.config.selectionPolicy == GLODEF_SELECTION_EGREEDY :  selected_machine = EGreedy(self.machines, exploration_weight)
+        elif self.config.selectionPolicy == GLODEF_SELECTION_SOFTMAX :  selected_machine = softMax(self.machines, exploration_weight)
+        elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
+        elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
 
         self.pulls += increase_pulls
 
@@ -107,7 +177,11 @@ class MABsolver():
         # change point detection
         rejected_pulls = 0
         if self.config.changePointDetector == GLODEF_CHANGEPOINT_DAVORTOM :
-            rejected_pulls = checkChange(self.change_point_threshold, self.machines,machine_id, self.config.resetAlgorithm)
+            change_point_threshold = self.config.params[1].getValue()
+            change_point_interval = self.config.params[2].getValue()
+            change_point_minimal_samples = self.config.params[3].getValue()
+
+            rejected_pulls = checkChange(change_point_threshold, self.machines[machine_id], self.config.resetAlgorithm)
             #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine
             self.total_rejected_pulls = self.total_rejected_pulls + rejected_pulls
             if rejected_pulls > 0 :
