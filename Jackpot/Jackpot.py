@@ -97,7 +97,7 @@ test_01_05 = [ allCases[i] for i in [0, 1, 2, 3, 4] ]
 #print 'Best param value: '+str(best)
 #raw_input("Press Enter to continue...")
 
-evaluation_batch_cases(test_all, 10)
+evaluation_batch_cases(allCases[5], 1)
 #evaluation_batch_cases([allCases[1]], 100)
 #evaluation_bactch_cases([allCases[5]],1)
 

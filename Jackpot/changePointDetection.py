@@ -28,10 +28,7 @@ def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
     print str(HP)
     return (HP>Tsh, mt, Mt, Y)
 
-GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO = 0
-GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE = 1
-GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF = 2
-GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE = 3
+
 
 def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm):
     tp=range(10,100,10) + range(100,1000,100)
@@ -53,7 +50,7 @@ def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm):
         if Z>=treshold:
             if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M)
             elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s)
-            elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,self.P[-s])
+            elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,m.P[-s])
             elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s)
     return rejected
             
@@ -65,14 +62,16 @@ def resetAllToZero(M):
     return rejected
 
 def resetAllToMovingMean(M, t, s):
+    rejected=0
     for m in M:
         rejected+=m.resetState(t,s)
 
     return rejected
 
 def resetAllToMovingMeanCutOff(M,last_pull):
+    rejected=0
     for m in M:
-        rejected+=m.reset(-2,last_pull)
+        rejected+=m.resetState(-2,last_pull)
                
     return rejected
 
