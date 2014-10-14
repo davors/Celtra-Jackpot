@@ -74,15 +74,15 @@ evaluateBatch(testSolver, testBatch_Complete, 100, 0)
 # 4 'UCBtuned'
 
 
-def findBestParams(test_cases, repeats, selection_algorithm = 0, param_range = [0], criterion = 0):
-    best_param=0
-    max_score=0
-    for p in param_range:
-        (average_metrics, metrics)=evaluation_batch_cases(test_cases, repeats, selection_algorithm,[p])
-        if average_metrics[criterion]>max_score:
-            max_score=average_metrics[criterion]
-            best_param=p
-    return (best_param)
+#def findBestParams(test_cases, repeats, selection_algorithm = 0, param_range = [0], criterion = 0):
+#    best_param=0
+#    max_score=0
+#    for p in param_range:
+#        (average_metrics, metrics)=evaluation_batch_cases(test_cases, repeats, selection_algorithm,[p])
+#        if average_metrics[criterion]>max_score:
+#            max_score=average_metrics[criterion]
+#            best_param=p
+#    return (best_param)
 
 
 allCases = constructTestCases()

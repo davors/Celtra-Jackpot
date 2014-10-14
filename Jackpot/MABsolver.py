@@ -102,13 +102,13 @@ class MABsolver():
     # update stats and detect change point (if enabled)
     def update(self, machine_id, reward, suppress_output = 0) :
 
-        self.machines[machine_id].update(reward)
+        self.machines[machine_id].update(reward, self.pulls)
 
         # change point detection
         rejected_pulls = 0
 
         if self.config.changePointDetector == GLODEF_CHANGEPOINT_DAVORTOM :
-            rejected_pulls = checkChange(self.change_point_threshold, self.machines[machine_id], self.config.resetAlgorithm)
+            rejected_pulls = checkChange(self.change_point_threshold, self.machines,machine_id, self.config.resetAlgorithm)
             #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine
             self.total_rejected_pulls = self.total_rejected_pulls + rejected_pulls
             if rejected_pulls > 0 :

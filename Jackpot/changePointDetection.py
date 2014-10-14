@@ -28,10 +28,14 @@ def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
     print str(HP)
     return (HP>Tsh, mt, Mt, Y)
 
+GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO = 0
+GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE = 1
+GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF = 2
+GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE = 3
 
-
-def checkChange(treshold, m, reset_algorithm):
-    #tp=range(10,100,10) + range(100,1000,100)
+def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm):
+    tp=range(10,100,10) + range(100,1000,100)
+    m=M[m_id]
     tp=[50] 
     rejected=0
     if m.moving_sum==[]:
@@ -47,15 +51,34 @@ def checkChange(treshold, m, reset_algorithm):
         #print str(Z)
         # 95 % confidence interval
         if Z>=treshold:
-            #print 'checkChange triggered at: '+str((Z,m.id,m.pulls))
-            #!TODO implement diferent kinds of RESET TECHNIQUES
-            #if(reset_algorithm == _GLODEF_RESET_ALGORITHM_TODO) : ...
-            rejected=m.resetState(t,s)
+            if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M)
+            elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s)
+            elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,self.P[-s])
+            elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s)
     return rejected
             
+def resetAllToZero(M):
+    rejected=0
+    for m in M:
+        rejected+=m.resetState(-1,0)
 
+    return rejected
 
+def resetAllToMovingMean(M, t, s):
+    for m in M:
+        rejected+=m.resetState(t,s)
 
+    return rejected
+
+def resetAllToMovingMeanCutOff(M,last_pull):
+    for m in M:
+        rejected+=m.reset(-2,last_pull)
+               
+    return rejected
+
+def resetToMovingMean(m,t,s):
+    rejected=m.resetState(t,s)
+    return rejected
 
 def testIfDistDiff(X,Y,Nx,Ny):
     try:
