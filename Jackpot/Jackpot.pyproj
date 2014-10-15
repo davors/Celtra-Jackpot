@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f84b3456-ac12-4ba3-99ab-2d0dd9212bcf</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Jackpot.py</StartupFile>
+    <StartupFile>Setup.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -36,7 +36,6 @@
     <Compile Include="CrossTest.py" />
     <Compile Include="Evaluator.py" />
     <Compile Include="fileIO.py" />
-    <Compile Include="FunctionApprox.py" />
     <Compile Include="GlobalDefines.py" />
     <Compile Include="Jackpot.py" />
     <Compile Include="Jackpot_init.py" />
