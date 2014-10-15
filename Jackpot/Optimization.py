@@ -15,8 +15,8 @@ class Optimizer() :
         self, 
         MABsolver,
         evaluationsPerStep = DEFAULT_OPTIMIZATION_EVALS_PER_SAMPLE,
-        selectiveOptimization = None,
         optimizationConfig = DEFAULT_OPTIMIZATION_CONFIG,
+        selectiveOptimization = None,
         fitnessMetric = DEFAULT_FITNESS_METRIC,
         optimizationAlgorithm = DEFAULT_OPTIMIZATION_ALGORITHM,
         ) :
@@ -56,7 +56,7 @@ class Optimizer() :
             self.MABsolver.config.info()
             batch.info()
 
-        #optimization algorithms
+        #-- optimization algorithms --#
         if self.optimizationAlgorithm == GLODEF_OPTIMIZATION_ANNEALING :
         
             #for some iterative procedure
