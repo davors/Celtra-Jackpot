@@ -1,4 +1,4 @@
-from configuration import *
+from Config import *
 import bisect
 class machine(object):
 

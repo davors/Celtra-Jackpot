@@ -1,51 +1,117 @@
-from configuration import *
-from evaluation import *
+from Config import *
+from MABsolver import *
+from Evaluator import *
 
-#TODO - IMPLEMENT SOME OPTIMIZATION PROCEDURE
+class Optimizer() :
+    
+    MABsolver = None                #multi-armed-bandit policy
+    fitnessMetric = None            #choosen fitness metric
+    selectiveOptimization = None    #choosen parameters to optimize - array of indices
+    optimizationAlgorithm = None    #choosen optimization algorithm
+    optimizationConfig = None       #array of parameters for the optimization algorithm
+    evaluationsPerStep = None       #number of evaluations per each parameter sample
 
-def Optimize(
-    cases,
-    optimization_algorithm,
-    optimization_algorithm_params,
-    evaluations_per_sample,
-    fitness_metric,
-    strategy_settings,
-    function_approximator,
-    suppress_output = 0
-    ) :
+    def __init__(
+        self, 
+        MABsolver,
+        evaluationsPerStep = DEFAULT_OPTIMIZATION_EVALS_PER_SAMPLE,
+        selectiveOptimization = None,
+        optimizationConfig = DEFAULT_OPTIMIZATION_CONFIG,
+        fitnessMetric = DEFAULT_FITNESS_METRIC,
+        optimizationAlgorithm = DEFAULT_OPTIMIZATION_ALGORITHM,
+        ) :
 
-    num_parameters = function_approximator.num_params
-
-
-    if not suppress_output :
-        print 'Procedure Optimize()'
-        print 'Settings: %s , %s , params: ' % (GLO_labels_optimization[optimization_algorithm], GLO_labels_metrics),
-        for i in xrange(len(optimization_algorithm_params)) :
-            print '%f' % optimization_algorithm_params[i],
-        print ''
-        print 'Eval per sample: %d' % evaluations_per_sample
-        print 'Strategy Settings: %s , %s , %s' % (GLO_labels_selection_policies[strategy_settings[0]], GLO_labels_change_point_detectors[strategy_settings[1]], GLO_labels_reset_algorithms[strategy_settings[2]])
-        print 'Function approximator: %s' % GLO_labels_function_approx[function_approximator]
-        print 'Strategy param values %f %f %f %f' % (strategy_settings[0], strategy_settings[1], strategy_settings[2], strategy_settings[3])
-        print 'Case list: ',
-        for i in xrange(num_cases) :
-            print '%d ' % cases[i].ID,
-        print ''
-        print 'Total cases: ' + str(num_cases)
-
-    if optimization_algorithm == GLODEF_OPTIMIZATION_ANNEALING :
+        self.MABsolver = MABsolver
+        self.fitnessMetric = fitnessMetric
+        self.optimizationAlgorithm = optimizationAlgorithm
+        self.optimizationConfig = optimizationConfig
+        self.evaluationsPerStep = evaluationsPerStep
         
-        #for some iterative procedure
-            #do something with parameters -> create new sample
-            #evaluate new (or all) samples
+        if selectiveOptimization is None :
+            self.selectiveOptimization = range(len(self.MABsolver.config.params))
+        else :
+            self.selectiveOptimization = selectiveOptimization
 
-            single_sample_score = evaluation_batch_cases(cases, evaluations_per_sample, 1, strategy_settings, [DEFAULT_PAR_EGREEDY_E, DEFAULT_PAR_SOFTMAX_T, DEFAULT_PAR_UCB1_C, DEFAULT_PAR_CHANGEPOINT_THR], function_approximator)[0][fitness_metric]
 
+    def Optimize(
+        self,
+        batch,                  #test cases
+        startingValues = None,  #optimized parameters starting values
+        suppress_output = 0
+        ) :
+        
+        #get list of parameters from MAB solver
+        paramValues = self.MABsolver.listParams(self.selectiveOptimization)
+        numParams = len(paramValues)
+
+        #set searched parameters to specified initial values
+        if not (startingValues is None) :
+            paramValues = startingValues
+            self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+
+        #user output
+        if not suppress_output :
+            print 'Procedure Optimizer.Optimize()'
+            self.info()
+            self.MABsolver.config.info()
+            batch.info()
+
+        #optimization algorithms
+        if self.optimizationAlgorithm == GLODEF_OPTIMIZATION_ANNEALING :
+        
+            #for some iterative procedure
+            for i in range(10) :
+                
+                #evaluate new (or all) samples
+                score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerStep, 1 )[0][self.fitnessMetric]
+                
+                if not suppress_output :
+                    print '%2d   %.1f   ' % (i+1, score),
+                    print '%s' % ', '.join(map(str, paramValues))
+
+                #do something with parameters -> create new sample
+                paramValues[0] += 0.2
+                self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+
+            #out of for loop
             #print best_sample_score and param setting
+            #set best parameter values
+            #self.MABsolver.setParams(paramValues, self.selectiveOptimization)
 
-    elif optimization_algorithm == GLODEF_OPTIMIZATION_GENETIC :
+        elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_GENETIC :
+            todo
+
+        #return best sample and its score
+        #return (best_sample, best_score)
+        #TODO
+        
+    #optimize on a learning batch and evaluate on another batch
+    def OptimizeEvaluate(
+        self,
+        learnBatch,
+        evalBatch,
+        evalRepeats,
+        suppress_output = 0
+        ) :
+    
+        self.Optimize(learnBatch, suppress_output)
+        evaluateBatch(self.MABsolver, evalBatch, evalRepeats, suppress_output)
+
+    def CrossOptimizeEvaluate() :
         todo
 
-    #return best sample and its score
-    #return (best_sample, best_score)
+    def info(self):
+        print 'Optimizer(): %s , %s' % (
+            GLO_labels_optimization[self.optimizationAlgorithm], 
+            GLO_labels_metrics[self.fitnessMetric], 
+            )
 
+        print 'Optimizer(): config: ',
+        for i in range(len(self.optimizationConfig)) :
+            print '%f ' % self.optimizationConfig[i],
+        print ''
+        print 'Optimizer(): selective: ',
+        for i in range(len(self.selectiveOptimization)) :
+            print '%f ' % self.selectiveOptimization[i],
+        print ''
+        print 'Optimizer(): evals/step: %d' % self.evaluationsPerStep

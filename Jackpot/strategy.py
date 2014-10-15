@@ -1,5 +1,5 @@
 #Different strategies for tackling the problem
-from configuration import *
+from Config import *
 import random
 from math import *
 

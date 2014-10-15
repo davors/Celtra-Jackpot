@@ -1,4 +1,4 @@
-from configuration import *
+from Config import *
 from machine import *
 from strategy import *
 from changePointDetection import *
@@ -52,13 +52,14 @@ class MABsolver_config() :
 
     def __init__(
         self, 
+        paramValues = None,
         selectionPolicy = DEFAULT_SELECTION_POLICY, 
         changePointDetector = DEFAULT_CHANGEPOINT_DETECTOR, 
         changePointTest = DEFAULT_CHANGEPOINT_TEST,
         resetAlgorithm = DEFAULT_RESET_ALGORITHM,
         paramFunctions = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS,
-        paramNumInputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS,
-        paramValues = None
+        paramNumInputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS
+        
         ) :
 
         self.selectionPolicy = selectionPolicy
@@ -70,6 +71,7 @@ class MABsolver_config() :
         lenI = len(paramNumInputs)
         if not(lenF == lenI) :
             print 'MABsolver_config(): ERROR_INIT: params configuration not equal length'
+            print ''
             return
 
         if paramValues is None :
@@ -126,18 +128,18 @@ class MABsolver() :
     # initialization
     def __init__(
         self, 
-        num_bandits = 0,
+        paramValues = None,
         selectionPolicy = DEFAULT_SELECTION_POLICY, 
         changePointDetector = DEFAULT_CHANGEPOINT_DETECTOR, 
         changePointTest = DEFAULT_CHANGEPOINT_TEST,
         resetAlgorithm = DEFAULT_RESET_ALGORITHM,
         paramTypes = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS,
         paramNumInputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS,
-        paramValues = None
+        init_bandits = 0,
         ) :
         
-        self.config = MABsolver_config(selectionPolicy, changePointDetector, changePointTest, resetAlgorithm, paramTypes, paramNumInputs, paramValues)
-        self.resetState(num_bandits)
+        self.config = MABsolver_config(paramValues, selectionPolicy, changePointDetector, changePointTest, resetAlgorithm, paramTypes, paramNumInputs)
+        self.resetState(init_bandits)
 
     # reset memory structures (preparation for new testcase)
     def resetState(self, num_bandits) :
@@ -192,6 +194,35 @@ class MABsolver() :
             todo
 
         self.total_rejected_pulls += rejected_pulls
+
+    def listParams(self, selectiveList = None) :
+        
+        if selectiveList is None :
+            selectedParams = range(len(self.config.params))
+        else :
+            selectedParams = selectiveList
+
+        list = []
+        for i in selectedParams :
+             list = list + self.config.params[i].weights
+
+        return list
+
+    def setParams(self, newValues, selectiveList = None) :
+        
+        if selectiveList is None :
+            selectedParams = range(len(self.config.params))
+        else :
+            selectedParams = selectiveList
+
+        c = 0
+        for i in selectedParams :
+            for j in range(len(self.config.params[i].weights)) :
+                self.config.params[i].weights[j] = newValues[c]
+                c += 1
+
+        if not (c == len(newValues)) :
+           print 'MABsolver(): setParams(): ERROR: newValues list incorrect length'
 
 
     # output memorized stats

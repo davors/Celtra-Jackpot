@@ -19,7 +19,7 @@ GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF = 2
 GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE = 3
 
 GLODEF_OPTIMIZATION_ANNEALING = 0
-GLODEF_OPTIMIZATION_ANNEALING = 1
+GLODEF_OPTIMIZATION_GENETIC = 1
 
 GLODEF_FITNESS_SUMREWARDS = 0
 GLODEF_FITNESS_REGRET = 1
@@ -64,8 +64,8 @@ GLO_labels_metrics = [
     ]
 
 GLO_labels_param_function = [
-    "ParFunc: Direct",
-    "ParFunc: Linear",
-    "ParFunc: Neural"
+    "Direct",
+    "Linear",
+    "Neural"
     ]
 
