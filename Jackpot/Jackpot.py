@@ -18,11 +18,12 @@ testBatch_06_10 = BanditTestBatch( allCases, [5, 6, 7, 8, 9] )
 testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )
 testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) )
 testBatch_tmp = BanditTestBatch( allCases, [10] )
+testBatch_05 = BanditTestBatch( allCases, [5])
 
 #unitTest_Optimizer(allCases)
 
 testSolver = MABsolver()
-evaluateBatch(testSolver, testBatch_01_10, 100, 0)
+evaluateBatch(testSolver, testBatch_05, 50, 0)
 
 
 #SampleAnalyzer('case_06_02m_01000p_1000r.txt')
@@ -87,7 +88,7 @@ evaluateBatch(testSolver, testBatch_01_10, 100, 0)
 #print 'Best param value: '+str(best)
 #raw_input("Press Enter to continue...")
 
-evaluation_batch_cases(allCases[5], 1)
+#evaluation_batch_cases(allCases[5], 1)
 #evaluation_batch_cases([allCases[1]], 100)
 #evaluation_bactch_cases([allCases[5]],1)
 

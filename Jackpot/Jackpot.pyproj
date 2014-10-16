@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f84b3456-ac12-4ba3-99ab-2d0dd9212bcf</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Setup.py</StartupFile>
+    <StartupFile>Jackpot.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
