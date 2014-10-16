@@ -87,7 +87,7 @@ def evaluateBatch(
             print '%s' % GLO_shortLabels_metrics[i],
         print '     ',
         for c in xrange(batch.num) :
-            print '   case%02d' % c,
+            print '   case%02d' % (c+1),
         print ''
         print ''
 
