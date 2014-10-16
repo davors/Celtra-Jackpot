@@ -8,23 +8,82 @@ from Evaluator import *
 from Optimization import *
 from unitTests import *
 
-#-- main program procedure (user code) --#
+###--- main program procedure (user code) ---###
+
+
+##-- all benchmark scenarios (cases)
 
 allCases = constructTestCases(GLODEF_ALLCASES_DEFINES)
 
-#Celtra's test batches
-testBatch_01_05 = BanditTestBatch( allCases, [0, 1, 2, 3, 4] )
-testBatch_06_10 = BanditTestBatch( allCases, [5, 6, 7, 8, 9] )
-testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )
-testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) )
-testBatch_tmp = BanditTestBatch( allCases, [10] )
-testBatch_05 = BanditTestBatch( allCases, [5])
 
-#unitTest_Optimizer(allCases)
 
-testSolver = MABsolver()
-evaluateBatch(testSolver, testBatch_05, 50, 0)
+##-- test batches
 
+testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+testBatch_01_05 = BanditTestBatch( allCases, [0, 1, 2, 3, 4] )  #Celtra
+testBatch_06_10 = BanditTestBatch( allCases, [5, 6, 7, 8, 9] )  #Celtra
+testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )       #Celtra
+
+testBatch_tmp = BanditTestBatch( allCases, [1,10] )
+testBatch_tmp2 = BanditTestBatch( allCases, [2,5] )
+testBatch_tmp3 = BanditTestBatch( allCases, [6] )
+
+
+
+##-- policy configuration
+
+solv_initial_param_values = None     #if None: default will be used
+solv_selection_policy = DEFAULT_SELECTION_POLICY
+solv_change_point_detector = DEFAULT_CHANGEPOINT_DETECTOR
+solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
+solv_reset_algorithm = DEFAULT_RESET_ALGORITHM
+solv_param_types = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS
+solv_param_num_inputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS
+
+solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, solv_change_point_test, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
+#solver = MABsolver()
+
+
+
+##-- evaluation
+
+eval_solver = solver
+eval_batch_cases = testBatch_tmp3
+eval_suppress_output = 0
+eval_num_repeats = 5
+eval_oracle_probablity = 0
+
+evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_output, eval_oracle_probablity)
+
+
+
+
+##-- optimization configuration
+
+#opti_solver = solver
+#opti_evaluations_per_sample = 5
+#opti_config = DEFAULT_OPTIMIZATION_CONFIG       #configuration for the optimization algorithm: arbitrary list of additional parameters
+#opti_fitness_metric = DEFAULT_FITNESS_METRIC
+#opti_algorithm = DEFAULT_OPTIMIZATION_ALGORITHM
+#opti_selective_optimization = None              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
+
+#optimizer = Optimizer(opti_solver, opti_evaluations_per_sample, opti_config, opti_fitness_metric, opti_algorithm, opti_selective_optimization)
+
+#opti_learn_cases = testBatch_tmp
+#opti_eval_cases = testBatch_tmp2
+#opti_starting_values = None     #set starting values of optimized parameters, if None then existing values are used as initial
+#opti_suppress_output = 0
+#opti_oracle_probablity = 1
+
+#optimizer.Optimize(opti_learn_cases, opti_starting_values, eval_suppress_output, opti_oracle_probablity)
+
+#opti_eval_repeats = 10
+
+#optimizer.OptimizeEvaluate(opti_learn_cases, opti_eval_cases, opti_eval_repeats, opti_starting_values, eval_suppress_output, opti_oracle_probablity)
+
+
+
+##-- analizer of samples gathered from URL
 
 #SampleAnalyzer('case_06_02m_01000p_1000r.txt')
 #SampleAnalyzer('case_09_04m_30000p_00024r.txt')

@@ -22,7 +22,7 @@ def UCB1(actions, all_pulls, parC = 1.0):
             UCBvalue = a.mean + parC*sqrt(2.0*log(all_pulls)/a.pulls)   #the UCB1 equation
 
             #find action with highest value
-            if UCBvalue >= bestVal :
+            if UCBvalue > bestVal :
                 bestVal = UCBvalue
                 selectedAction = a
 
@@ -41,6 +41,7 @@ def UCBT(actions, all_pulls, parC = 1.0):
     
     selectedAction = None
     bestVal = -1e30000
+    equalNum = 1
 
     #find best action among all available
     for a in actions :
@@ -57,9 +58,10 @@ def UCBT(actions, all_pulls, parC = 1.0):
                 V = a.variance+sqrt(2.0*log(all_pulls)/a.pulls)
                 UCBvalue = a.mean + parC * sqrt((log(all_pulls)/a.pulls)*min(1.0/4.0,V))
                 #find action with highest value
-                if UCBvalue >= bestVal :
+                if UCBvalue > bestVal :
                     bestVal = UCBvalue
                     selectedAction = a
+                    equalNum = 1
 
                 #break ties sequentially randomly
                 elif UCBvalue == bestVal :

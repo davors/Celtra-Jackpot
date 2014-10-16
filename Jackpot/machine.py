@@ -10,8 +10,8 @@ class machine(object):
     #self.last_reset=0
     mean=0.0
     mean2=0.0
-    sum=0
-    sum_total=0
+    sum=0.0
+    sum_total=0.0
     id=0
     moving_sum=[]
     variance=0.0
@@ -40,8 +40,8 @@ class machine(object):
         #self.last_reset=0
         self.mean=0.0
         self.mean2=0.0
-        self.sum=0
-        self.sum_total=0
+        self.sum=0.0
+        self.sum_total=0.0
         self.id=id
         self.moving_sum=[]
         self.variance=0.0
@@ -77,7 +77,7 @@ class machine(object):
                 self.sum=sum(self.R[index-1:])
             else: 
                 new_pulls=0
-                self.sum=0
+                self.sum=0.0
             p_tmp=self.pulls-new_pulls
         
         self.pulls=new_pulls

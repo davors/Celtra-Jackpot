@@ -31,9 +31,7 @@
     <Compile Include="BanditGenerator.py" />
     <Compile Include="changePointDetection.py" />
     <Compile Include="Config.py" />
-    <Compile Include="configuration.py" />
     <Compile Include="Config_testCases.py" />
-    <Compile Include="CrossTest.py" />
     <Compile Include="Evaluator.py" />
     <Compile Include="fileIO.py" />
     <Compile Include="GlobalDefines.py" />
@@ -44,6 +42,7 @@
     <Compile Include="Optimization.py" />
     <Compile Include="SampleAnalyzer.py" />
     <Compile Include="strategy.py" />
+    <Compile Include="unitTests.py" />
     <Compile Include="webClient.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />

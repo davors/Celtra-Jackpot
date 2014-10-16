@@ -1,7 +1,7 @@
 #
 # Statistical tests to determine if the machine changed
 #
-from configuration import *
+from Config import *
 from math import *
 
 #rat=kumulativen povprecen reward na avtomat v t potezah
