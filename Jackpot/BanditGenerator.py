@@ -57,6 +57,14 @@ class BanditTestCase() :
             reward = -1 #getMachineResponse(url,bandit_id,pull_id)
         return reward
 
+    # pull a specified one-armed bandit
+    def probBandit(self,bandit_id,pull_id) :
+        if (self.onlineUrl is None) :
+            reward = self.bandits[bandit_id].prob(pull_id)
+        else :
+            print 'BanditTestCase(): probBandit(): ERROR, CANNOT GET PROBABILITY OF URL_BANDIT'
+        return reward
+
     # inquire about the number of bandits in the test case
     def getNumBandits(self) :
         if (self.onlineUrl is None) :
@@ -128,7 +136,7 @@ class BanditTestBatch() :
             self.sumRandomRewards += self.list[c].randomReward
 
     def info(self) :
-        print 'BanditTestBatch: casesID: ',
+        print 'BanditTestBatch: casesIDs: ',
         for i in xrange(self.num) :
             print '%d ' % self.list[i].ID,
         print ''

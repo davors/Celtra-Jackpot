@@ -157,8 +157,7 @@ class MABsolver() :
     # select a bandit from available stats
     def selectBandit(self, increase_pulls = 1) :
 
-        #exploration_weight = self.config.params[0].getValue()
-        exploration_weight = self.config.params[0].weights[0]
+        exploration_weight = self.config.params[0].getValue()
 
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]
         elif self.config.selectionPolicy == GLODEF_SELECTION_EGREEDY :  selected_machine = EGreedy(self.machines, exploration_weight)
@@ -173,6 +172,16 @@ class MABsolver() :
 
     # update stats and detect change point (if enabled)
     def update(self, machine_id, reward, suppress_output = 0) :
+
+        #TODO PARAM_INPUTS if not direct parameter search (if linear or neural used...), update inputs in function approximator for parameters
+        #example:
+        # self.config.params[0].updateInputs( array_of_new_inputs )
+        #or
+        # self.config.params[0].lastInputs[0] = some_new_input1
+        # self.config.params[0].lastInputs[1] = some_new_input2
+        # self.config.params[1].lastInputs[0] = some_new_input1
+        # self.config.params[1].lastInputs10] = some_new_input2
+        # self.config.params[2].lastInputs[0] = some_new_input3
 
         self.machines[machine_id].update(reward, self.pulls)
 
