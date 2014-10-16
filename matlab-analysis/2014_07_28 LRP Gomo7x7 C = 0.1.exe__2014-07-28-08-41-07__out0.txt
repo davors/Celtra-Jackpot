@@ -1,0 +1,38 @@
+LRP_test_wrapperMultiPar(), 100 repeats 1 params
+
+LRP_improved_v1()
+Gomoku 7x7
+Players: UCT 	UCT_TomTest 	
+Evaluated_player 2  sim 1000  start_Cp 0.200  par_w_init 0.000
+Opponent_player  1  sim 1000  fixed_Cp 0.200
+LRP_steps   200  games 10 10
+LRP_restart   14  restart_threshold 0.023 0.005
+kNN 22  central_weight 1.1  weight_repeats 1
+enable_output_best_kNN 1  final_eval_games 20000
+Score_conf_test 1.44
+Games_by_conf_fact 1.0 1.0
+LRP_ab_by_conf 1  LRP_dw_by_conf 0
+LRP_ab_min 0.020  LRP_ab_max 0.750  LRP_b_koef 1.000
+lrp_ab_dscore_min 0.100 lrp_ab_dscore_max 1.000
+Use_linear_dw_decrease 1  dw 0.20000 0.00100  dw_tau 37.74783
+Evaluated_player:  RAVE_scheme 0  start_RAVE_V 35.0
+AMAF_EQUATION_TYPE 0  PARAM_FUNC_APP_TYPE 1  Nnet I 1 O 3 H 3 F 0
+QVALUE_EQUATION_TYPE 0  QVALUE_ALGORITHM 3  TRACE_GAMMA S2 T1
+
+
+Run       avg    [%]    [%]    [%]   Final_params
+        games scr100  scr10  final   P0       
+  0      10.0  35.17  48.75  50.04   0.0020  
+  1      10.0  33.68  45.50  50.51  -0.0010  
+  2      10.0  34.08  47.75  49.85   0.0250  
+  3      10.0  38.01  53.50  50.63   0.0160  
+  4      10.0  32.41  42.75  47.72   0.0540  
+  5      10.0  36.74  45.50  40.39   0.1100  
+  6      10.0  34.33  50.50  50.55   0.0150  
+  7      10.0  37.81  47.75  48.48   0.0430  
+  8      10.0  35.97  53.75  49.09  -0.0140  
+  9      10.0  36.59  46.75  50.41   0.0010  
+ 10      10.0  33.03  54.25  50.63  -0.0030  
+ 11      10.0  37.09  46.25  49.13   0.0300  
+ 12      10.0  32.94  48.00  47.27   0.0520  
+ 13      10.0  34.53  51.50  49.00   0.0280  
