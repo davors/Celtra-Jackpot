@@ -1,6 +1,9 @@
 from GlobalDefines import *
 from Config_testCases import *
 
+#RUNTIME SETTINGS
+REPRINT_TO_FILE = 1
+
 #set to 1 if test
 #set to 0 if production
 TEST = 1

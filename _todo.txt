@@ -1,7 +1,6 @@
 Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
 --------------------------------------------------------------
 
-- TOM: dej da vse zapisuje še v datoteko z datumom
 - DAVOR: implementiraj razliène RESET algorithms v changePointDetection() - DEBUG!
 
 - èe tega nismo že: implementacija neke znane/uveljavljene metode

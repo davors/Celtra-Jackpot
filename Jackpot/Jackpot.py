@@ -1,24 +1,22 @@
 #-- imports --#
-from Config import *
+from Jackpot_init import *
+from Config_testCases import *
+from BanditGenerator import *
 from fileIO import *
 from SampleAnalyzer import *
-from Jackpot_init import *
 from MABsolver import *
 from Evaluator import *
 from Optimization import *
 from unitTests import *
 import cProfile
 import pstats
+from experiments import *
 
 ###--- main program procedure (user code) ---###
-
-random.seed()
 
 ##-- all benchmark scenarios (cases)
 
 allCases = constructTestCases(GLODEF_ALLCASES_DEFINES)
-
-
 
 ##-- test batches
 
@@ -32,10 +30,16 @@ testBatch_tmp2 = BanditTestBatch( allCases, [2,5] )
 testBatch_tmp3 = BanditTestBatch( allCases, [6] )
 
 
+##-- experiments (for ICANNGA)
+
+#test_2014_10_18_noChangePoint(allCases)
+
+
+
 ##-- unit tests
 
 #unitTest_OptExhaustive(allCases)
-unitTest_OptSimulatedAnnealing(allCases)
+#unitTest_OptSimulatedAnnealing(allCases)
 
 ##-- policy configuration
 

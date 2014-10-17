@@ -33,6 +33,7 @@
     <Compile Include="Config.py" />
     <Compile Include="Config_testCases.py" />
     <Compile Include="Evaluator.py" />
+    <Compile Include="experiments.py" />
     <Compile Include="fileIO.py" />
     <Compile Include="GlobalDefines.py" />
     <Compile Include="Jackpot.py" />
@@ -41,6 +42,7 @@
     <Compile Include="machine.py" />
     <Compile Include="Optimization.py" />
     <Compile Include="SampleAnalyzer.py" />
+    <Compile Include="setup.py" />
     <Compile Include="strategy.py" />
     <Compile Include="unitTests.py" />
     <Compile Include="webClient.py" />

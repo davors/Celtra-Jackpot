@@ -4,6 +4,7 @@ from MABsolver import *
 from Evaluator import *
 import random
 import math
+import sys
 
 class Optimizer() :
 
@@ -202,6 +203,7 @@ class Optimizer() :
                 for p in xrange(len(paramValues)) :
                     print ' %f' % paramValues[p],
                 print ''
+                sys.stdout.flush()
 
             return score
 
@@ -342,16 +344,18 @@ class Optimizer() :
                     accept = True
                 if (accept==True):
                     # update currently accepted solution
-                    xc[0] = xi[0]
-                    xc[1] = xi[1]
+
+                    for kk in range(len(xi)):
+                        xc[kk] = xi[kk]
+
                     fc = objFuncVal
                     # increment number of accepted solutions
                     num_accepted = num_accepted + 1.0
                     # update DeltaE_avg
                     DeltaE_avg = (DeltaE_avg * (num_accepted-1.0) +  DeltaE) / num_accepted
             # Record the best x values at the end of every cycle
-            x[i+1][0] = xc[0]
-            x[i+1][1] = xc[1]
+            for kk in range(len(xc)):
+                x[i+1][kk] = xc[kk]
             fs[i+1] = fc
             # Lower the temperature for next cycle
             t = frac * t
