@@ -5,12 +5,12 @@
 experiment_filenames{1}   = '2014_07_28 LRP Gomo7x7 C = 0.1.exe__2014-07-28-08-41-07__out0';
 experiment_filenames{2}   = '2014_10_17 first test';
 
-experiment_filenames{3}   = '';
+experiment_filenames{3}   = 'temp2_nejc';
 
 %TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
 %file read settings
 
-filename_to_load = 2;
+filename_to_load = 3;
 
 num_header_lines = 18;  %old txt data files had 21
 data_delimiter = ' ';

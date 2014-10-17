@@ -34,8 +34,8 @@ testBatch_tmp3 = BanditTestBatch( allCases, [6] )
 
 ##-- unit tests
 
-unitTest_OptExhaustive(allCases)
-
+#unitTest_OptExhaustive(allCases)
+unitTest_OptSimulatedAnnealing(allCases)
 
 ##-- policy configuration
 
@@ -111,10 +111,10 @@ eval_oracle_probablity = 1
 #for c in range(1,configuration.N_CASES+1):
 #    machines=getNumMachines(c)
 #    pulls=getNumPulls(c)
-#    reps=1   
-#    #if c<=5: 
+#    reps=1
+#    #if c<=5:
 #    #    reps=20000/pulls
-#    #else: 
+#    #else:
 #    #    reps=20000
 #    if configuration.TEST==1:
 #        writeDataToFile(c,machines,pulls,reps)
@@ -129,7 +129,7 @@ eval_oracle_probablity = 1
 #for i in range(500,1000):
 #    data[0][i]=int(random.random()<0.4)
 #    data[1][i]=int(random.random()<0.6)
- 
+
 # 0 'random'
 # 1 'epsilonGreedy
 # 2 'softMax'
@@ -190,4 +190,4 @@ eval_oracle_probablity = 1
     #    print 'HankeyPankey triggered at: '+str((HP,i))
     #    break
 
-#print str(case)    
+#print str(case)

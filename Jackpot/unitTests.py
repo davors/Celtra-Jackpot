@@ -41,6 +41,50 @@ def unitTest_OptExhaustive(allCases) :
 
     optimizer.Optimize(opti_learn_cases, opti_config, opti_suppress_output, opti_oracle_probablity)
 
+def unitTest_OptSimulatedAnnealing(allCases) :
+
+    testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    testBatch_01_05 = BanditTestBatch( allCases, [0, 1, 2, 3, 4] )  #Celtra
+    testBatch_06_10 = BanditTestBatch( allCases, [5, 6, 7, 8, 9] )  #Celtra
+
+    testBatch_05 = BanditTestBatch( allCases, [5] ) # 5
+
+    solv_initial_param_values = None     #if None: default will be used
+    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
+    solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
+    solv_reset_algorithm = DEFAULT_RESET_ALGORITHM
+    solv_param_types = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS
+    solv_param_num_inputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS
+
+    solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, solv_change_point_test, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
+
+    opti_solver = solver
+    opti_evaluations_per_sample = 1
+    opti_config = [     #configuration for the optimization algorithm: arbitrary list of additional parameters
+    [0.0, 1.0],         # lower bounds for all parameters
+    [1.0, 3.0],         # upper bounds for all parameters
+    [0.1,0.2],          # grid step (if you want discrete search); leave empty for continuous search
+    10,                 # number of cycles (epochs) of SA
+    10,                 # number of iterations per each cycle
+    0.2,                # probability of accepting worse solution at the start
+    0.001,              # probability of accepting worse solution at the end
+    0.5,                # neighbourhood radius at the start (ratio of interval)
+    0.1                 # neighbourhood radius at the end (ratio of interval)
+    ]
+
+    opti_fitness_metric = DEFAULT_FITNESS_METRIC
+    opti_algorithm = GLODEF_OPTIMIZATION_ANNEALING
+    opti_selective_optimization = [0, 1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
+
+    optimizer = Optimizer(opti_solver, opti_evaluations_per_sample, opti_config, opti_fitness_metric, opti_algorithm, opti_selective_optimization)
+
+    opti_learn_cases = testBatch_05
+    opti_suppress_output = 0
+    opti_oracle_probablity = 1
+
+    optimizer.Optimize(opti_learn_cases, opti_config, opti_suppress_output, opti_oracle_probablity)
+
 def unitTest_Optimizer(allCases) :
     testBatch_tmp = BanditTestBatch( allCases, [10] )
     testSolver = MABsolver([1.0, 2.5, 0.2, 5], GLODEF_SELECTION_UCBTUNED, GLODEF_CHANGEPOINT_NONE , GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO, GLODEF_PARAM_FUNCTION_DIRECT)
@@ -120,4 +164,4 @@ def unitTest_allObjects_andParameters():
     opti_selective_optimization = None              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
 
     optimizer = Optimizer(opti_solver, opti_evaluations_per_sample, opti_config, opti_fitness_metric, opti_algorithm, opti_selective_optimization)
-  
+
