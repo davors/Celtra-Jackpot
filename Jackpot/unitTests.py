@@ -60,17 +60,17 @@ def unitTest_OptSimulatedAnnealing(allCases) :
     solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, solv_change_point_test, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
 
     opti_solver = solver
-    opti_evaluations_per_sample = 1
+    opti_evaluations_per_sample = 10
     opti_config = [     #configuration for the optimization algorithm: arbitrary list of additional parameters
-    [0.0, 1.0],         # lower bounds for all parameters
-    [1.0, 3.0],         # upper bounds for all parameters
-    [0.1,0.2],          # grid step (if you want discrete search); leave empty for continuous search
+    [0.0, 0.1],         # lower bounds for all parameters
+    [2.0, 5.0],         # upper bounds for all parameters
+    [],          # grid step (if you want discrete search); leave empty for continuous search
     10,                 # number of cycles (epochs) of SA
-    10,                 # number of iterations per each cycle
+    20,                 # number of iterations per each cycle
     0.2,                # probability of accepting worse solution at the start
     0.001,              # probability of accepting worse solution at the end
-    0.5,                # neighbourhood radius at the start (ratio of interval)
-    0.1                 # neighbourhood radius at the end (ratio of interval)
+    0.50,                # neighbourhood radius at the start (ratio of interval)
+    0.01                 # neighbourhood radius at the end (ratio of interval)
     ]
 
     opti_fitness_metric = DEFAULT_FITNESS_METRIC
@@ -81,7 +81,7 @@ def unitTest_OptSimulatedAnnealing(allCases) :
 
     opti_learn_cases = testBatch_05
     opti_suppress_output = 0
-    opti_oracle_probablity = 1
+    opti_oracle_probablity = 0
 
     optimizer.Optimize(opti_learn_cases, opti_config, opti_suppress_output, opti_oracle_probablity)
 

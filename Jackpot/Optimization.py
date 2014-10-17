@@ -66,8 +66,10 @@ class Optimizer() :
             print ''
 
         #-- optimization algorithms --#
+        best_sample = None
+        best_score = None
         if self.optimizationAlgorithm == GLODEF_OPTIMIZATION_ANNEALING :
-            self.simulatedAnnealing(batch, paramValues, suppress_output, oracleProbablity)
+            (best_sample, best_score) = self.simulatedAnnealing(batch, paramValues, suppress_output, oracleProbablity)
 
         elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_GENETIC :
             todo
@@ -77,7 +79,7 @@ class Optimizer() :
 
         elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_EXHAUSTIVE :
             #recursive exhaustive search
-            self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, 0)
+            (best_sample, best_score) = self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, 0)
 
         if not suppress_output :
             print ''
@@ -85,8 +87,7 @@ class Optimizer() :
             print ''
 
         #return best sample and its score
-        #return (best_sample, best_score)
-        #TODO
+        return (best_sample, best_score)
 
     #optimize on a learning batch and evaluate on another batch
     def OptimizeEvaluate(
@@ -102,7 +103,8 @@ class Optimizer() :
         if not suppress_output :
             print 'Procedure Optimizer.OptimizeEvaluate()'
 
-        self.Optimize(learnBatch, optimizationConfig, suppress_output, oracleProbablity)
+        (best_sample, best_score) = self.Optimize(learnBatch, optimizationConfig, suppress_output, oracleProbablity)
+        self.MABsolver.setParams(best_sample, self.selectiveOptimization)
         evaluateBatch(self.MABsolver, evalBatch, evalRepeats, suppress_output, oracleProbablity)
 
         if not suppress_output :
@@ -127,6 +129,7 @@ class Optimizer() :
         print ''
         print 'Optimizer(): evals/step: %d' % self.evaluationsPerSample
 
+    #recursive exhaustive search of complete discretized parameter space
     def exhaustiveSearch(self, batch, paramValues, suppress_output, oracleProbablity, level) :
 
         bestScore = -1e30000
@@ -156,9 +159,9 @@ class Optimizer() :
 
         return (bestScore, bestParams)
 
+
+    #simulated annealing search algorithm
     def simulatedAnnealing(self, batch, paramValues, suppress_output, oracleProbablity):
-
-
 
         # CONFIGURATION
         BOUND_LOWER = self.optimizationConfig[0]
@@ -174,8 +177,6 @@ class Optimizer() :
                            # when choosing next candidate, search only the neighbourhood
                            # of current solution. NEIGH_RADIUS is a ratio of full interval
                            # span, i.e.: NEIGH_RADIUS * (BOUND_UPPER - BOUND_LOWER)
-
-
 
         # define objective function
         def f(paramValues):
@@ -346,8 +347,10 @@ class Optimizer() :
             neigh_radius = neigh_radius - neigh_radius_delta
 
 
-        # print solution
-        if not suppress_output :
-            print 'Optimization with Simulated Annealing is over.'
-            print 'Best solution: ' + str(xc)
-            print 'Best objective: ' + str(fc)
+        ## print solution
+        #if not suppress_output :
+        #    print 'Optimization with Simulated Annealing is over.'
+        #    print 'Best solution: ' + str(xc)
+        #    print 'Best score: ' + str(fc)
+
+        return (xc, fc)
