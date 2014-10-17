@@ -91,3 +91,9 @@ GLO_labels_param_function = [
     'Neural'
     ]
 
+def PrintStrings(L):
+    if isinstance(str(L), basestring):
+        print str(L)
+    else:
+        for x in L:
+            PrintStrings(x)

@@ -35,10 +35,10 @@ class Optimizer() :
 
     def Optimize(
         self,
-        batch,                  # test cases
-        startingValues = None,  # optimized parameters' starting values
-        suppress_output = 0,    # enable/disable print output
-        oracleProbablity = 0    # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
+        batch,                          # test cases
+        optimizationConfig = None,      # array of parameters for the optimization algorithm
+        suppress_output = 0,            # enable/disable print output
+        oracleProbablity = 0            # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
         ) :
         
         #get list of parameters from MAB solver
@@ -46,9 +46,8 @@ class Optimizer() :
         numParams = len(paramValues)
 
         #set searched parameters to specified initial values
-        if not (startingValues is None) :
-            paramValues = startingValues
-            self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+        if not (optimizationConfig is None) :
+            self.optimizationConfig = optimizationConfig
 
         #user output
         if not suppress_output :
@@ -58,6 +57,7 @@ class Optimizer() :
             else :
                 print '!!! --- WARNING --- !!! Oracle probabilites : ENABLED !!! --- WARNING --- !!!'
             self.info()
+            print 'Optimizer(): numParams: %d' % numParams
             self.MABsolver.config.info()
             batch.info()
             print ''
@@ -90,7 +90,8 @@ class Optimizer() :
             todo
 
         elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_EXHAUSTIVE :
-            todo
+            #recursive exhaustive search
+            self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, 0)
 
         if not suppress_output :
             print ''
@@ -107,15 +108,15 @@ class Optimizer() :
         learnBatch,
         evalBatch,
         evalRepeats,
-        startingValues = None,  # optimized parameters' starting values
-        suppress_output = 0,    # enable/disable print output
-        oracleProbablity = 0    # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
+        optimizationConfig = None,  # array of parameters for the optimization algorithm
+        suppress_output = 0,        # enable/disable print output
+        oracleProbablity = 0        # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
         ) :
     
         if not suppress_output :
             print 'Procedure Optimizer.OptimizeEvaluate()'
         
-        self.Optimize(learnBatch, startingValues, suppress_output, oracleProbablity)
+        self.Optimize(learnBatch, optimizationConfig, suppress_output, oracleProbablity)
         evaluateBatch(self.MABsolver, evalBatch, evalRepeats, suppress_output, oracleProbablity)
         
         if not suppress_output :
@@ -133,11 +134,38 @@ class Optimizer() :
             )
 
         print 'Optimizer(): config: ',
-        for i in range(len(self.optimizationConfig)) :
-            print '%f ' % self.optimizationConfig[i],
-        print ''
+        PrintStrings(self.optimizationConfig)
         print 'Optimizer(): selective: ',
         for i in range(len(self.selectiveOptimization)) :
             print '%f ' % self.selectiveOptimization[i],
         print ''
         print 'Optimizer(): evals/step: %d' % self.evaluationsPerSample
+
+    def exhaustiveSearch(self, batch, paramValues, suppress_output, oracleProbablity, level) :
+
+        bestScore = -1e30000
+        bestParams = None
+        paramValues[level] = self.optimizationConfig[level][0]      #set initial values
+        for i in xrange(self.optimizationConfig[level][2]) :        #for iterate number of steps
+
+            if(level == (len(paramValues)-1) ) :
+                self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+                score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
+                params = paramValues
+                if not suppress_output :
+                    print GLO_metrics_out_format[self.fitnessMetric] % score,
+                    print '  ',
+                    for p in xrange(len(paramValues)) :
+                        print ' %f' % paramValues[p],
+                    print ''
+
+            else :
+                (score, params) = self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, level + 1)
+
+            if(score >= bestScore) :
+                bestScore = score
+                bestParams = params
+
+            paramValues[level] += self.optimizationConfig[level][1]        #increase parameter value by step rate
+
+        return (bestScore, bestParams)

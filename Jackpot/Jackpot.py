@@ -32,6 +32,10 @@ testBatch_tmp2 = BanditTestBatch( allCases, [2,5] )
 testBatch_tmp3 = BanditTestBatch( allCases, [6] )
 
 
+##-- unit tests
+
+unitTest_OptExhaustive(allCases)
+
 
 ##-- policy configuration
 
@@ -73,11 +77,10 @@ eval_oracle_probablity = 1
 
 #opti_learn_cases = testBatch_tmp
 #opti_eval_cases = testBatch_tmp2
-#opti_starting_values = None     #set starting values of optimized parameters, if None then existing values are used as initial
 #opti_suppress_output = 0
 #opti_oracle_probablity = 1
 
-#optimizer.Optimize(opti_learn_cases, opti_starting_values, eval_suppress_output, opti_oracle_probablity)
+#optimizer.Optimize(opti_learn_cases, opti_config, opti_suppress_output, opti_oracle_probablity)
 
 #opti_eval_repeats = 10
 
@@ -87,9 +90,9 @@ eval_oracle_probablity = 1
 
 ##-- example of profiling the computation times
 
-cProfile.run('evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_output, eval_oracle_probablity)', 'myFunction.profile')
-stats = pstats.Stats('myFunction.profile')
-stats.strip_dirs().sort_stats('time').print_stats()
+#cProfile.run('evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_output, eval_oracle_probablity)', 'myFunction.profile')
+#stats = pstats.Stats('myFunction.profile')
+#stats.strip_dirs().sort_stats('time').print_stats()
 
 
 
