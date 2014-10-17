@@ -16,6 +16,7 @@ class machine(object):
     moving_sum=[]
     variance=0.0
     __M2__=0.0
+    #storedValue=None
     
     def __varmean__(self,pulls):
         n=self.pulls-pulls

@@ -1,9 +1,12 @@
+from __future__ import division
 from Config import *
 from MABsolver import *
 from Evaluator import *
+import random
+import math
 
 class Optimizer() :
-    
+
     MABsolver = None                #multi-armed-bandit policy
     fitnessMetric = None            #choosen fitness metric
     optimizationAlgorithm = None    #choosen optimization algorithm
@@ -12,7 +15,7 @@ class Optimizer() :
     selectiveOptimization = None    #choosen parameters to optimize - array of indices
 
     def __init__(
-        self, 
+        self,
         MABsolver,
         evaluationsPerSample = DEFAULT_OPTIMIZATION_EVALS_PER_SAMPLE,
         optimizationConfig = DEFAULT_OPTIMIZATION_CONFIG,
@@ -26,7 +29,7 @@ class Optimizer() :
         self.optimizationAlgorithm = optimizationAlgorithm
         self.optimizationConfig = optimizationConfig
         self.evaluationsPerSample = evaluationsPerSample
-        
+
         if selectiveOptimization is None :
             self.selectiveOptimization = range(len(self.MABsolver.config.params))
         else :
@@ -35,20 +38,19 @@ class Optimizer() :
 
     def Optimize(
         self,
-        batch,                  # test cases
-        startingValues = None,  # optimized parameters' starting values
-        suppress_output = 0,    # enable/disable print output
-        oracleProbablity = 0    # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
+        batch,                          # test cases
+        optimizationConfig = None,      # array of parameters for the optimization algorithm
+        suppress_output = 0,            # enable/disable print output
+        oracleProbablity = 0            # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
         ) :
-        
+
         #get list of parameters from MAB solver
         paramValues = self.MABsolver.listParams(self.selectiveOptimization)
         numParams = len(paramValues)
 
         #set searched parameters to specified initial values
-        if not (startingValues is None) :
-            paramValues = startingValues
-            self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+        if not (optimizationConfig is None) :
+            self.optimizationConfig = optimizationConfig
 
         #user output
         if not suppress_output :
@@ -58,30 +60,16 @@ class Optimizer() :
             else :
                 print '!!! --- WARNING --- !!! Oracle probabilites : ENABLED !!! --- WARNING --- !!!'
             self.info()
+            print 'Optimizer(): numParams: %d' % numParams
             self.MABsolver.config.info()
             batch.info()
             print ''
 
         #-- optimization algorithms --#
+        best_sample = None
+        best_score = None
         if self.optimizationAlgorithm == GLODEF_OPTIMIZATION_ANNEALING :
-        
-            #for some iterative procedure
-            for i in range(10) :
-                
-                #evaluate new (or all) samples
-                score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
-                if not suppress_output :
-                    print '%2d   %.1f   ' % (i+1, score),
-                    print '%s' % ' '.join(map(str, paramValues))
-
-                #do something with parameters -> create new sample
-                paramValues[0] += 0.2
-                self.MABsolver.setParams(paramValues, self.selectiveOptimization)
-
-            #out of for loop
-            #print best_sample_score and param setting
-            #set best parameter values
-            #self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+            (best_sample, best_score) = self.simulatedAnnealing(batch, paramValues, suppress_output, oracleProbablity)
 
         elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_GENETIC :
             todo
@@ -90,7 +78,8 @@ class Optimizer() :
             todo
 
         elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_EXHAUSTIVE :
-            todo
+            #recursive exhaustive search
+            (best_sample, best_score) = self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, 0)
 
         if not suppress_output :
             print ''
@@ -98,26 +87,26 @@ class Optimizer() :
             print ''
 
         #return best sample and its score
-        #return (best_sample, best_score)
-        #TODO
-        
+        return (best_sample, best_score)
+
     #optimize on a learning batch and evaluate on another batch
     def OptimizeEvaluate(
         self,
         learnBatch,
         evalBatch,
         evalRepeats,
-        startingValues = None,  # optimized parameters' starting values
-        suppress_output = 0,    # enable/disable print output
-        oracleProbablity = 0    # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
+        optimizationConfig = None,  # array of parameters for the optimization algorithm
+        suppress_output = 0,        # enable/disable print output
+        oracleProbablity = 0        # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
         ) :
-    
+
         if not suppress_output :
             print 'Procedure Optimizer.OptimizeEvaluate()'
-        
-        self.Optimize(learnBatch, startingValues, suppress_output, oracleProbablity)
+
+        (best_sample, best_score) = self.Optimize(learnBatch, optimizationConfig, suppress_output, oracleProbablity)
+        self.MABsolver.setParams(best_sample, self.selectiveOptimization)
         evaluateBatch(self.MABsolver, evalBatch, evalRepeats, suppress_output, oracleProbablity)
-        
+
         if not suppress_output :
             print ''
             print 'Procedure Optimizer.OptimizeEvaluate(): COMPLETED'
@@ -128,16 +117,240 @@ class Optimizer() :
 
     def info(self):
         print 'Optimizer(): %s , %s' % (
-            GLO_labels_optimization[self.optimizationAlgorithm], 
-            GLO_labels_metrics[self.fitnessMetric], 
+            GLO_labels_optimization[self.optimizationAlgorithm],
+            GLO_labels_metrics[self.fitnessMetric],
             )
 
         print 'Optimizer(): config: ',
-        for i in range(len(self.optimizationConfig)) :
-            print '%f ' % self.optimizationConfig[i],
-        print ''
+        PrintStrings(self.optimizationConfig)
         print 'Optimizer(): selective: ',
         for i in range(len(self.selectiveOptimization)) :
             print '%f ' % self.selectiveOptimization[i],
         print ''
         print 'Optimizer(): evals/step: %d' % self.evaluationsPerSample
+
+    #recursive exhaustive search of complete discretized parameter space
+    def exhaustiveSearch(self, batch, paramValues, suppress_output, oracleProbablity, level) :
+
+        bestScore = -1e30000
+        bestParams = None
+        paramValues[level] = self.optimizationConfig[level][0]      #set initial values
+        for i in xrange(self.optimizationConfig[level][2]) :        #for iterate number of steps
+
+            if(level == (len(paramValues)-1) ) :
+                self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+                score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
+                params = paramValues
+                if not suppress_output :
+                    print GLO_metrics_out_format[self.fitnessMetric] % score,
+                    print '  ',
+                    for p in xrange(len(paramValues)) :
+                        print ' %f' % paramValues[p],
+                    print ''
+
+            else :
+                (score, params) = self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, level + 1)
+
+            if(score >= bestScore) :
+                bestScore = score
+                bestParams = params
+
+            paramValues[level] += self.optimizationConfig[level][1]        #increase parameter value by step rate
+
+        return (bestScore, bestParams)
+
+
+    #simulated annealing search algorithm
+    def simulatedAnnealing(self, batch, paramValues, suppress_output, oracleProbablity):
+
+        # CONFIGURATION
+        BOUND_LOWER = self.optimizationConfig[0]
+        BOUND_UPPER = self.optimizationConfig[1]
+        GRID_STEP   = self.optimizationConfig[2] # Leave empty for unconstraint search (continuous)
+        START_VALUES = paramValues;              # leave empty for random initialization
+        NUM_CYCLES  = self.optimizationConfig[3] # number of cycles (epochs) of SA
+        NUM_TRIALS_PER_CYCLE = self.optimizationConfig[4] # number of iterations per each cycle
+        P_START = self.optimizationConfig[5] # Probability of accepting worse solution at the start
+        P_END = self.optimizationConfig[6] # Probability of accepting worse solution at the end
+        NEIGH_RADIUS_START = self.optimizationConfig[7]
+        NEIGH_RADIUS_END = self.optimizationConfig[8]
+                           # when choosing next candidate, search only the neighbourhood
+                           # of current solution. NEIGH_RADIUS is a ratio of full interval
+                           # span, i.e.: NEIGH_RADIUS * (BOUND_UPPER - BOUND_LOWER)
+
+        # define objective function
+        def f(paramValues):
+
+            self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+            score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
+
+            if not suppress_output :
+                print GLO_metrics_out_format[self.fitnessMetric] % score,
+                print '  ',
+                for p in xrange(len(paramValues)) :
+                    print ' %f' % paramValues[p],
+                print ''
+
+            return score
+
+        # define function that returns new trial point (solution candidate)
+        def get_new_candidate(x_curr,neigh_radius):
+            if not neigh_radius:
+                neigh_radius = 1.0
+
+            x = [0 for i in xrange(num_params)]
+            for i in xrange(num_params):
+                if GRID_MODE == "discrete":
+                    # Choose from values in list
+                    rnd_idx = random.randint(0, param_vec_count[i]-1)
+                    x[i] = param_vec[i][rnd_idx]
+                else:
+                    if not x_curr:
+                        x_curr_i = random.uniform(BOUND_LOWER[i],BOUND_UPPER[i])
+                    else:
+                        x_curr_i = x_curr[i]
+
+                    # Generate random value in the neighbourhood of current solution
+                    x[i] = x_curr_i + (
+                    (random.uniform(-1.0,1.0) * neigh_radius) * abs(BOUND_UPPER[i]-BOUND_LOWER[i])
+                    )
+                    # Clip to upper and lower bounds
+                    x[i] = max(min(x[i],BOUND_UPPER[i]),BOUND_LOWER[i])
+
+            return x
+
+        def linspace(start, stop, step):
+            n = int(math.ceil(((stop - start) / step)) +1)
+            v = [0 for i in xrange(n)]
+
+            for i in range(n):
+                v[i]=(start + step * i)
+            return v
+
+
+        ################################################################################
+        # Checks
+        num_params = len(BOUND_LOWER)
+        if num_params != len(BOUND_UPPER):
+            print("Length of BOUND_UPPER does not match with others!\n")
+
+        GRID_MODE = "continuous"
+        if GRID_STEP:
+            GRID_MODE = "discrete"
+            if (num_params != len(GRID_STEP)):
+                print("Length of GRID_STEP does not match with others! Switching to continuous mode.\n")
+                GRID_MODE = "continuous"
+
+
+        if GRID_MODE == "discrete":
+            # Create vectors of parameters values
+            param_vec = [0 for i in xrange(num_params)]
+            param_vec_count = [0 for i in xrange(num_params)]
+
+            for i in xrange(num_params):
+                param_vec[i] = linspace(BOUND_LOWER[i],BOUND_UPPER[i],GRID_STEP[i])
+                param_vec_count[i] = len(param_vec[i])
+
+
+        # Start values - random if empty
+        if not START_VALUES:
+            x_start = get_new_candidate(None,None)
+        else:
+            if num_params != len(START_VALUES):
+                print("Length of START_VALUES does not match with others!\n")
+            else:
+                x_start = START_VALUES
+
+
+        ##################################################
+        # Simulated Annealing
+        ##################################################
+        # Number of accepted solutions
+        num_accepted = 0.0
+
+        # Initial temperature
+        t_start = -1.0/math.log(P_START)
+
+        # Final temperature
+        t_end = -1.0/math.log(P_END)
+
+        # Fractional reduction every cycle
+        frac = (t_end/t_start)**(1.0/(NUM_CYCLES-1.0))
+
+        # Initialize x
+        x = [[0 for i in xrange(num_params)] for j in xrange(NUM_CYCLES+1)]
+        x[0] = x_start
+
+        # current trial points
+        xi = x_start
+        num_accepted = num_accepted + 1.0
+
+        # Current best results so far
+        xc = x[0]
+        fc = f(xi)
+        fs = [0 for i in xrange(NUM_CYCLES+1)]
+        fs[0] = fc
+
+        # Current temperature
+        t = t_start
+
+        # Current neighbourhood radius
+        neigh_radius = NEIGH_RADIUS_START
+        neigh_radius_delta = (NEIGH_RADIUS_START-NEIGH_RADIUS_END)/(NUM_CYCLES-1)
+
+        # DeltaE Average
+        DeltaE_avg = 0.0
+
+        for i in range(NUM_CYCLES):
+            #if not suppress_output :
+                #print 'Cycle: ' + str(i) + ', Temperature: ' + str(t) + ', neigh_radius: ' +str(neigh_radius) + ', score: ' + str(fc)
+
+            for j in range(NUM_TRIALS_PER_CYCLE):
+                # Generate new trial points
+                xi = get_new_candidate(xc,neigh_radius)
+                objFuncVal = f(xi)
+
+                DeltaE = abs(objFuncVal-fc)
+                if (objFuncVal < fc):
+                    # Initialize DeltaE_avg if a worse solution was found
+                    #   on the first iteration
+                    if (i==0 and j==0): DeltaE_avg = DeltaE
+                    # objective function is worse
+                    # generate probability of acceptance
+                    p = math.exp(-DeltaE/(DeltaE_avg * t))
+                    # determine whether to accept worse point
+                    if (random.random()<p):
+                        # accept the worse solution
+                        accept = True
+                    else:
+                        # don't accept the worse solution
+                        accept = False
+                else:
+                    # objective function is lower, automatically accept
+                    accept = True
+                if (accept==True):
+                    # update currently accepted solution
+                    xc[0] = xi[0]
+                    xc[1] = xi[1]
+                    fc = objFuncVal
+                    # increment number of accepted solutions
+                    num_accepted = num_accepted + 1.0
+                    # update DeltaE_avg
+                    DeltaE_avg = (DeltaE_avg * (num_accepted-1.0) +  DeltaE) / num_accepted
+            # Record the best x values at the end of every cycle
+            x[i+1][0] = xc[0]
+            x[i+1][1] = xc[1]
+            fs[i+1] = fc
+            # Lower the temperature for next cycle
+            t = frac * t
+            # Tighten neighbourhood for next cycle
+            neigh_radius = neigh_radius - neigh_radius_delta
+
+
+        ## print solution
+        #if not suppress_output :
+        #    print 'Optimization with Simulated Annealing is over.'
+        #    print 'Best solution: ' + str(xc)
+        #    print 'Best score: ' + str(fc)
+
+        return (xc, fc)

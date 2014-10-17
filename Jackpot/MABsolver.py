@@ -156,7 +156,7 @@ class MABsolver() :
 
     # select a bandit from available stats
     def selectBandit(self, increase_pulls = 1) :
-
+        
         exploration_weight = self.config.params[0].getValue()
 
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]

@@ -1,14 +1,12 @@
 Ta dokument vsebuje možne ideje in nadaljnje delo, èe nam ostane še kaj èasa
 ----------------------------------------------------------------------------
 
-- ko change point detection zazna spremembo se stanje nekako resetira:
+- (ALI JE TO ŽE?) ko change point detection zazna spremembo se stanje nekako resetira:
 	*tisti bandit B, ki je sprožil reset se nastavi na število vzorcev N kolikor jih je bilo v moving average
 	*ostale bandite pa je potrebno resetirat na drugaèno število - potrebno je gledat ne absolutno po številu potegov, ampak po èasu (koliko potegov je bilo vsakega bandita od toèke v preteklosti, ko je moving average naredil N vozrcev bandita B)
 		-- preizkusi obe opciji (z in brez tega)
 		-- poskusi, èe dela kaj boljše: IZKLJUÈI CHANGE POINT DETECTION, da ne zaznava sprememb navzgor
 
-- kaj pa èe opravimo zaporedno K potegov (npr. 5) od vsakega bandita, ki ima manj kot K potegov v zandjih N (npr. 1000) potegih (mehki reset)
-		
 - exploration parameter (C, epsilon, ...) linearna funkcija naslednjih spremenljivk:
 	*število avtomatov/akcij/banditov
 	*število vseh potegov (max_pulls), se spremeni z resetom
@@ -25,7 +23,11 @@ Ta dokument vsebuje možne ideje in nadaljnje delo, èe nam ostane še kaj èasa
 		* TOM: dodaj kot feature posameznega testCase-a (in mogoèe uporabi kot vhodno spremenljivko za parametre uèenja) neko mero za "stacionarnost" primera (poglej èlanke), sicer pa sem si zamislu lastno, da gledaš koliko izgubiš v povpreèju na potezo, èe po vsaki spremembi avtomatov slediš prejšnjemu najboljšemu vse do konca, al nekaj podobnega
 	- verjetnosti za nagrade so zelo nizke, blizu 0, kar pomeni, da imamo sparse vektorje vzorcev (zelo malo informacije)
 	
-		
+- kaj pa èe opravimo zaporedno K potegov (npr. 5) od vsakega bandita, ki ima manj kot K potegov v zandjih N (npr. 1000) potegih (mehki reset)
+	*ali pa še bolj enostavno: vsakiè ko izberemo bandita, ga potegnemo veèkrat zaporedoma:
+		število zaporednih potegov pa je doloèeno (1/P + B) * P, pri èemer je P maximalno število potegov, B pa nastavljiv parameter (kolikšen delež VEÈ zaporednih potegov, glede na število vseh potegov), ker je številka zelo majhna (ranga 0.00003 - 0.002) lahko preuredim enaèbo v (1/P + B/1000)*P (tako je v rangu 0.03 - 2.00)
+	
+	
 - poskusi ensamble of algorithms
 	*glede na izmerjene rezulate po posameznih primerih ugotovi ali se splaèa sploh uporabit kaj drugega kot UCB1tuned
 	*èe ja, potem naredi nek "voting system" na primer treh algoritmov, kjer se izbere tisti machine/akcija, ki ima najveè glasov, sicer pa èe imajo vsi enako naj prevlada npr. UCB1tuned

@@ -3,29 +3,38 @@
 
 %2014_07_25-28 search of optimal parameters at UCT with moving-average-values (MAV)
 experiment_filenames{1}   = '2014_07_28 LRP Gomo7x7 C = 0.1.exe__2014-07-28-08-41-07__out0';
+experiment_filenames{2}   = '2014_10_17 first test';
+experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
+experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
 
+experiment_filenames{5}   = '';
+experiment_filenames{6}   = '';
+experiment_filenames{7}   = '';
 
-experiment_filenames{2}   = '';
-
+experiment_filenames{10}   = '';
 
 %TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
 %file read settings
 
-filename_to_load = 1;
+filename_to_load = 3;
 
-num_header_lines = 24;  %old txt data files had 21
+num_header_lines = 18;  %old txt data files had 21
 data_delimiter = ' ';
-first_data_column = 5;
+first_data_column = 1;
 
-position_num_final_evaluations = [11 4];    %row and column in file
-position_num_samples = [1 2];               %for safety check
-position_num_params = [1 4];                %for safety check
+position_num_final_evaluations = [7 3];    %row and column in file
+%position_num_samples = [1 2];               %for safety check
+position_num_params = [8 3];                %for safety check
 
 %matlab analysis settings
 
 override_final_evaluations = 0;    %if value is 0 then it is read from the header of the results file, otherwise the value given here is used
 use_num_evaluations_for_confidence = true;  %use the number of evaluations (outside of matlab) to calculate score confidence instead of averaging in matlab
-assume_binomial_score_distribution = true;  %by default is TRUE for games (win, lose, draw) ... FALSE not yet implemented!
+assume_binomial_score_distribution = false;  %by default is TRUE for games (win, lose, draw) ... FALSE not yet implemented!
+
+when_identifying_most_reliable_IGNORE_FIRST_N_SAMPLES = 1;   %the number of samples to ignore when identifying max(value - confidence)
+                                                             %default = 0
+                                                             %useful when assume_binomial_score_distribution = false
 
 calucalte_average_values_to_percent = 40;   %calculate best scores from how many "calucalte_average_values_step_ratio steps" in % of best samples (calculates them all, from the single best down to the given percentage)
 calucalte_average_values_step_ratio = 1;    %the step ratio in % to calucalte_average_values_to_percent (this represents the step size in % of number of samples per calculation)
@@ -52,10 +61,10 @@ num_pars_d = num_rows_d - 1;
 
 %check file integrity
 
-tmpstr = strsplit(importedFile.textdata{position_num_samples(1)},' ');
-if(str2double(tmpstr{position_num_samples(2)}) ~= total_num_samples)
-    warning(['File header mismatch: "' filename '": number of samples does not match!']);
-end
+% tmpstr = strsplit(importedFile.textdata{position_num_samples(1)},' ');
+% if(str2double(tmpstr{position_num_samples(2)}) ~= total_num_samples)
+%     warning(['File header mismatch: "' filename '": number of samples does not match!']);
+% end
 tmpstr = strsplit(importedFile.textdata{position_num_params(1)},' ');
 if(str2double(tmpstr{position_num_params(2)}) ~= num_pars_d)
     warning(['File header mismatch: "' filename '": number of parameters does not match!']);
@@ -110,7 +119,8 @@ end
 best_settings = FuncCalcAvgBestSamples(d,calucalte_average_values_to_percent,calucalte_average_values_step_ratio,use_num_evaluations_for_confidence,assume_binomial_score_distribution,num_evaluations_per_score);
 
 %find most reliable setting (max(score-confidence95))
-[most_reliable_setting_min_score , most_reliable_setting_index] = max(best_settings(:,3)-best_settings(:,3+num_pars_d+1));
+[most_reliable_setting_min_score , most_reliable_setting_index] = max(best_settings(when_identifying_most_reliable_IGNORE_FIRST_N_SAMPLES+2:end,3)-best_settings(when_identifying_most_reliable_IGNORE_FIRST_N_SAMPLES+2:end,3+num_pars_d+1));
+most_reliable_setting_index = most_reliable_setting_index + when_identifying_most_reliable_IGNORE_FIRST_N_SAMPLES + 1;
 most_reliable_setting_avg_score = best_settings(most_reliable_setting_index,3);
 most_reliable_setting_num_samples = best_settings(most_reliable_setting_index,2);
 

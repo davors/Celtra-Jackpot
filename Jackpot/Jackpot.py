@@ -7,9 +7,12 @@ from MABsolver import *
 from Evaluator import *
 from Optimization import *
 from unitTests import *
+import cProfile
+import pstats
 
 ###--- main program procedure (user code) ---###
 
+random.seed()
 
 ##-- all benchmark scenarios (cases)
 
@@ -29,11 +32,15 @@ testBatch_tmp2 = BanditTestBatch( allCases, [2,5] )
 testBatch_tmp3 = BanditTestBatch( allCases, [6] )
 
 
+##-- unit tests
+
+#unitTest_OptExhaustive(allCases)
+unitTest_OptSimulatedAnnealing(allCases)
 
 ##-- policy configuration
 
 solv_initial_param_values = None     #if None: default will be used
-solv_selection_policy = DEFAULT_SELECTION_POLICY
+solv_selection_policy = GLODEF_SELECTION_UCBTUNED
 solv_change_point_detector = DEFAULT_CHANGEPOINT_DETECTOR
 solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
 solv_reset_algorithm = DEFAULT_RESET_ALGORITHM
@@ -48,13 +55,12 @@ solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change
 ##-- evaluation
 
 eval_solver = solver
-eval_batch_cases = testBatch_tmp3
+eval_batch_cases = testBatch_01_10
 eval_suppress_output = 0
-eval_num_repeats = 5
-eval_oracle_probablity = 0
+eval_num_repeats = 1
+eval_oracle_probablity = 1
 
-evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_output, eval_oracle_probablity)
-
+#evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_output, eval_oracle_probablity)
 
 
 
@@ -71,15 +77,22 @@ evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_out
 
 #opti_learn_cases = testBatch_tmp
 #opti_eval_cases = testBatch_tmp2
-#opti_starting_values = None     #set starting values of optimized parameters, if None then existing values are used as initial
 #opti_suppress_output = 0
 #opti_oracle_probablity = 1
 
-#optimizer.Optimize(opti_learn_cases, opti_starting_values, eval_suppress_output, opti_oracle_probablity)
+#optimizer.Optimize(opti_learn_cases, opti_config, opti_suppress_output, opti_oracle_probablity)
 
 #opti_eval_repeats = 10
 
 #optimizer.OptimizeEvaluate(opti_learn_cases, opti_eval_cases, opti_eval_repeats, opti_starting_values, eval_suppress_output, opti_oracle_probablity)
+
+
+
+##-- example of profiling the computation times
+
+#cProfile.run('evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_output, eval_oracle_probablity)', 'myFunction.profile')
+#stats = pstats.Stats('myFunction.profile')
+#stats.strip_dirs().sort_stats('time').print_stats()
 
 
 
@@ -98,10 +111,10 @@ evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_out
 #for c in range(1,configuration.N_CASES+1):
 #    machines=getNumMachines(c)
 #    pulls=getNumPulls(c)
-#    reps=1   
-#    #if c<=5: 
+#    reps=1
+#    #if c<=5:
 #    #    reps=20000/pulls
-#    #else: 
+#    #else:
 #    #    reps=20000
 #    if configuration.TEST==1:
 #        writeDataToFile(c,machines,pulls,reps)
@@ -116,7 +129,7 @@ evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_out
 #for i in range(500,1000):
 #    data[0][i]=int(random.random()<0.4)
 #    data[1][i]=int(random.random()<0.6)
- 
+
 # 0 'random'
 # 1 'epsilonGreedy
 # 2 'softMax'
@@ -177,4 +190,4 @@ evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_out
     #    print 'HankeyPankey triggered at: '+str((HP,i))
     #    break
 
-#print str(case)    
+#print str(case)

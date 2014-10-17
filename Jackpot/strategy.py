@@ -6,49 +6,58 @@ from math import *
 #the UCB algorithm by Auer et al., 2002
 def UCB1(actions, all_pulls, parC = 1.0):
     
-    selectedAction = None
     bestVal = -1e30000
+    numEqualBest = 1
+    indicesBest = [-1]*len(actions)
 
     #find best action among all available
-    for a in actions :
+    for i in range(len(actions)) :
+
+        a = actions[i]
 
         #first try all the unexplored actions (those with zero visits)
         if a.pulls <= 0 :
-            selectedAction = a
+            indicesBest[0] = i
             break
 
         #if all actions already explored, calculate their values
         else :
             UCBvalue = a.mean + parC*sqrt(2.0*log(all_pulls)/a.pulls)   #the UCB1 equation
 
+            #store calculated value
+            a.storedValue = UCBvalue
+
             #find action with highest value
             if UCBvalue > bestVal :
                 bestVal = UCBvalue
-                selectedAction = a
+                numEqualBest = 1
+                indicesBest[numEqualBest-1] = i
 
-            #break ties sequentially randomly
+            #remember best
             elif UCBvalue == bestVal :
-                if not (selectedAction is None) :
-                    if random.random() < 0.5 :
-                        selectedAction = a
-                else :
-                    selectedAction = a
+                numEqualBest += 1
+                indicesBest[numEqualBest-1] = i
 
-    return selectedAction
+    #break ties randomly
+    indicesBest[0] = indicesBest[random.randint(0,numEqualBest-1)]
+
+    return actions[indicesBest[0]]
 
 
 def UCBT(actions, all_pulls, parC = 1.0):
     
-    selectedAction = None
     bestVal = -1e30000
-    equalNum = 1
+    numEqualBest = 1
+    indicesBest = [-1]*len(actions)
 
     #find best action among all available
-    for a in actions :
+    for i in range(len(actions)) :
+
+        a = actions[i]
 
         #first try all the unexplored actions (those with zero visits)
         if a.pulls <= 0 :
-            selectedAction = a
+            indicesBest[0] = i
             break
 
         #if all actions already explored, calculate their values
@@ -57,24 +66,28 @@ def UCBT(actions, all_pulls, parC = 1.0):
                 #UCBvalue = a.mean + parC*sqrt(2.0*log(all_pulls)/a.pulls)   #the UCB1 equation
                 V = a.variance+sqrt(2.0*log(all_pulls)/a.pulls)
                 UCBvalue = a.mean + parC * sqrt((log(all_pulls)/a.pulls)*min(1.0/4.0,V))
+
+                #store calculated value
+                a.storedValue = UCBvalue
+
                 #find action with highest value
                 if UCBvalue > bestVal :
                     bestVal = UCBvalue
-                    selectedAction = a
-                    equalNum = 1
+                    numEqualBest = 1
+                    indicesBest[numEqualBest-1] = i
 
-                #break ties sequentially randomly
+                #remember best
                 elif UCBvalue == bestVal :
-                    if not (selectedAction is None) :
-                        if random.random() < 0.5 :
-                            selectedAction = a
-                    else :
-                        selectedAction = a
-            except:
-                print 'lol'
+                    numEqualBest += 1
+                    indicesBest[numEqualBest-1] = i
 
-    return selectedAction
-    return 0
+            except:
+                print 'UCBT(): lol'
+
+    #break ties randomly
+    indicesBest[0] = indicesBest[random.randint(0,numEqualBest-1)]
+
+    return actions[indicesBest[0]]
 
 
 def SoftMax(M, tao):
