@@ -6,8 +6,8 @@ experiment_filenames{1}   = '2014_07_28 LRP Gomo7x7 C = 0.1.exe__2014-07-28-08-4
 experiment_filenames{2}   = '2014_10_17 first test';
 experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
+experiment_filenames{5}   = '2014_10_17 first test, case5 multiple';
 
-experiment_filenames{5}   = '';
 experiment_filenames{6}   = '';
 experiment_filenames{7}   = '';
 
@@ -16,7 +16,7 @@ experiment_filenames{10}   = '';
 %TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
 %file read settings
 
-filename_to_load = 3;
+filename_to_load = 5;
 
 num_header_lines = 18;  %old txt data files had 21
 data_delimiter = ' ';

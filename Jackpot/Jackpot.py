@@ -77,14 +77,15 @@ eval_oracle_probablity = 1
 
 #opti_learn_cases = testBatch_tmp
 #opti_eval_cases = testBatch_tmp2
+#opti_completeRepeats = 1
 #opti_suppress_output = 0
 #opti_oracle_probablity = 1
 
-#optimizer.Optimize(opti_learn_cases, opti_config, opti_suppress_output, opti_oracle_probablity)
+#optimizer.Optimize(opti_learn_cases, opti_config, opti_completeRepeats, opti_suppress_output, opti_oracle_probablity)
 
 #opti_eval_repeats = 10
 
-#optimizer.OptimizeEvaluate(opti_learn_cases, opti_eval_cases, opti_eval_repeats, opti_starting_values, eval_suppress_output, opti_oracle_probablity)
+#optimizer.OptimizeEvaluate(opti_learn_cases, opti_eval_cases, opti_eval_repeats, opti_config, opti_completeRepeats, eval_suppress_output, opti_oracle_probablity)
 
 
 

@@ -40,6 +40,7 @@ class Optimizer() :
         self,
         batch,                          # test cases
         optimizationConfig = None,      # array of parameters for the optimization algorithm
+        completeRepeats = 1,            # number of repeats of whole optimization procedure (to start multiple times from initial point - good if optimization algorithm tedns to get stuck in a local maximum)
         suppress_output = 0,            # enable/disable print output
         oracleProbablity = 0            # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
         ) :
@@ -60,7 +61,7 @@ class Optimizer() :
             else :
                 print '!!! --- WARNING --- !!! Oracle probabilites : ENABLED !!! --- WARNING --- !!!'
             self.info()
-            print 'Optimizer(): numParams: %d' % numParams
+            print 'Optimizer(): numParams: %d , completeRepeats: %d' % (numParams, completeRepeats)
             self.MABsolver.config.info()
             batch.info()
             print ''
@@ -68,23 +69,33 @@ class Optimizer() :
         #-- optimization algorithms --#
         best_sample = None
         best_score = None
-        if self.optimizationAlgorithm == GLODEF_OPTIMIZATION_ANNEALING :
-            (best_sample, best_score) = self.simulatedAnnealing(batch, paramValues, suppress_output, oracleProbablity)
 
-        elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_GENETIC :
-            todo
+        # multiple repeats of an optimization run
+        for r in range(completeRepeats) :
 
-        elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_GENETIC :
-            todo
+            if self.optimizationAlgorithm == GLODEF_OPTIMIZATION_ANNEALING :
+                (last_sample, last_score) = self.simulatedAnnealing(batch, paramValues, suppress_output, oracleProbablity)
 
-        elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_EXHAUSTIVE :
-            #recursive exhaustive search
-            (best_sample, best_score) = self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, 0)
+            elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_GENETIC :
+                todo
 
-        if not suppress_output :
-            print ''
-            print 'Procedure Optimizer.Optimize(): COMPLETED'
-            print ''
+            elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_GENETIC :
+                todo
+
+            elif self.optimizationAlgorithm == GLODEF_OPTIMIZATION_EXHAUSTIVE :
+                #recursive exhaustive search
+                (last_sample, last_score) = self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, 0)
+
+            # remember best
+            if( last_score > best_score ) :
+                best_score = last_score
+                best_sample = last_sample
+
+
+        #if not suppress_output :
+        #    print ''
+        #    print 'Procedure Optimizer.Optimize(): COMPLETED'
+        #    print ''
 
         #return best sample and its score
         return (best_sample, best_score)
@@ -96,6 +107,7 @@ class Optimizer() :
         evalBatch,
         evalRepeats,
         optimizationConfig = None,  # array of parameters for the optimization algorithm
+        completeRepeats = 1,        # number of repeats of whole optimization procedure (to start multiple times from initial point - good if optimization algorithm tedns to get stuck in a local maximum)
         suppress_output = 0,        # enable/disable print output
         oracleProbablity = 0        # if enabled (1): gather bandits probability instead of -> can only be used on BanditGenerator() classes, so NOT on ONLINE (url) scenarios
         ) :
@@ -103,14 +115,14 @@ class Optimizer() :
         if not suppress_output :
             print 'Procedure Optimizer.OptimizeEvaluate()'
 
-        (best_sample, best_score) = self.Optimize(learnBatch, optimizationConfig, suppress_output, oracleProbablity)
+        (best_sample, best_score) = self.Optimize(learnBatch, optimizationConfig, completeRepeats, suppress_output, oracleProbablity)
         self.MABsolver.setParams(best_sample, self.selectiveOptimization)
         evaluateBatch(self.MABsolver, evalBatch, evalRepeats, suppress_output, oracleProbablity)
 
-        if not suppress_output :
-            print ''
-            print 'Procedure Optimizer.OptimizeEvaluate(): COMPLETED'
-            print ''
+        #if not suppress_output :
+        #    print ''
+        #    print 'Procedure Optimizer.OptimizeEvaluate(): COMPLETED'
+        #    print ''
 
     def CrossOptimizeEvaluate() :
         todo

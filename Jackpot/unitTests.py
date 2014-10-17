@@ -36,10 +36,11 @@ def unitTest_OptExhaustive(allCases) :
     optimizer = Optimizer(opti_solver, opti_evaluations_per_sample, opti_config, opti_fitness_metric, opti_algorithm, opti_selective_optimization)
 
     opti_learn_cases = testBatch_Complete
+    opti_completeRepeats = 1
     opti_suppress_output = 0
     opti_oracle_probablity = 1
 
-    optimizer.Optimize(opti_learn_cases, opti_config, opti_suppress_output, opti_oracle_probablity)
+    optimizer.Optimize(opti_learn_cases, opti_config, opti_completeRepeats, opti_suppress_output, opti_oracle_probablity)
 
 def unitTest_OptSimulatedAnnealing(allCases) :
 
@@ -80,10 +81,11 @@ def unitTest_OptSimulatedAnnealing(allCases) :
     optimizer = Optimizer(opti_solver, opti_evaluations_per_sample, opti_config, opti_fitness_metric, opti_algorithm, opti_selective_optimization)
 
     opti_learn_cases = testBatch_05
+    opti_completeRepeats = 5
     opti_suppress_output = 0
     opti_oracle_probablity = 0
 
-    optimizer.Optimize(opti_learn_cases, opti_config, opti_suppress_output, opti_oracle_probablity)
+    optimizer.Optimize(opti_learn_cases, opti_config, opti_completeRepeats, opti_suppress_output, opti_oracle_probablity)
 
 def unitTest_Optimizer(allCases) :
     testBatch_tmp = BanditTestBatch( allCases, [10] )
