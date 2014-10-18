@@ -1,0 +1,41 @@
+constructTestCases(): generating 11 specified cases ...  DONE
+Procedure Optimizer.Optimize()
+Oracle probabilites : disabled
+Optimizer(): Simulated Annealing , Random-normalized optimality [%]
+Optimizer(): config:  [[1e-05], [0.5], [], 10, 10, 0.75, 0.01, 0.5, 0.01]
+Optimizer(): selective:  0.000000  
+Optimizer(): evals/step: 10
+Optimizer(): numParams: 1 , completeRepeats: 100
+MABsolver_config: algorithms: SoftMax , CP Disabled , CPT Davor , Reset: TODO
+MABsolver_config: params: types:  Direct  Direct  Direct  Direct  
+MABsolver_config: params: numInputs:  0  0  0  0  
+MABsolver_config: params: weights:  [  0.010000  ]  [  2.500000  ]  [  0.200000  ]  [  5.000000  ]  
+BanditTestBatch: casesIDs:  0  1  2  3  4  5  6  7  8  9  
+BanditTestBatch: numCases: 10
+BanditTestBatch: maxim sum reward: 3919.0
+BanditTestBatch: random reward: 2805.0
+
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\Python Tools for Visual Studio\2.1\visualstudio_py_util.py", line 106, in exec_file
+    exec_code(code, file, global_variables)
+  File "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\Python Tools for Visual Studio\2.1\visualstudio_py_util.py", line 82, in exec_code
+    exec(code_obj, global_variables)
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\Jackpot.py", line 35, in <module>
+    test_2014_10_18_noChangePoint(allCases)
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\experiments.py", line 71, in test_2014_10_18_noChangePoint
+    optimizer.Optimize(opti_learn_cases, opti_config, opti_completeRepeats, opti_suppress_output, opti_oracle_probablity)
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\Optimization.py", line 78, in Optimize
+    (last_sample, last_score) = self.simulatedAnnealing(batch, paramValues, suppress_output, oracleProbablity)
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\Optimization.py", line 304, in simulatedAnnealing
+    fc = f(xi)
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\Optimization.py", line 198, in f
+    score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\Evaluator.py", line 103, in evaluateBatch
+    new_result = evaluateSingleCase(solver, batch.list[c], 1, oracleProbablity)
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\Evaluator.py", line 31, in evaluateSingleCase
+    selected_bandit = solver.selectBandit()         #apply selection policy
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\MABsolver.py", line 164, in selectBandit
+    elif self.config.selectionPolicy == GLODEF_SELECTION_SOFTMAX :  selected_machine = SoftMax(self.machines, exploration_weight)
+  File "D:\Tom\Research\Celtra Jackpot Problem\Jackpot\strategy.py", line 112, in SoftMax
+    Norm=[ (1.0 / (1.0 + exp(-(m-average)/deviation) ) ) for m in meanT]
+TypeError: 'float' object is not iterable

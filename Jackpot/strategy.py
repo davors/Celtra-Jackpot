@@ -91,26 +91,75 @@ def UCBT(actions, all_pulls, parC = 1.0):
 
 
 def SoftMax(M, tao):
-    Avg=[m.mean for m in M]
-    E=[exp(a/tao) for a in Avg]
-    E_sum=sum(E)
-    P=[e/E_sum for e in E]
 
+    # hardcoded limitation due to numerical stability
+    if tao > 0.001 :
 
-    sp=0;
-    for i in range(0,len(P)):
-        sp=sp+P[i]
-        if random.random()<sp:
-           return (M[i])
+        #average = 0.0
+        #variance = 0.0
 
+        #meanT = [0.0] * len(M)
+        #for m in xrange(len(M)) :
+        #    meanT[m] = (M[m].mean) 
+        #    old_avg = average
+        #    average = average + (meanT[m] - average) / (m + 1)
+        #    variance = variance + (meanT[m] - average) * (meanT[m] - old_avg)
+
+        #deviation = sqrt(variance/len(M))
+        
+        #if deviation == 0.0 :
+        #    values = [m.mean for m in M]
+        #    return M[CompleteGreedy(values)]
+        #Norm=[ (1.0 / (1.0 + exp(-(m-average)/deviation) ) ) for m in meanT]
+        #E=[exp(a) for a in Norm]
+
+        A=[m.mean for m in M]
+        E=[exp(a/tao) for a in A]
+        E_sum=sum(E)
+        P=[e/E_sum for e in E]
+
+        sp = 0.0
+        rpoint = random.random()
+        for i in xrange(len(P)):
+            sp = sp + P[i]
+            if rpoint < sp:
+               return (M[i])
+
+    # if temperature is close to zero, then the algorithm is pratically completely greedy
+    else :
+        values = [m.mean for m in M]
+        return M[CompleteGreedy(values)]
+
+def CompleteGreedy(valueList) :
+    bestVal = -1e30000
+    numEqualBest = 1
+    indicesBest = [-1]*len(valueList)
+    for i in xrange(len(valueList)) :
+
+        #find action with highest value
+        if valueList[i] > bestVal :
+            bestVal = valueList[i]
+            numEqualBest = 1
+            indicesBest[numEqualBest-1] = i
+
+        #remember best
+        elif valueList[i] == bestVal :
+            numEqualBest += 1
+            indicesBest[numEqualBest-1] = i
+
+    #break ties randomly
+    indicesBest[0] = indicesBest[random.randint(0,numEqualBest-1)]
+
+    return indicesBest[0]
 
 def EGreedy(M, E):
     Avg=[m.mean for m in M]
     maxM=Avg.index(max(Avg))
     P=[float(E)/len(M)]*len(M)
     P[maxM]=1-E+E/len(M)
-    sp=0;
-    for i in range(0,len(M)):
-        sp=sp+P[i]
-        if random.random()<sp:
-           return (M[i])
+    sp = 0.0
+    rpoint = random.random()
+    for i in xrange(len(P)):
+        sp = sp + P[i]
+        if rpoint < sp:
+            return (M[i])

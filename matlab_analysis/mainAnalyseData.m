@@ -1,13 +1,13 @@
 
 %list of available measurements (files) - scores were copied in excel file
 
-%2014_07_25-28 search of optimal parameters at UCT with moving-average-values (MAV)
 experiment_filenames{1}   = '2014_07_28 LRP Gomo7x7 C = 0.1.exe__2014-07-28-08-41-07__out0';
 experiment_filenames{2}   = '2014_10_17 first test';
 experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
 experiment_filenames{5}   = '2014_10_17 first test, case5 multiple';
 
+%first experiments: EG on celtra cases (!!! INCORRECT EG IMPLEMENTATION - random in for loop !!!)
 experiment_filenames{6}   = 'Jackpot_init.pyc_2014_10_18_01_24_05';    %EG cases celtra 1-5 
 experiment_filenames{7}   = 'Jackpot_init.pyc_2014_10_18_02_07_38';    %EG cases celtra 1-5 oracle
 experiment_filenames{8}   = 'Jackpot_init.pyc_2014_10_18_01_24_08';    %EG cases celtra 6-10 
@@ -16,12 +16,41 @@ experiment_filenames{10}   = 'Jackpot_init.pyc_2014_10_18_02_10_38';    %EG case
 experiment_filenames{11}   = 'Jackpot_init.pyc_2014_10_18_02_11_04';    %EG cases celtra 1-10 oracle
 experiment_filenames{12}   = 'Jackpot_init.pyc_2014_10_18_01_24_57';    %complete with own testcase11, was run by mistake   
 
+%no change point experiments: all strategies on Celtra cases (T1 cases 0-4, T2 cases 5-9, T2 cases 0-9), Or - oracle 0/1
+experiment_filenames{13}   = '';
+experiment_filenames{14}   = '';
+experiment_filenames{15}   = '';
+experiment_filenames{16}   = '';
+experiment_filenames{17}   = '';
+experiment_filenames{18}   = '';
+experiment_filenames{19}   = '';
 experiment_filenames{20}   = '';
+
+experiment_filenames{21}   = '';
+experiment_filenames{22}   = '';
+experiment_filenames{23}   = '';
+experiment_filenames{24}   = '';
+experiment_filenames{25}   = '';
+experiment_filenames{26}   = '';
+experiment_filenames{27}   = '';
+experiment_filenames{28}   = '';
+
+experiment_filenames{29}   = 'Reprint___2014_10_18_EG_T3_Or0___2014_10_18_23_57_07';
+experiment_filenames{30}   = 'Reprint___2014_10_18_EG_T3_Or1___2014_10_18_23_57_10';
+experiment_filenames{31}   = 'Reprint___2014_10_18_UCB1_T3_Or0___2014_10_18_12_35_45';
+experiment_filenames{32}   = 'Reprint___2014_10_18_UCBT_T3_Or0___2014_10_18_12_36_16';
+experiment_filenames{33}   = 'Reprint___2014_10_18_SMAX_T3_Or0___2014_10_18_23_57_12';
+experiment_filenames{34}   = 'Reprint___2014_10_18_SMAX_T3_Or1___2014_10_18_21_38_03';
+experiment_filenames{35}   = 'Reprint___2014_10_18_UCB1_T3_Or1___2014_10_18_12_35_18';
+experiment_filenames{36}   = 'Reprint___2014_10_18_UCBT_T3_Or1___2014_10_18_12_37_21';
+
+
+experiment_filenames{40}   = '';
 
 %TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
 %file read settings
 
-filename_to_load = 12;
+filename_to_load = 11;
 
 num_header_lines = 18;  %old txt data files had 21
 data_delimiter = ' ';
