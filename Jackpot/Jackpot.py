@@ -32,7 +32,7 @@ testBatch_tmp3 = BanditTestBatch( allCases, [6] )
 
 ##-- experiments (for ICANNGA)
 
-#test_2014_10_18_noChangePoint(allCases)
+test_2014_10_18_noChangePoint(allCases)
 
 
 

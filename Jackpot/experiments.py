@@ -14,12 +14,13 @@ def test_2014_10_18_noChangePoint(allCases):
     testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
     testBatch_01_05 = BanditTestBatch( allCases, [0, 1, 2, 3, 4] )  #Celtra
     testBatch_06_10 = BanditTestBatch( allCases, [5, 6, 7, 8, 9] )  #Celtra
+    testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )  #Celtra
 
     #-- change configuration here
     
-    opti_learn_cases = testBatch_01_05    
+    #opti_learn_cases = testBatch_01_05    
     #opti_learn_cases = testBatch_06_10    
-    #opti_learn_cases = testBatch_Complete
+    opti_learn_cases = testBatch_01_10
 
     solv_selection_policy = GLODEF_SELECTION_EGREEDY
     opti_config_param_boundaries = [0.0, 0.5]
@@ -31,7 +32,7 @@ def test_2014_10_18_noChangePoint(allCases):
     #solv_selection_policy = GLODEF_SELECTION_UCBTUNED
     #opti_config_param_boundaries = [0.0, 3.0]
 
-    opti_oracle_probablity = 0
+    opti_oracle_probablity = 1
     opti_completeRepeats = 100
 
     #-- do not change value belowe here

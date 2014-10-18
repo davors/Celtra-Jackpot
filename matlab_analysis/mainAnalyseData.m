@@ -8,15 +8,20 @@ experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
 experiment_filenames{5}   = '2014_10_17 first test, case5 multiple';
 
-experiment_filenames{6}   = '';
-experiment_filenames{7}   = '';
+experiment_filenames{6}   = 'Jackpot_init.pyc_2014_10_18_01_24_05';    %EG cases celtra 1-5 
+experiment_filenames{7}   = 'Jackpot_init.pyc_2014_10_18_02_07_38';    %EG cases celtra 1-5 oracle
+experiment_filenames{8}   = 'Jackpot_init.pyc_2014_10_18_01_24_08';    %EG cases celtra 6-10 
+experiment_filenames{9}   = 'Jackpot_init.pyc_2014_10_18_02_07_40';    %EG cases celtra 6-10 oracle
+experiment_filenames{10}   = 'Jackpot_init.pyc_2014_10_18_02_10_38';    %EG cases celtra 1-10
+experiment_filenames{11}   = 'Jackpot_init.pyc_2014_10_18_02_11_04';    %EG cases celtra 1-10 oracle
+experiment_filenames{12}   = 'Jackpot_init.pyc_2014_10_18_01_24_57';    %complete with own testcase11, was run by mistake   
 
-experiment_filenames{10}   = '';
+experiment_filenames{20}   = '';
 
 %TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
 %file read settings
 
-filename_to_load = 5;
+filename_to_load = 12;
 
 num_header_lines = 18;  %old txt data files had 21
 data_delimiter = ' ';
