@@ -50,8 +50,8 @@ def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm):
             xn=m.pulls-s
             yn=s
             #shrink:
-            x=x*(1.0-shrink_interval)+(xn-x)*shrink_interval
-            y=y*(1.0-shrink_interval)+(yn-y)*shrink_interval
+            x=x*shrink_interval+((1.0-shrink_interval)/2.0)*xn
+            y=y*shrink_interval+((1.0-shrink_interval)/2.0)*yn
             Z=testIfDistDiff(x,y,xn,yn)
         #print str(Z)
         # 95 % confidence interval
