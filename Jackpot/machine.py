@@ -20,16 +20,17 @@ class machine(object):
     
     def __varmean__(self,pulls):
         n=self.pulls-pulls
-        for x in self.R[-(pulls):]:
-            n=n+1
-            delta=x-self.mean
-            self.mean=self.mean+float(delta)/n
-            self.__M2__=self.__M2__+delta*(x-self.mean)
+        if pulls>0:
+            for x in self.R[-(pulls):]:
+                n=n+1
+                delta=x-self.mean
+                self.mean=self.mean+float(delta)/n
+                self.__M2__=self.__M2__+delta*(x-self.mean)
 
-        if self.pulls<2:
-            self.variance=0.0
-        else:
-            self.variance=float(self.__M2__)/(self.pulls-1)
+            if self.pulls<2:
+                self.variance=0.0
+            else:
+                self.variance=float(self.__M2__)/(self.pulls-1)
 
         
     def __init__(self,id):
@@ -61,21 +62,20 @@ class machine(object):
 
     def resetState(self,index,new_pulls):
         if index!=-2:
-            p_tmp=self.pulls-new_pulls
             if new_pulls>self.pulls:
                 new_pulls=self.pulls
-                
+            p_tmp=self.pulls-new_pulls
             if index!=-1:
                 self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
                 self.sum=self.moving_sum[index]
             else:
-                self.moving_sum[:]=[0.0]*len(self.moving_sum[index:])
+                self.moving_sum[:]=[0.0]*len(self.moving_sum[:])
                 self.sum=0.0
         else:
             index=bisect.bisect(self.P,new_pulls)
-            if index>0:
-                new_pulls=len(self.R[index-1:])
-                self.sum=sum(self.R[index-1:])
+            if index>0 and index<self.pulls_total:
+                new_pulls=len(self.R[index:])
+                self.sum=sum(self.R[index:])
             else: 
                 new_pulls=0
                 self.sum=0.0

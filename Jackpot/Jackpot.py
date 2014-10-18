@@ -29,17 +29,19 @@ testBatch_tmp = BanditTestBatch( allCases, [1,10] )
 testBatch_tmp2 = BanditTestBatch( allCases, [2,5] )
 testBatch_tmp3 = BanditTestBatch( allCases, [6] )
 
+testBatch_debug = BanditTestBatch( allCases, [5])
+
 
 ##-- experiments (for ICANNGA)
 
-test_2014_10_18_noChangePoint(allCases)
+#test_2014_10_18_noChangePoint(allCases)
 
 
 
 ##-- unit tests
 
 #unitTest_OptExhaustive(allCases)
-#unitTest_OptSimulatedAnnealing(allCases)
+unitTest_OptSimulatedAnnealing(allCases)
 
 ##-- policy configuration
 
@@ -59,10 +61,10 @@ solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change
 ##-- evaluation
 
 eval_solver = solver
-eval_batch_cases = testBatch_01_10
+eval_batch_cases = testBatch_debug
 eval_suppress_output = 0
 eval_num_repeats = 1
-eval_oracle_probablity = 1
+eval_oracle_probablity = 0
 
 #evaluateBatch(eval_solver, eval_batch_cases, eval_num_repeats, eval_suppress_output, eval_oracle_probablity)
 

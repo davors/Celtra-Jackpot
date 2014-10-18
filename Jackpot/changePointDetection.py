@@ -33,7 +33,7 @@ def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
 def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm):
     tp=range(10,100,10) + range(100,1000,100)
     m=M[m_id]
-    tp=[50] 
+    tp=[50, 100, 200] 
     rejected=0
     if m.moving_sum==[]:
         m.moving_sum=[0.0 for s in tp]
@@ -44,14 +44,22 @@ def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm):
         m.moving_sum[t]=m.moving_sum[t]+m.R[-1]
         if s>m.pulls:
             s=m.pulls
-        Z=testIfDistDiff(m.sum,m.moving_sum[t],m.pulls,s)
+        if m.pulls>=2*s and s>=tp[0]:
+            x=m.sum-m.moving_sum[t]
+            y=m.moving_sum[t]
+            xn=m.pulls-s
+            yn=s
+            #shrink:
+            x=x*(1.0-shrink_interval)+(xn-x)*shrink_interval
+            y=y*(1.0-shrink_interval)+(yn-y)*shrink_interval
+            Z=testIfDistDiff(x,y,xn,yn)
         #print str(Z)
         # 95 % confidence interval
-        if Z>=treshold:
-            if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M)
-            elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s)
-            elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,m.P[-s])
-            elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s)
+            if Z>=treshold:
+                if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M)
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s)
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,m.P[-s-1])
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s)
     return rejected
             
 def resetAllToZero(M):
