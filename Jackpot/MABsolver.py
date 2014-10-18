@@ -161,7 +161,7 @@ class MABsolver() :
 
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]
         elif self.config.selectionPolicy == GLODEF_SELECTION_EGREEDY :  selected_machine = EGreedy(self.machines, exploration_weight)
-        elif self.config.selectionPolicy == GLODEF_SELECTION_SOFTMAX :  selected_machine = softMax(self.machines, exploration_weight)
+        elif self.config.selectionPolicy == GLODEF_SELECTION_SOFTMAX :  selected_machine = SoftMax(self.machines, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
 

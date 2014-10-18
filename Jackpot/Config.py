@@ -3,6 +3,11 @@ from Config_testCases import *
 
 #RUNTIME SETTINGS
 REPRINT_TO_FILE = 1
+REPRINT_FILENAME_FORMAT = 2
+    # 0 - write name of script without path
+    # 1 - write name of the directory containing the script
+    # 2 - default value: write the name of the directory two levels above (best if script is compiled with py2exe)
+    
 
 #set to 1 if test
 #set to 0 if production

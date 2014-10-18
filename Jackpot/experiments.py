@@ -22,17 +22,17 @@ def test_2014_10_18_noChangePoint(allCases):
     #opti_learn_cases = testBatch_06_10    
     opti_learn_cases = testBatch_01_10
 
-    solv_selection_policy = GLODEF_SELECTION_EGREEDY
-    opti_config_param_boundaries = [0.0, 0.5]
-
-    #solv_selection_policy = GLODEF_SELECTION_SOFTMAX
+    #solv_selection_policy = GLODEF_SELECTION_EGREEDY
     #opti_config_param_boundaries = [0.0, 0.5]
+
+    solv_selection_policy = GLODEF_SELECTION_SOFTMAX
+    opti_config_param_boundaries = [0.000001, 0.5]       #softmax tao lower boundary must be > 0
 
     #solv_selection_policy = GLODEF_SELECTION_UCB1
     #solv_selection_policy = GLODEF_SELECTION_UCBTUNED
     #opti_config_param_boundaries = [0.0, 3.0]
 
-    opti_oracle_probablity = 1
+    opti_oracle_probablity = 0
     opti_completeRepeats = 100
 
     #-- do not change value belowe here
