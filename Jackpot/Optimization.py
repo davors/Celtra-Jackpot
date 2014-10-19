@@ -136,10 +136,10 @@ class Optimizer() :
 
         print 'Optimizer(): config: ',
         PrintStrings(self.optimizationConfig)
-        print 'Optimizer(): selective: ',
+        print 'Optimizer(): selective: [ ',
         for i in range(len(self.selectiveOptimization)) :
-            print '%f ' % self.selectiveOptimization[i],
-        print ''
+            print '%d ' % self.selectiveOptimization[i],
+        print ']'
         print 'Optimizer(): evals/step: %d' % self.evaluationsPerSample
 
     #recursive exhaustive search of complete discretized parameter space

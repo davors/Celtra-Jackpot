@@ -10,7 +10,7 @@ from unitTests import *
 
 
 # 2014.10.18 test policies without change point detection on Celtra's testcases
-def test_2014_10_20_ChangePoint_DavorTom2par(allCases):
+def test_2014_10_20_changePoint_DavorTom2par(allCases):
 
     testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
     testBatch_01_05 = BanditTestBatch( allCases, [0, 1, 2, 3, 4] )  #Celtra
@@ -31,17 +31,29 @@ def test_2014_10_20_ChangePoint_DavorTom2par(allCases):
 
     ##solv_selection_policy = GLODEF_SELECTION_UCB1
     solv_selection_policy = GLODEF_SELECTION_UCBTUNED
-    solv_initial_param_values = None     #if None: default will be used
-    opti_selective_optimization = [0, 1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
-    opti_config_params_lower_bounds = [0.0, 0.5]
-    opti_config_params_upper_bounds = [3.0, 7.0]
-    
-    solv_reset_algorithm = DEFAULT_RESET_ALGORITHM
+    solv_initial_param_values = [0.77, 2.5, 1.0, 50]     #if None: default will be used
 
-    opti_oracle_probablity = 0
+    opti_selective_optimization = [1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
+    opti_config_params_lower_bounds = [0.5]
+    opti_config_params_upper_bounds = [7.0]
+
+    #opti_selective_optimization = [0, 1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
+    #opti_config_params_lower_bounds = [0.0, 0.5]
+    #opti_config_params_upper_bounds = [3.0, 7.0]
+
+    #opti_selective_optimization = [0, 1, 2, 3]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
+    #opti_config_params_lower_bounds = [0.0, 0.5, 0.5, 10]
+    #opti_config_params_upper_bounds = [3.0, 7.0, 1.0, 1000]
+    
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+
+    opti_oracle_probablity = 1
     opti_completeRepeats = 100
 
-    #-- do not change value belowe here
+    #-- do not change values below here --#
 
     solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
     solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
@@ -52,15 +64,15 @@ def test_2014_10_20_ChangePoint_DavorTom2par(allCases):
 
     opti_solver = solver
     if opti_oracle_probablity == 1 :
-        opti_evaluations_per_sample = 5
+        opti_evaluations_per_sample = 2
     else :
-        opti_evaluations_per_sample = 25
+        opti_evaluations_per_sample = 20
     opti_config = [     #configuration for the optimization algorithm: arbitrary list of additional parameters
     opti_config_params_lower_bounds,         # lower bounds for all parameters
     opti_config_params_upper_bounds,         # upper bounds for all parameters
     [],                 # grid step (if you want discrete search); leave empty for continuous search
-    10,                 # number of cycles (epochs) of SA
-    10,                 # number of iterations per each cycle
+    int(sqrt(len(opti_selective_optimization)))*10,                 # number of cycles (epochs) of SA
+    int(sqrt(len(opti_selective_optimization)))*10,                 # number of iterations per each cycle
     0.75,               # probability of accepting worse solution at the start
     0.01,               # probability of accepting worse solution at the end
     0.50,               # neighbourhood radius at the start (ratio of interval)

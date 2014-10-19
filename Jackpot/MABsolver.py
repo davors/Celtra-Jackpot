@@ -96,7 +96,7 @@ class MABsolver_config() :
             GLO_labels_selection_policies[self.selectionPolicy], 
             GLO_labels_change_point_detectors[self.changePointDetector], 
             GLO_labels_change_point_test[self.changePointTest],
-            GLO_labels_reset_algorithms[self.changePointTest]
+            GLO_labels_reset_algorithms[self.resetAlgorithm]
             )
 
         print 'MABsolver_config: params: types: ',
