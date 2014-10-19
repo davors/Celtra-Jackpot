@@ -3,4 +3,4 @@ import inspect, os
 from distutils.core import setup
 
 setup(console=['Jackpot.py'])
-os.startfile(".\\dist\\Jackpot.exe")
+#os.startfile(".\\dist\\Jackpot.exe")

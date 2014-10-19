@@ -1,8 +1,6 @@
 Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
 --------------------------------------------------------------
 
-- DAVOR: implementiraj razliène RESET algorithms v changePointDetection() - DEBUG!
-
 - èe tega nismo že: implementacija neke znane/uveljavljene metode
 	* temeljito preišèi èlanke kaj je bilo na zadnje raziskovano (aktualne objave) in to implemenitraj, èe ni preveè zahtevno
 	* ali dovolj je npr. da izboljšamo UCB1 ali UCB1tuned z našo metodo changePointDetection?
@@ -16,7 +14,3 @@ Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
 - preizkusi "_ideje.txt"
 	* predvsem nameri razliène naèine za reset UCBjev ko je change point detectan
 	
-	
-- ???: križni testi, da ni overfittanja!
-	* vzemi npr. pol primerov (pazi, da je enak delež tistih s fiksnimi avtomati in s spremenljivimi) in tam optimiziraj, na ostalih 5 pa evalviraj (mogoèe dodaj še 2 primera, da boš imel parno število obeh tipov)
-	* ponovi npr. najboljših 5 rešitev iz prejšnje toèke, in naredi npr. 10 križnih testov ~ 50 optimizacij in meritev

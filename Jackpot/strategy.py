@@ -93,7 +93,7 @@ def UCBT(actions, all_pulls, parC = 1.0):
 def SoftMax(M, tao):
 
     # hardcoded limitation due to numerical stability
-    if tao > 0.001 :
+    if tao > 0.005 :
 
         #average = 0.0
         #variance = 0.0

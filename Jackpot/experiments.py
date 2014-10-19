@@ -19,14 +19,14 @@ def test_2014_10_18_noChangePoint(allCases):
     #-- change configuration here
     
     #opti_learn_cases = testBatch_01_05    
-    #opti_learn_cases = testBatch_06_10    
-    opti_learn_cases = testBatch_01_10
+    opti_learn_cases = testBatch_06_10    
+    #opti_learn_cases = testBatch_01_10
 
-    #solv_selection_policy = GLODEF_SELECTION_EGREEDY
-    #opti_config_param_boundaries = [0.0, 0.4]
+    solv_selection_policy = GLODEF_SELECTION_EGREEDY
+    opti_config_param_boundaries = [0.0, 0.4]
 
-    solv_selection_policy = GLODEF_SELECTION_SOFTMAX
-    opti_config_param_boundaries = [0.001, 0.1]       #softmax tao lower boundary must be > 0
+    #solv_selection_policy = GLODEF_SELECTION_SOFTMAX
+    #opti_config_param_boundaries = [0.005, 0.02]       #softmax tao lower boundary must be > 0
 
     ##solv_selection_policy = GLODEF_SELECTION_UCB1
     #solv_selection_policy = GLODEF_SELECTION_UCBTUNED
@@ -47,7 +47,10 @@ def test_2014_10_18_noChangePoint(allCases):
     solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, solv_change_point_test, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
 
     opti_solver = solver
-    opti_evaluations_per_sample = 10
+    if opti_oracle_probablity == 1 :
+        opti_evaluations_per_sample = 5
+    else :
+        opti_evaluations_per_sample = 25
     opti_config = [     #configuration for the optimization algorithm: arbitrary list of additional parameters
     [opti_config_param_boundaries[0]],         # lower bounds for all parameters
     [opti_config_param_boundaries[1]],         # upper bounds for all parameters
