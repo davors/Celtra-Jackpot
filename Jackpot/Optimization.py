@@ -214,22 +214,43 @@ class Optimizer() :
 
             x = [0 for i in xrange(num_params)]
             for i in xrange(num_params):
-                if GRID_MODE == "discrete":
-                    # Choose from values in list
-                    rnd_idx = random.randint(0, param_vec_count[i]-1)
-                    x[i] = param_vec[i][rnd_idx]
-                else:
-                    if not x_curr:
-                        x_curr_i = random.uniform(BOUND_LOWER[i],BOUND_UPPER[i])
-                    else:
-                        x_curr_i = x_curr[i]
 
-                    # Generate random value in the neighbourhood of current solution
-                    x[i] = x_curr_i + (
-                    (random.uniform(-1.0,1.0) * neigh_radius) * abs(BOUND_UPPER[i]-BOUND_LOWER[i])
-                    )
-                    # Clip to upper and lower bounds
-                    x[i] = max(min(x[i],BOUND_UPPER[i]),BOUND_LOWER[i])
+                if not x_curr:
+                    # choose a random point
+                    x[i] = random.uniform(BOUND_LOWER[i],BOUND_UPPER[i])
+                    if GRID_MODE == "discrete":
+                        remainder = x[i] % GRID_STEP[i]
+                        quocient = x[i] // GRID_STEP[i]
+                        if remainder >= (0.5*GRID_STEP[i]):
+                            x[i] = (quocient+1)*GRID_STEP[i]
+                        else:
+                            x[i] = quocient*GRID_STEP[i]
+                        x[i] = max(min(x[i],BOUND_UPPER[i]),BOUND_LOWER[i])
+
+                else:
+                    x_curr_i = x_curr[i]
+
+                    if GRID_MODE == "discrete":
+                        # Choose from values in list
+                        rnd_in_neigh = x_curr_i + random.uniform(-1.0,1.0) * neigh_radius * abs(BOUND_UPPER[i]-BOUND_LOWER[i])
+                        # Clip to upper and lower bounds
+                        rnd_in_neigh = max(min(rnd_in_neigh,BOUND_UPPER[i]),BOUND_LOWER[i])
+                        # Compute point in the grid
+                        remainder = rnd_in_neigh % GRID_STEP[i]
+                        quocient = rnd_in_neigh // GRID_STEP[i]
+                        if remainder >= (0.5*GRID_STEP[i]):
+                            x[i] = (quocient+1)*GRID_STEP[i]
+                        else:
+                            x[i] = quocient*GRID_STEP[i]
+                        #rnd_idx = random.randint(0, param_vec_count[i]-1)
+                        #x[i] = param_vec[i][rnd_idx]
+                    else:
+                        # Generate random value in the neighbourhood of current solution
+                        x[i] = x_curr_i + (
+                        (random.uniform(-1.0,1.0) * neigh_radius) * abs(BOUND_UPPER[i]-BOUND_LOWER[i])
+                        )
+                        # Clip to upper and lower bounds
+                        x[i] = max(min(x[i],BOUND_UPPER[i]),BOUND_LOWER[i])
 
             return x
 
@@ -256,14 +277,13 @@ class Optimizer() :
                 GRID_MODE = "continuous"
 
 
-        if GRID_MODE == "discrete":
+        #if GRID_MODE == "discrete":
             # Create vectors of parameters values
-            param_vec = [0 for i in xrange(num_params)]
-            param_vec_count = [0 for i in xrange(num_params)]
-
-            for i in xrange(num_params):
-                param_vec[i] = linspace(BOUND_LOWER[i],BOUND_UPPER[i],GRID_STEP[i])
-                param_vec_count[i] = len(param_vec[i])
+            #param_vec = [0 for i in xrange(num_params)]
+            #param_vec_count = [0 for i in xrange(num_params)]
+            #for i in xrange(num_params):
+            #    param_vec[i] = linspace(BOUND_LOWER[i],BOUND_UPPER[i],GRID_STEP[i])
+            #    param_vec_count[i] = len(param_vec[i])
 
 
         # Start values - random if empty
