@@ -317,7 +317,7 @@ class Optimizer() :
 
         for i in range(NUM_CYCLES):
             #if not suppress_output :
-            print 'Cycle: ' + str(i) + ', Temperature: ' + str(t) + ', neigh_radius: ' +str(neigh_radius) + ', score: ' + str(fc)
+            #print 'Cycle: ' + str(i) + ', Temperature: ' + str(t) + ', neigh_radius: ' +str(neigh_radius) + ', score: ' + str(fc)
 
             for j in range(NUM_TRIALS_PER_CYCLE):
                 # Generate new trial points
