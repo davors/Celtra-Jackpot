@@ -60,14 +60,16 @@ experiment_filenames{46}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetAllMA__
 experiment_filenames{47}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetCut___2014_10_20_01_25_39';
 experiment_filenames{48}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetSingle___2014_10_20_01_25_51';
 
-experiment_filenames{49}   = '';
-experiment_filenames{50}   = '';
-experiment_filenames{51}   = '';
-experiment_filenames{52}   = '';
-experiment_filenames{53}   = '';
-experiment_filenames{54}   = '';
-experiment_filenames{55}   = '';
-experiment_filenames{56}   = '';
+experiment_filenames{49}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr0.6_Min50_ResetZero___2014_10_20_09_25_50';
+experiment_filenames{50}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr0.6_Min50_ResetAllMA___2014_10_20_09_25_42';
+experiment_filenames{51}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr0.6_Min50_ResetCut___2014_10_20_09_25_44';
+experiment_filenames{52}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr0.6_Min50_ResetSingle___2014_10_20_09_25_48';
+
+experiment_filenames{53}   = 'Reprint___2014_10_20_UCBT_T3_Or1_2par(CT,CI)_ResetZero___2014_10_20_09_53_05';
+experiment_filenames{54}   = 'Reprint___2014_10_20_UCBT_T3_Or1_2par(CT,CI)_ResetAllMA___2014_10_20_09_51_26';
+experiment_filenames{55}   = 'Reprint___2014_10_20_UCBT_T3_Or1_2par(CT,CI)_ResetCut___2014_10_20_09_54_49';
+experiment_filenames{56}   = 'Reprint___2014_10_20_UCBT_T3_Or1_2par(CT,CI)_ResetSingle___2014_10_20_09_48_44';
+
 experiment_filenames{57}   = '';
 experiment_filenames{58}   = '';
 experiment_filenames{59}   = '';
@@ -81,7 +83,7 @@ experiment_filenames{60}   = '';
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 5;
+filename_to_load = 56;
 
 analyze_score_for_testCase = 0;
     % 0 ... take average of all
@@ -89,7 +91,7 @@ analyze_score_for_testCase = 0;
 
 num_header_lines = 17;  %old txt data files had 21
 data_delimiter = ' ';
-first_data_column = 1;
+first_data_column = 1;  %if filename_to_load > 60 then it must be 1; otherwise 2
 
 position_num_final_evaluations = [7 3];    %row and column in file
 %position_num_samples = [1 2];               %for safety check
