@@ -1,7 +1,7 @@
+%%%%--- USE first_data_column = 1 FROM experiment_filenames{1} to {59} !!!! ---%%%%
 
 %list of available measurements (files) - scores were copied in excel file
 
-experiment_filenames{1}   = '2014_07_28 LRP Gomo7x7 C = 0.1.exe__2014-07-28-08-41-07__out0';
 experiment_filenames{2}   = '2014_10_17 first test';
 experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
@@ -60,12 +60,28 @@ experiment_filenames{46}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetAllMA__
 experiment_filenames{47}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetCut___2014_10_20_01_25_39';
 experiment_filenames{48}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetSingle___2014_10_20_01_25_51';
 
+experiment_filenames{49}   = '';
 experiment_filenames{50}   = '';
+experiment_filenames{51}   = '';
+experiment_filenames{52}   = '';
+experiment_filenames{53}   = '';
+experiment_filenames{54}   = '';
+experiment_filenames{55}   = '';
+experiment_filenames{56}   = '';
+experiment_filenames{57}   = '';
+experiment_filenames{58}   = '';
+experiment_filenames{59}   = '';
 
-%TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
+%%%%--- USE first_data_column = 2 FROM HERE ON !!!! ---%%%%
+
+experiment_filenames{60}   = '';
+
+
+
+%-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 48;
+filename_to_load = 5;
 
 analyze_score_for_testCase = 0;
     % 0 ... take average of all
@@ -102,6 +118,7 @@ values_decimal_precision = 3;   %default = 2, possible values 1-3
 
 %%------------- END of config section  -------------%%
 
+%TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
 
 %import data from file
 filename = [experiment_filenames{filename_to_load} '.txt'];

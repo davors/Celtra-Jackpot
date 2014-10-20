@@ -31,7 +31,7 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
 
     ##solv_selection_policy = GLODEF_SELECTION_UCB1
     solv_selection_policy = GLODEF_SELECTION_UCBTUNED
-    solv_initial_param_values = [0.166, 2.5, 1.0, 50]     #if None: default will be used
+    solv_initial_param_values = [0.166, 2.5, 1.0, 50, 1.0]     #if None: default will be used
 
     #opti_selective_optimization = [1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
     #opti_config_params_lower_bounds = [0.5]
@@ -47,8 +47,8 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
-    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
-    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
 
     opti_oracle_probablity = 1
     opti_completeRepeats = 100

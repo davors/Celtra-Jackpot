@@ -17,6 +17,8 @@ class Optimizer() :
 
     infoNumOutputLines = 5
 
+    totalEvaluatedSamples = 0         #cumulative number of evalauted samples (regardless of multiple runs/resets)
+
     def __init__(
         self,
         MABsolver,
@@ -67,7 +69,7 @@ class Optimizer() :
             print 'Optimizer(): numParams: %d , completeRepeats: %d' % (numParams, completeRepeats)
             self.MABsolver.config.info()
             batch.info()
-            print '    Score   ',
+            print ' Evals       Score   ',
             for p in xrange(numParams) :
                 print '      p%02d' % self.selectiveOptimization[p],
             print '  ',
@@ -157,7 +159,10 @@ class Optimizer() :
         (avgScore, casesScore) = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)
         fitness = avgScore[self.fitnessMetric]
 
+        self.totalEvaluatedSamples += 1
+
         if not suppress_output :
+            print '%6d  ' % self.totalEvaluatedSamples,
             print GLO_metrics_out_format[self.fitnessMetric] % fitness,
             print '  ',
             for p in xrange(len(paramValues)) :
