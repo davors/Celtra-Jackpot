@@ -216,51 +216,36 @@ class Optimizer() :
             for i in xrange(num_params):
 
                 if not x_curr:
-                    # choose a random point
-                    x[i] = random.uniform(BOUND_LOWER[i],BOUND_UPPER[i])
-                    if GRID_MODE == "discrete":
-                        remainder = x[i] % GRID_STEP[i]
-                        quocient = x[i] // GRID_STEP[i]
-                        if remainder >= (0.5*GRID_STEP[i]):
-                            x[i] = (quocient+1)*GRID_STEP[i]
-                        else:
-                            x[i] = quocient*GRID_STEP[i]
-                        x[i] = max(min(x[i],BOUND_UPPER[i]),BOUND_LOWER[i])
+                    # choose a random point from whole interval
+                    lowEnd = BOUND_LOWER[i]
+                    highEnd = BOUND_UPPER[i]
 
                 else:
                     x_curr_i = x_curr[i]
+                    r = neigh_radius * abs(BOUND_UPPER[i]-BOUND_LOWER[i])*0.5
+                    lowEnd = max(x_curr_i - r, BOUND_LOWER[i])
+                    highEnd = min(x_curr_i + r, BOUND_UPPER[i])
 
-                    if GRID_MODE == "discrete":
-                        # Choose from values in list
-                        rnd_in_neigh = x_curr_i + random.uniform(-1.0,1.0) * neigh_radius * abs(BOUND_UPPER[i]-BOUND_LOWER[i])
-                        # Clip to upper and lower bounds
-                        rnd_in_neigh = max(min(rnd_in_neigh,BOUND_UPPER[i]),BOUND_LOWER[i])
-                        # Compute point in the grid
-                        remainder = rnd_in_neigh % GRID_STEP[i]
-                        quocient = rnd_in_neigh // GRID_STEP[i]
-                        if remainder >= (0.5*GRID_STEP[i]):
-                            x[i] = (quocient+1)*GRID_STEP[i]
-                        else:
-                            x[i] = quocient*GRID_STEP[i]
-                        #rnd_idx = random.randint(0, param_vec_count[i]-1)
-                        #x[i] = param_vec[i][rnd_idx]
+                x[i] = random.uniform(lowEnd,highEnd)
+
+                if GRID_MODE == "discrete":
+                    # Compute point in the grid
+                    remainder = x[i] % GRID_STEP[i]
+                    quocient = x[i] // GRID_STEP[i]
+                    if remainder >= (0.5*GRID_STEP[i]):
+                        x[i] = (quocient+1)*GRID_STEP[i]
                     else:
-                        # Generate random value in the neighbourhood of current solution
-                        x[i] = x_curr_i + (
-                        (random.uniform(-1.0,1.0) * neigh_radius) * abs(BOUND_UPPER[i]-BOUND_LOWER[i])
-                        )
-                        # Clip to upper and lower bounds
-                        x[i] = max(min(x[i],BOUND_UPPER[i]),BOUND_LOWER[i])
+                        x[i] = quocient*GRID_STEP[i]
 
             return x
 
-        def linspace(start, stop, step):
-            n = int(math.ceil(((stop - start) / step)) +1)
-            v = [0 for i in xrange(n)]
-
-            for i in range(n):
-                v[i]=(start + step * i)
-            return v
+##        def linspace(start, stop, step):
+##            n = int(math.ceil(((stop - start) / step)) +1)
+##            v = [0 for i in xrange(n)]
+##
+##            for i in range(n):
+##                v[i]=(start + step * i)
+##            return v
 
 
         ################################################################################
@@ -275,16 +260,6 @@ class Optimizer() :
             if (num_params != len(GRID_STEP)):
                 print("Length of GRID_STEP does not match with others! Switching to continuous mode.\n")
                 GRID_MODE = "continuous"
-
-
-        #if GRID_MODE == "discrete":
-            # Create vectors of parameters values
-            #param_vec = [0 for i in xrange(num_params)]
-            #param_vec_count = [0 for i in xrange(num_params)]
-            #for i in xrange(num_params):
-            #    param_vec[i] = linspace(BOUND_LOWER[i],BOUND_UPPER[i],GRID_STEP[i])
-            #    param_vec_count[i] = len(param_vec[i])
-
 
         # Start values - random if empty
         if not START_VALUES:
@@ -337,7 +312,7 @@ class Optimizer() :
 
         for i in range(NUM_CYCLES):
             #if not suppress_output :
-                #print 'Cycle: ' + str(i) + ', Temperature: ' + str(t) + ', neigh_radius: ' +str(neigh_radius) + ', score: ' + str(fc)
+            print 'Cycle: ' + str(i) + ', Temperature: ' + str(t) + ', neigh_radius: ' +str(neigh_radius) + ', score: ' + str(fc)
 
             for j in range(NUM_TRIALS_PER_CYCLE):
                 # Generate new trial points
