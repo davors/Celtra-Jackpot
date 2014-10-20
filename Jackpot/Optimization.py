@@ -15,6 +15,8 @@ class Optimizer() :
     evaluationsPerSample = None     #number of evaluations per each parameter sample
     selectiveOptimization = None    #choosen parameters to optimize - array of indices
 
+    infoNumOutputLines = 5
+
     def __init__(
         self,
         MABsolver,
@@ -65,6 +67,12 @@ class Optimizer() :
             print 'Optimizer(): numParams: %d , completeRepeats: %d' % (numParams, completeRepeats)
             self.MABsolver.config.info()
             batch.info()
+            print '    Score   ',
+            for p in xrange(numParams) :
+                print '      p%02d' % self.selectiveOptimization[p],
+            print '  ',
+            for c in xrange(batch.num) :
+                print '   case%02d' % (c+1),
             print ''
 
         #-- optimization algorithms --#
@@ -142,7 +150,27 @@ class Optimizer() :
         print ']'
         print 'Optimizer(): evals/step: %d' % self.evaluationsPerSample
 
-    #recursive exhaustive search of complete discretized parameter space
+    # fitness function (returns score)
+    def getFitness(self, paramValues, batch, oracleProbablity, suppress_output):
+
+        self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+        (avgScore, casesScore) = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)
+        fitness = avgScore[self.fitnessMetric]
+
+        if not suppress_output :
+            print GLO_metrics_out_format[self.fitnessMetric] % fitness,
+            print '  ',
+            for p in xrange(len(paramValues)) :
+                print ' %f' % paramValues[p],
+            print '  ',
+            for c in xrange(batch.num) :
+                print GLO_metrics_out_format[self.fitnessMetric] % casesScore[self.fitnessMetric][c],
+            print ''
+            sys.stdout.flush()
+
+        return fitness
+
+    # recursive exhaustive search of complete discretized parameter space
     def exhaustiveSearch(self, batch, paramValues, suppress_output, oracleProbablity, level) :
 
         bestScore = -1e30000
@@ -151,15 +179,8 @@ class Optimizer() :
         for i in xrange(self.optimizationConfig[level][2]) :        #for iterate number of steps
 
             if(level == (len(paramValues)-1) ) :
-                self.MABsolver.setParams(paramValues, self.selectiveOptimization)
-                score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
+                score = self.getFitness(paramValues, batch, oracleProbablity, suppress_output)
                 params = paramValues
-                if not suppress_output :
-                    print GLO_metrics_out_format[self.fitnessMetric] % score,
-                    print '  ',
-                    for p in xrange(len(paramValues)) :
-                        print ' %f' % paramValues[p],
-                    print ''
 
             else :
                 (score, params) = self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, level + 1)
@@ -190,22 +211,6 @@ class Optimizer() :
                            # when choosing next candidate, search only the neighbourhood
                            # of current solution. NEIGH_RADIUS is a ratio of full interval
                            # span, i.e.: NEIGH_RADIUS * (BOUND_UPPER - BOUND_LOWER)
-
-        # define objective function
-        def f(paramValues):
-
-            self.MABsolver.setParams(paramValues, self.selectiveOptimization)
-            score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
-
-            if not suppress_output :
-                print GLO_metrics_out_format[self.fitnessMetric] % score,
-                print '  ',
-                for p in xrange(len(paramValues)) :
-                    print ' %f' % paramValues[p],
-                print ''
-                sys.stdout.flush()
-
-            return score
 
         # define function that returns new trial point (solution candidate)
         def get_new_candidate(x_curr,neigh_radius):
@@ -296,7 +301,7 @@ class Optimizer() :
 
         # Current best results so far
         xc = x[0]
-        fc = f(xi)
+        fc = self.getFitness(xi, batch, oracleProbablity, suppress_output)
         fs = [0 for i in xrange(NUM_CYCLES+1)]
         fs[0] = fc
 
@@ -317,7 +322,7 @@ class Optimizer() :
             for j in range(NUM_TRIALS_PER_CYCLE):
                 # Generate new trial points
                 xi = get_new_candidate(xc,neigh_radius)
-                objFuncVal = f(xi)
+                objFuncVal = self.getFitness(xi, batch, oracleProbablity, suppress_output)
 
                 DeltaE = abs(objFuncVal-fc)
                 if (objFuncVal < fc):

@@ -123,6 +123,8 @@ class BanditTestBatch() :
     sumMaxRewards = None
     sumRandomRewards = None
 
+    infoNumOutputLines = 4
+
     # initialize and calculate the maximum achievable reward and random-policy reward for the test batch
     def __init__(self, allCases, indices) :
         self.list = [ allCases[i] for i in indices ]
