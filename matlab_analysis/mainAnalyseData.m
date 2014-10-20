@@ -44,15 +44,34 @@ experiment_filenames{34}   = 'Reprint___2014_10_18_SMAX_T3_Or1___2014_10_18_21_3
 experiment_filenames{35}   = 'Reprint___2014_10_18_UCB1_T3_Or1___2014_10_18_12_35_18';
 experiment_filenames{36}   = 'Reprint___2014_10_18_UCBT_T3_Or1___2014_10_18_12_37_21';
 
+%DavorTom change point experiments
+experiment_filenames{37}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetZero___2014_10_20_01_24_54';
+experiment_filenames{38}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetAllMA___2014_10_20_01_24_47';
+experiment_filenames{39}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetCut___2014_10_20_01_24_49';
+experiment_filenames{40}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetSingle___2014_10_20_01_24_52';
 
-experiment_filenames{40}   = '';
+experiment_filenames{41}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr1.0_Min50_ResetZero___2014_10_20_00_01_05';
+experiment_filenames{42}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr1.0_Min50_ResetAllMA___2014_10_20_00_01_50';
+experiment_filenames{43}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr1.0_Min50_ResetCut___2014_10_20_00_02_16';
+experiment_filenames{44}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr1.0_Min50_ResetSingle___2014_10_20_00_02_45';
+
+experiment_filenames{45}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetZero___2014_10_20_01_25_55';
+experiment_filenames{46}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetAllMA___2014_10_20_01_25_30';
+experiment_filenames{47}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetCut___2014_10_20_01_25_39';
+experiment_filenames{48}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetSingle___2014_10_20_01_25_51';
+
+experiment_filenames{50}   = '';
 
 %TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
 %file read settings
 
-filename_to_load = 31;
+filename_to_load = 48;
 
-num_header_lines = 18;  %old txt data files had 21
+analyze_score_for_testCase = 0;
+    % 0 ... take average of all
+    % > 0 ... analyze for selected testCase
+
+num_header_lines = 17;  %old txt data files had 21
 data_delimiter = ' ';
 first_data_column = 1;
 
@@ -87,7 +106,15 @@ values_decimal_precision = 3;   %default = 2, possible values 1-3
 %import data from file
 filename = [experiment_filenames{filename_to_load} '.txt'];
 importedFile = importdata(filename,data_delimiter,num_header_lines);
-d = importedFile.data(:,first_data_column:end);
+
+tmpstr = strsplit(importedFile.textdata{position_num_params(1)},' ');
+input_num_pars = str2double(tmpstr{position_num_params(2)});
+
+d = importedFile.data(:,first_data_column:first_data_column+input_num_pars);
+
+if(analyze_score_for_testCase > 0)
+    d(:,1) = importedFile.data(:,first_data_column+input_num_pars+analyze_score_for_testCase);
+end
 
 total_num_samples = size(d,1);
 num_rows_d = size(d,2);
@@ -99,8 +126,8 @@ num_pars_d = num_rows_d - 1;
 % if(str2double(tmpstr{position_num_samples(2)}) ~= total_num_samples)
 %     warning(['File header mismatch: "' filename '": number of samples does not match!']);
 % end
-tmpstr = strsplit(importedFile.textdata{position_num_params(1)},' ');
-if(str2double(tmpstr{position_num_params(2)}) ~= num_pars_d)
+
+if(input_num_pars ~= num_pars_d)
     warning(['File header mismatch: "' filename '": number of parameters does not match!']);
 end
     

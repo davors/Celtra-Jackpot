@@ -31,7 +31,7 @@ def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
 
 
 def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm):
-    tp=range(10,100,10) + range(100,1000,100) + range(1000,5000,1000)
+    tp=range(10,100,10) + range(100,1000,100) + range(1000,6000,1000)
     m=M[m_id]
     #tp=[50, 100, 200] 
     rejected=0

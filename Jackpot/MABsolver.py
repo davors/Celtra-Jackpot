@@ -50,6 +50,8 @@ class MABsolver_config() :
     resetAlgorithm = None    
     params = None
 
+    infoNumOutputLines = 4
+
     def __init__(
         self, 
         paramValues = None,
