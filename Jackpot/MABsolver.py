@@ -50,6 +50,8 @@ class MABsolver_config() :
     resetAlgorithm = None    
     params = None
 
+    infoNumOutputLines = 4
+
     def __init__(
         self, 
         paramValues = None,
@@ -76,7 +78,7 @@ class MABsolver_config() :
 
         if paramValues is None :
             
-            paramValues = [0.0 , DEFAULT_PAR_CHANGEPOINT_THR, DEFAULT_PAR_CHANGEPOINT_INT, DEFAULT_PAR_CHANGEPOINT_NUM]
+            paramValues = [0.0 , DEFAULT_PAR_CHANGEPOINT_THR, DEFAULT_PAR_CHANGEPOINT_INT, DEFAULT_PAR_CHANGEPOINT_NUM, DEFAULT_PAR_CHANGEPOINT_SOFT]
 
             if   selectionPolicy == GLODEF_SELECTION_EGREEDY :  paramValues[0] = DEFAULT_PAR_EGREEDY_E
             elif selectionPolicy == GLODEF_SELECTION_SOFTMAX :  paramValues[0] = DEFAULT_PAR_SOFTMAX_T
@@ -96,7 +98,7 @@ class MABsolver_config() :
             GLO_labels_selection_policies[self.selectionPolicy], 
             GLO_labels_change_point_detectors[self.changePointDetector], 
             GLO_labels_change_point_test[self.changePointTest],
-            GLO_labels_reset_algorithms[self.changePointTest]
+            GLO_labels_reset_algorithms[self.resetAlgorithm]
             )
 
         print 'MABsolver_config: params: types: ',
@@ -191,7 +193,8 @@ class MABsolver() :
             change_point_threshold = self.config.params[1].getValue()
             change_point_interval = self.config.params[2].getValue()
             change_point_minimal_samples = self.config.params[3].getValue()
-            rejected_pulls = checkChange(change_point_threshold, change_point_interval, change_point_minimal_samples,self.machines,machine_id, self.config.resetAlgorithm)
+            change_point_soft_reset = self.config.params[4].getValue()
+            rejected_pulls = checkChange(change_point_threshold, change_point_interval, change_point_minimal_samples,self.machines,machine_id, self.config.resetAlgorithm, change_point_soft_reset)
             #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine
             #self.total_rejected_pulls = self.total_rejected_pulls + rejected_pulls
             if rejected_pulls > 0 :

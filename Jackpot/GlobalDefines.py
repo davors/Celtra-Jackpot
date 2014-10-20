@@ -54,7 +54,10 @@ GLO_labels_change_point_test = [
     ]
 
 GLO_labels_reset_algorithms = [
-    'Reset: TODO'
+    'Reset AllZero',
+    'Reset AllMovingAvg',
+    'Reset AllMovingCutoff',
+    'Reset SingleMovingAvg'
     ]
 
 GLO_labels_optimization = [

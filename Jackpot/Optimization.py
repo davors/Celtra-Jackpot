@@ -15,6 +15,10 @@ class Optimizer() :
     evaluationsPerSample = None     #number of evaluations per each parameter sample
     selectiveOptimization = None    #choosen parameters to optimize - array of indices
 
+    infoNumOutputLines = 5
+
+    totalEvaluatedSamples = 0         #cumulative number of evalauted samples (regardless of multiple runs/resets)
+
     def __init__(
         self,
         MABsolver,
@@ -65,6 +69,12 @@ class Optimizer() :
             print 'Optimizer(): numParams: %d , completeRepeats: %d' % (numParams, completeRepeats)
             self.MABsolver.config.info()
             batch.info()
+            print ' Evals       Score   ',
+            for p in xrange(numParams) :
+                print '      p%02d' % self.selectiveOptimization[p],
+            print '  ',
+            for c in xrange(batch.num) :
+                print '   case%02d' % (c+1),
             print ''
 
         #-- optimization algorithms --#
@@ -136,13 +146,36 @@ class Optimizer() :
 
         print 'Optimizer(): config: ',
         PrintStrings(self.optimizationConfig)
-        print 'Optimizer(): selective: ',
+        print 'Optimizer(): selective: [ ',
         for i in range(len(self.selectiveOptimization)) :
-            print '%f ' % self.selectiveOptimization[i],
-        print ''
+            print '%d ' % self.selectiveOptimization[i],
+        print ']'
         print 'Optimizer(): evals/step: %d' % self.evaluationsPerSample
 
-    #recursive exhaustive search of complete discretized parameter space
+    # fitness function (returns score)
+    def getFitness(self, paramValues, batch, oracleProbablity, suppress_output):
+
+        self.MABsolver.setParams(paramValues, self.selectiveOptimization)
+        (avgScore, casesScore) = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)
+        fitness = avgScore[self.fitnessMetric]
+
+        self.totalEvaluatedSamples += 1
+
+        if not suppress_output :
+            print '%6d  ' % self.totalEvaluatedSamples,
+            print GLO_metrics_out_format[self.fitnessMetric] % fitness,
+            print '  ',
+            for p in xrange(len(paramValues)) :
+                print ' %f' % paramValues[p],
+            print '  ',
+            for c in xrange(batch.num) :
+                print GLO_metrics_out_format[self.fitnessMetric] % casesScore[self.fitnessMetric][c],
+            print ''
+            sys.stdout.flush()
+
+        return fitness
+
+    # recursive exhaustive search of complete discretized parameter space
     def exhaustiveSearch(self, batch, paramValues, suppress_output, oracleProbablity, level) :
 
         bestScore = -1e30000
@@ -151,15 +184,8 @@ class Optimizer() :
         for i in xrange(self.optimizationConfig[level][2]) :        #for iterate number of steps
 
             if(level == (len(paramValues)-1) ) :
-                self.MABsolver.setParams(paramValues, self.selectiveOptimization)
-                score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
+                score = self.getFitness(paramValues, batch, oracleProbablity, suppress_output)
                 params = paramValues
-                if not suppress_output :
-                    print GLO_metrics_out_format[self.fitnessMetric] % score,
-                    print '  ',
-                    for p in xrange(len(paramValues)) :
-                        print ' %f' % paramValues[p],
-                    print ''
 
             else :
                 (score, params) = self.exhaustiveSearch(batch, paramValues, suppress_output, oracleProbablity, level + 1)
@@ -191,22 +217,6 @@ class Optimizer() :
                            # of current solution. NEIGH_RADIUS is a ratio of full interval
                            # span, i.e.: NEIGH_RADIUS * (BOUND_UPPER - BOUND_LOWER)
 
-        # define objective function
-        def f(paramValues):
-
-            self.MABsolver.setParams(paramValues, self.selectiveOptimization)
-            score = evaluateBatch(self.MABsolver, batch, self.evaluationsPerSample, 1, oracleProbablity)[0][self.fitnessMetric]
-
-            if not suppress_output :
-                print GLO_metrics_out_format[self.fitnessMetric] % score,
-                print '  ',
-                for p in xrange(len(paramValues)) :
-                    print ' %f' % paramValues[p],
-                print ''
-                sys.stdout.flush()
-
-            return score
-
         # define function that returns new trial point (solution candidate)
         def get_new_candidate(x_curr,neigh_radius):
             if not neigh_radius:
@@ -214,32 +224,38 @@ class Optimizer() :
 
             x = [0 for i in xrange(num_params)]
             for i in xrange(num_params):
-                if GRID_MODE == "discrete":
-                    # Choose from values in list
-                    rnd_idx = random.randint(0, param_vec_count[i]-1)
-                    x[i] = param_vec[i][rnd_idx]
-                else:
-                    if not x_curr:
-                        x_curr_i = random.uniform(BOUND_LOWER[i],BOUND_UPPER[i])
-                    else:
-                        x_curr_i = x_curr[i]
 
-                    # Generate random value in the neighbourhood of current solution
-                    x[i] = x_curr_i + (
-                    (random.uniform(-1.0,1.0) * neigh_radius) * abs(BOUND_UPPER[i]-BOUND_LOWER[i])
-                    )
-                    # Clip to upper and lower bounds
-                    x[i] = max(min(x[i],BOUND_UPPER[i]),BOUND_LOWER[i])
+                if not x_curr:
+                    # choose a random point from whole interval
+                    lowEnd = BOUND_LOWER[i]
+                    highEnd = BOUND_UPPER[i]
+
+                else:
+                    x_curr_i = x_curr[i]
+                    r = neigh_radius * abs(BOUND_UPPER[i]-BOUND_LOWER[i])*0.5
+                    lowEnd = max(x_curr_i - r, BOUND_LOWER[i])
+                    highEnd = min(x_curr_i + r, BOUND_UPPER[i])
+
+                x[i] = random.uniform(lowEnd,highEnd)
+
+                if GRID_MODE == "discrete":
+                    # Compute point in the grid
+                    remainder = x[i] % GRID_STEP[i]
+                    quocient = x[i] // GRID_STEP[i]
+                    if remainder >= (0.5*GRID_STEP[i]):
+                        x[i] = (quocient+1)*GRID_STEP[i]
+                    else:
+                        x[i] = quocient*GRID_STEP[i]
 
             return x
 
-        def linspace(start, stop, step):
-            n = int(math.ceil(((stop - start) / step)) +1)
-            v = [0 for i in xrange(n)]
-
-            for i in range(n):
-                v[i]=(start + step * i)
-            return v
+##        def linspace(start, stop, step):
+##            n = int(math.ceil(((stop - start) / step)) +1)
+##            v = [0 for i in xrange(n)]
+##
+##            for i in range(n):
+##                v[i]=(start + step * i)
+##            return v
 
 
         ################################################################################
@@ -254,17 +270,6 @@ class Optimizer() :
             if (num_params != len(GRID_STEP)):
                 print("Length of GRID_STEP does not match with others! Switching to continuous mode.\n")
                 GRID_MODE = "continuous"
-
-
-        if GRID_MODE == "discrete":
-            # Create vectors of parameters values
-            param_vec = [0 for i in xrange(num_params)]
-            param_vec_count = [0 for i in xrange(num_params)]
-
-            for i in xrange(num_params):
-                param_vec[i] = linspace(BOUND_LOWER[i],BOUND_UPPER[i],GRID_STEP[i])
-                param_vec_count[i] = len(param_vec[i])
-
 
         # Start values - random if empty
         if not START_VALUES:
@@ -301,7 +306,7 @@ class Optimizer() :
 
         # Current best results so far
         xc = x[0]
-        fc = f(xi)
+        fc = self.getFitness(xi, batch, oracleProbablity, suppress_output)
         fs = [0 for i in xrange(NUM_CYCLES+1)]
         fs[0] = fc
 
@@ -317,12 +322,12 @@ class Optimizer() :
 
         for i in range(NUM_CYCLES):
             #if not suppress_output :
-                #print 'Cycle: ' + str(i) + ', Temperature: ' + str(t) + ', neigh_radius: ' +str(neigh_radius) + ', score: ' + str(fc)
+            #print 'Cycle: ' + str(i) + ', Temperature: ' + str(t) + ', neigh_radius: ' +str(neigh_radius) + ', score: ' + str(fc)
 
             for j in range(NUM_TRIALS_PER_CYCLE):
                 # Generate new trial points
                 xi = get_new_candidate(xc,neigh_radius)
-                objFuncVal = f(xi)
+                objFuncVal = self.getFitness(xi, batch, oracleProbablity, suppress_output)
 
                 DeltaE = abs(objFuncVal-fc)
                 if (objFuncVal < fc):

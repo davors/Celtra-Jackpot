@@ -1,7 +1,7 @@
+%%%%--- USE first_data_column = 1 FROM experiment_filenames{1} to {59} !!!! ---%%%%
 
 %list of available measurements (files) - scores were copied in excel file
 
-experiment_filenames{1}   = '2014_07_28 LRP Gomo7x7 C = 0.1.exe__2014-07-28-08-41-07__out0';
 experiment_filenames{2}   = '2014_10_17 first test';
 experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
@@ -44,17 +44,54 @@ experiment_filenames{34}   = 'Reprint___2014_10_18_SMAX_T3_Or1___2014_10_18_21_3
 experiment_filenames{35}   = 'Reprint___2014_10_18_UCB1_T3_Or1___2014_10_18_12_35_18';
 experiment_filenames{36}   = 'Reprint___2014_10_18_UCBT_T3_Or1___2014_10_18_12_37_21';
 
+%DavorTom change point experiments
+experiment_filenames{37}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetZero___2014_10_20_01_24_54';
+experiment_filenames{38}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetAllMA___2014_10_20_01_24_47';
+experiment_filenames{39}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetCut___2014_10_20_01_24_49';
+experiment_filenames{40}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetSingle___2014_10_20_01_24_52';
 
-experiment_filenames{40}   = '';
+experiment_filenames{41}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr1.0_Min50_ResetZero___2014_10_20_00_01_05';
+experiment_filenames{42}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr1.0_Min50_ResetAllMA___2014_10_20_00_01_50';
+experiment_filenames{43}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr1.0_Min50_ResetCut___2014_10_20_00_02_16';
+experiment_filenames{44}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr1.0_Min50_ResetSingle___2014_10_20_00_02_45';
 
-%TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
+experiment_filenames{45}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetZero___2014_10_20_01_25_55';
+experiment_filenames{46}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetAllMA___2014_10_20_01_25_30';
+experiment_filenames{47}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetCut___2014_10_20_01_25_39';
+experiment_filenames{48}   = 'Reprint___2014_10_20_UCBT_T3_Or0_4par_ResetSingle___2014_10_20_01_25_51';
+
+experiment_filenames{49}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr0.6_Min50_ResetZero___2014_10_20_09_25_50';
+experiment_filenames{50}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr0.6_Min50_ResetAllMA___2014_10_20_09_25_42';
+experiment_filenames{51}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr0.6_Min50_ResetCut___2014_10_20_09_25_44';
+experiment_filenames{52}   = 'Reprint___2014_10_20_UCBT_T3_Or0_Shr0.6_Min50_ResetSingle___2014_10_20_09_25_48';
+
+experiment_filenames{53}   = 'Reprint___2014_10_20_UCBT_T3_Or1_2par(CT,CI)_ResetZero___2014_10_20_09_53_05';
+experiment_filenames{54}   = 'Reprint___2014_10_20_UCBT_T3_Or1_2par(CT,CI)_ResetAllMA___2014_10_20_09_51_26';
+experiment_filenames{55}   = 'Reprint___2014_10_20_UCBT_T3_Or1_2par(CT,CI)_ResetCut___2014_10_20_09_54_49';
+experiment_filenames{56}   = 'Reprint___2014_10_20_UCBT_T3_Or1_2par(CT,CI)_ResetSingle___2014_10_20_09_48_44';
+
+experiment_filenames{57}   = '';
+experiment_filenames{58}   = '';
+experiment_filenames{59}   = '';
+
+%%%%--- USE first_data_column = 2 FROM HERE ON !!!! ---%%%%
+
+experiment_filenames{60}   = '';
+
+
+
+%-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 31;
+filename_to_load = 56;
 
-num_header_lines = 18;  %old txt data files had 21
+analyze_score_for_testCase = 0;
+    % 0 ... take average of all
+    % > 0 ... analyze for selected testCase
+
+num_header_lines = 17;  %old txt data files had 21
 data_delimiter = ' ';
-first_data_column = 1;
+first_data_column = 1;  %if filename_to_load > 60 then it must be 1; otherwise 2
 
 position_num_final_evaluations = [7 3];    %row and column in file
 %position_num_samples = [1 2];               %for safety check
@@ -83,11 +120,20 @@ values_decimal_precision = 3;   %default = 2, possible values 1-3
 
 %%------------- END of config section  -------------%%
 
+%TODO naredi da pri corelaciji se zanemari 10% (poljubno nastavljivo) najslabše ocenjenih vzorcev (outliers)
 
 %import data from file
 filename = [experiment_filenames{filename_to_load} '.txt'];
 importedFile = importdata(filename,data_delimiter,num_header_lines);
-d = importedFile.data(:,first_data_column:end);
+
+tmpstr = strsplit(importedFile.textdata{position_num_params(1)},' ');
+input_num_pars = str2double(tmpstr{position_num_params(2)});
+
+d = importedFile.data(:,first_data_column:first_data_column+input_num_pars);
+
+if(analyze_score_for_testCase > 0)
+    d(:,1) = importedFile.data(:,first_data_column+input_num_pars+analyze_score_for_testCase);
+end
 
 total_num_samples = size(d,1);
 num_rows_d = size(d,2);
@@ -99,8 +145,8 @@ num_pars_d = num_rows_d - 1;
 % if(str2double(tmpstr{position_num_samples(2)}) ~= total_num_samples)
 %     warning(['File header mismatch: "' filename '": number of samples does not match!']);
 % end
-tmpstr = strsplit(importedFile.textdata{position_num_params(1)},' ');
-if(str2double(tmpstr{position_num_params(2)}) ~= num_pars_d)
+
+if(input_num_pars ~= num_pars_d)
     warning(['File header mismatch: "' filename '": number of parameters does not match!']);
 end
     

@@ -7,6 +7,7 @@ Non-stationary multi-armed bandit
 2014 http://iieng.org/siteadmin/upload/3042E0114570.pdf
 2013 http://jmlr.org/proceedings/papers/v28/karnin13.pdf
 2010 http://link.springer.com/chapter/10.1007%2F978-3-642-13033-5_21
+
 2008 http://arxiv.org/pdf/0805.3415.pdf
 2008 http://www.cs.cmu.edu/~deepay/mywww/papers/nips08-mortal.pdf
 2008 http://www.sciencedirect.com/science/article/pii/S0096300307007448
