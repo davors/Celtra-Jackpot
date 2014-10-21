@@ -34,6 +34,7 @@ if REPRINT_TO_FILE == 1:
 
     #add timestamp
     filename = 'Reprint___' + filename  + '___' + (time.strftime("%Y_%m_%d_%H_%M_%S")) + '.txt'
+    print os.path.dirname(__file__)
 
     #bufsize = 0
         # 0 - buffering disabled
