@@ -76,22 +76,43 @@ experiment_filenames{59}   = '';
 
 %%%%--- USE first_data_column = 2 FROM HERE ON !!!! ---%%%%
 
-experiment_filenames{60}   = '';
+experiment_filenames{60}   = 'Reprint___2014_10_21_UCBT_4parms_resetSingle___2014_10_21_00_30_42';
+experiment_filenames{61}   = 'Reprint___2014_10_21_UCBT_2parms_resetSingle___2014_10_21_01_19_20';
+experiment_filenames{62}   = 'Reprint___2014_10_21_Or1_UCBT_3parms_resetSingle___2014_10_20_13_19_04';
+
+experiment_filenames{63}   = 'Reprint___2014_10_21_T3_Or0_Egre_CPthr_resetCut___2014_10_21_01_19_20';
+experiment_filenames{64}   = 'Reprint___2014_10_21_T3_Or0_Egre_CPthr_resetMA___2014_10_21_01_19_20';
+experiment_filenames{65}   = 'Reprint___2014_10_21_T3_Or0_Egre_CPthr_resetSingle___2014_10_21_01_19_20';
+experiment_filenames{66}   = 'Reprint___2014_10_21_T3_Or0_Egre_CPthr_resetZero___2014_10_21_01_19_20';
+
+experiment_filenames{67}   = 'Reprint___2014_10_21_T3_Or0_UCB1_CPthr_resetCut___2014_10_21_01_19_20';
+experiment_filenames{68}   = 'Reprint___2014_10_21_T3_Or0_UCB1_CPthr_resetMA___2014_10_21_01_19_20';
+experiment_filenames{69}   = 'Reprint___2014_10_21_T3_Or0_UCB1_CPthr_resetSingle___2014_10_21_01_19_21';
+experiment_filenames{70}   = 'Reprint___2014_10_21_T3_Or0_UCB1_CPthr_resetZero___2014_10_21_01_19_20';
+
+experiment_filenames{71}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetCut___2014_10_21_01_19_21';
+experiment_filenames{72}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetMA___2014_10_21_01_19_21';
+experiment_filenames{73}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetSingle___2014_10_21_01_19_21';
+experiment_filenames{74}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetZero___2014_10_21_10_32_18';
 
 
 
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 56;
+filename_to_load = 65;
 
-analyze_score_for_testCase = 9;
+analyze_score_for_testCase = 7;
     % 0 ... take average of all
     % > 0 ... analyze for selected testCase
 
 num_header_lines = 17;  %old txt data files had 21
 data_delimiter = ' ';
-first_data_column = 1;  %if filename_to_load > 60 then it must be 1; otherwise 2
+if filename_to_load < 60
+    first_data_column = 1;  %if filename_to_load < 60 then it must be 1; otherwise 2
+else 
+    first_data_column = 2;
+end
 
 position_num_final_evaluations = [7 3];    %row and column in file
 %position_num_samples = [1 2];               %for safety check

@@ -66,8 +66,12 @@ class machine(object):
                 new_pulls=self.pulls
             p_tmp=self.pulls-new_pulls
             if index!=-1:
-                self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
-                self.sum=self.moving_sum[index]
+                try:
+                    #occasionaly list index problem HERE!
+                    self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
+                    self.sum=self.moving_sum[index]
+                except: 
+                    print 'lol'
             else:
                 self.moving_sum[:]=[0.0]*len(self.moving_sum[:])
                 self.sum=0.0
