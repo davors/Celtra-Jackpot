@@ -194,7 +194,8 @@ class MABsolver() :
             change_point_interval = self.config.params[2].getValue()
             change_point_minimal_samples = self.config.params[3].getValue()
             change_point_soft_reset = self.config.params[4].getValue()
-            rejected_pulls = checkChange(change_point_threshold, change_point_interval, change_point_minimal_samples,self.machines,machine_id, self.config.resetAlgorithm, change_point_soft_reset)
+            #rejected_pulls = checkChange(change_point_threshold, change_point_interval, change_point_minimal_samples,self.machines,machine_id, self.config.resetAlgorithm, change_point_soft_reset)
+            rejected_pulls = HankeyPankeyTest(change_point_treshold,self.machines[machine_id])
             #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine
             #self.total_rejected_pulls = self.total_rejected_pulls + rejected_pulls
             if rejected_pulls > 0 :

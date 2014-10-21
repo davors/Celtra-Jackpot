@@ -12,22 +12,16 @@ from math import *
 #PHt=Mt-mt=max(PH(t-1)-rt+rat-delta,0)
 
 #Treshold 80
-def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
-    delta=0.005
-    if N==0:
-        HP=0.0
-        Y=0.0
-        Mt=0
-        mt=0
-    Y=Y+X
-    mt=0.9999*mt+float(X)-float(Y)/float(N)+delta
-    #mt=0.9999*mt+float(Y)/float(N)-X+delta
-    Mt=max(Mt,mt)
-    #HP=max(float(HP)-float(X)+float(Y)/float(N)-delta,0)
-    HP=Mt-mt
-    print str(HP)
-    return (HP>Tsh, mt, Mt, Y)
+def HankeyPankeyTest(treshold,m):
+    
 
+
+    if abs(m.CUSUM)>=treshold:
+                if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M,soft_reset)
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s,soft_reset)
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,m.P[-s-1],soft_reset)
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s,soft_reset)
+    return rejected
 
 
 def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm, soft_reset):
