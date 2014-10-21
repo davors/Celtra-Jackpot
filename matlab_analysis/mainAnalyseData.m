@@ -85,7 +85,7 @@ experiment_filenames{60}   = '';
 
 filename_to_load = 56;
 
-analyze_score_for_testCase = 0;
+analyze_score_for_testCase = 9;
     % 0 ... take average of all
     % > 0 ... analyze for selected testCase
 
@@ -246,6 +246,11 @@ for i = 1:num_pars_d
     errorbar(best_settings(:,3),best_settings(:,3+i),best_settings(:,4+num_pars_d+i),'- .','MarkerSize',15,'Color',cmap(i+1,:));    %mean + conf95
     xlim_space = (best_settings(1,3) - best_settings(end,3)) / 20;
     tmp_xlim = [best_settings(end,3)-xlim_space best_settings(1,3)+xlim_space];
+    if tmp_xlim(2) == tmp_xlim(1)
+       tttv = tmp_xlim(1)*0.01;
+       tmp_xlim(2) = tmp_xlim(2)+tttv;
+       tmp_xlim(1) = tmp_xlim(1)-tttv;
+    end
     yl = get(gca,'ylim');
     plot(tmp_xlim, [0 0],'--','color', [0.7 0.7 0.7])       %grey dashed horizontal line at 0
     set(gca,'ylim',yl);
@@ -330,6 +335,11 @@ for i = 2:num_pars_d
     %errorbar(best_settings(:,3),best_settings(:,3+i),best_settings(:,4+num_pars_d+i),'- .','MarkerSize',15,'Color',cmap(i+1,:));  %with confidence errorbars
 end
 tmp_xlim = [best_settings(end,3)-xlim_space best_settings(1,3)+xlim_space];
+if tmp_xlim(2) == tmp_xlim(1)
+   tttv = tmp_xlim(1)*0.01;
+   tmp_xlim(2) = tmp_xlim(2)+tttv;
+   tmp_xlim(1) = tmp_xlim(1)-tttv;
+end
 plot(tmp_xlim, [0 0],'--','color', [0.7 0.7 0.7])       %grey horizontal line at 0
 xlim(tmp_xlim);
 plot([most_reliable_setting_avg_score most_reliable_setting_avg_score],get(gca,'ylim'),'-','color', [0.7 0.7 0.7])     %vertical line at most reliable setting (max(avg-conf95))
@@ -371,6 +381,11 @@ for i = 2:num_pars_d
     plot(best_settings(:,3),abs(best_settings(:,3+i))-best_settings(:,4+num_pars_d+i),'- .','MarkerSize',15,'Color',cmap(i+1,:));
 end
 tmp_xlim = [best_settings(end,3)-xlim_space best_settings(1,3)+xlim_space];
+if tmp_xlim(2) == tmp_xlim(1)
+   tttv = tmp_xlim(1)*0.01;
+   tmp_xlim(2) = tmp_xlim(2)+tttv;
+   tmp_xlim(1) = tmp_xlim(1)-tttv;
+end
 plot(tmp_xlim, [0 0],'--','color', [0.7 0.7 0.7])       %grey horizontal line at 0
 xlim(tmp_xlim);
 plot([most_reliable_setting_avg_score most_reliable_setting_avg_score],get(gca,'ylim'),'-','color', [0.7 0.7 0.7])     %vertical line at most reliable setting (max(avg-conf95))
