@@ -14,14 +14,14 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
 
     testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
     testBatch_01_05 = BanditTestBatch( allCases, [0, 1, 2, 3, 4] )  #Celtra
-    testBatch_06_10 = BanditTestBatch( allCases, [5, 6, 7, 8, 9] )  #Celtra
+    testBatch_07_10 = BanditTestBatch( allCases, [6, 7, 8, 9] )  #Celtra
     testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )  #Celtra
 
     #-- change configuration here
-    
-    #opti_learn_cases = testBatch_01_05    
-    #opti_learn_cases = testBatch_06_10    
-    opti_learn_cases = testBatch_01_10
+
+    #opti_learn_cases = testBatch_01_05
+    #opti_learn_cases = testBatch_06_10
+    opti_learn_cases = testBatch_07_10
 
     #solv_selection_policy = GLODEF_SELECTION_EGREEDY
     #opti_config_param_boundaries = [0.0, 0.4]
@@ -37,18 +37,18 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     #opti_config_params_lower_bounds = [0.5]
     #opti_config_params_upper_bounds = [9.0]
 
-    opti_selective_optimization = [1, 2]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
-    opti_config_params_lower_bounds = [0.5, 0.5]
-    opti_config_params_upper_bounds = [9.0, 1.0]
+    opti_selective_optimization = [1, 2, 3]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
+    opti_config_params_lower_bounds = [0.5, 0.5, 10]
+    opti_config_params_upper_bounds = [9.0, 1.0, 300]
 
     #opti_selective_optimization = [0, 1, 2, 3]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
     #opti_config_params_lower_bounds = [0.0, 0.5, 0.5, 10]
     #opti_config_params_upper_bounds = [3.0, 7.0, 1.0, 300]
-    
+
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
-    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
-    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
 
     opti_oracle_probablity = 1
     opti_completeRepeats = 100
@@ -80,7 +80,7 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     ]
     opti_algorithm = GLODEF_OPTIMIZATION_ANNEALING
     opti_fitness_metric = GLODEF_FITNESS_OPTIMALITY_RANDNOR
-    
+
 
     optimizer = Optimizer(opti_solver, opti_evaluations_per_sample, opti_config, opti_fitness_metric, opti_algorithm, opti_selective_optimization)
 
@@ -99,9 +99,9 @@ def test_2014_10_18_noChangePoint(allCases):
     testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )  #Celtra
 
     #-- change configuration here
-    
-    #opti_learn_cases = testBatch_01_05    
-    opti_learn_cases = testBatch_06_10    
+
+    #opti_learn_cases = testBatch_01_05
+    opti_learn_cases = testBatch_06_10
     #opti_learn_cases = testBatch_01_10
 
     solv_selection_policy = GLODEF_SELECTION_EGREEDY
