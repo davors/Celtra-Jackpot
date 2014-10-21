@@ -46,10 +46,11 @@ class machine(object):
         self.sum=0.0
         self.sum_total=0.0
         self.id=id
-        self.moving_sum=[]
         self.variance=0.0
         self.CUSUM=0.0
         __M2__=0.0
+        tp=range(10,100,10) + range(100,1000,100) + range(1000,6000,1000)
+        self.moving_sum=[0.0 for s in tp]
 
     def update(self,r,p):
         self.R.append(r)
@@ -69,12 +70,8 @@ class machine(object):
                 new_pulls=self.pulls
             p_tmp=self.pulls-new_pulls
             if index!=-1:
-                try:
-                    #occasionaly list index problem HERE!
                     self.moving_sum[index:]=[self.moving_sum[index]]*len(self.moving_sum[index:])
                     self.sum=self.moving_sum[index]
-                except: 
-                    print 'lol'
             else:
                 self.moving_sum[:]=[0.0]*len(self.moving_sum[:])
                 self.sum=0.0

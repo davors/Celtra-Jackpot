@@ -12,12 +12,12 @@ from math import *
 #PHt=Mt-mt=max(PH(t-1)-rt+rat-delta,0)
 
 #Treshold 80
-def HankeyPankeyTest(treshold,m):
+def HankeyPankeyTest(treshold,reset_algorithm,M,m_id):
     
+    rejected=0;
 
-
-    if abs(m.CUSUM)>=treshold:
-                if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M,soft_reset)
+    if abs(M[m_id].CUSUM)>=treshold:
+                if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M,0)
                 elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s,soft_reset)
                 elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,m.P[-s-1],soft_reset)
                 elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s,soft_reset)
@@ -27,10 +27,8 @@ def HankeyPankeyTest(treshold,m):
 def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm, soft_reset):
     tp=range(10,100,10) + range(100,1000,100) + range(1000,6000,1000)
     m=M[m_id]
-    #tp=[50, 100, 200] 
+    #tp=[50] 
     rejected=0
-    if m.moving_sum==[]:
-        m.moving_sum=[0.0 for s in tp]
     for t in range(0,len(tp)):
         s=tp[t]
         if s<m.pulls:
@@ -49,6 +47,7 @@ def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm, s
             Z=testIfDistDiff(x,y,xn,yn)
         #print str(Z)
         # 95 % confidence interval
+            Z=abs(M[m_id].CUSUM)
             if Z>=treshold:
                 if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M,soft_reset)
                 elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s,soft_reset)
