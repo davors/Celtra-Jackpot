@@ -23,9 +23,10 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     #opti_learn_cases = testBatch_06_10
     opti_learn_cases = testBatch_01_10
 
-    solv_selection_policy = GLODEF_SELECTION_EGREEDY
-    solv_initial_param_values = [0.140, 2.0, 1.0, 50, 1.0]     #if None: default will be used
-    ##opti_config_param_boundaries = [0.0, 0.4]
+    #solv_selection_policy = GLODEF_SELECTION_EGREEDY
+    #solv_initial_param_values = [0.140, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+    #opti_config_params_lower_bounds = [0.0]
+    #opti_config_params_upper_bounds = [0.4]
 
     #solv_selection_policy = GLODEF_SELECTION_SOFTMAX
     #opti_config_param_boundaries = [0.005, 0.02]       #softmax tao lower boundary must be > 0
@@ -33,12 +34,12 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     #solv_selection_policy = GLODEF_SELECTION_UCB1
     #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
-    #solv_selection_policy = GLODEF_SELECTION_UCBTUNED
-    #solv_initial_param_values = [0.770, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_initial_param_values = [0.770, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
-    opti_selective_optimization = [1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
-    opti_config_params_lower_bounds = [0.2]
-    opti_config_params_upper_bounds = [9.9]
+    opti_selective_optimization = [0]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
+    opti_config_params_lower_bounds = [0.0]
+    opti_config_params_upper_bounds = [2.5]
 
     #opti_selective_optimization = [1, 3]              #choosen parameters to optimize - array of indices, if none then all parameters will be optimized
     #opti_config_params_lower_bounds = [0.2, 10]
@@ -60,16 +61,19 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     #opti_config_params_upper_bounds = [3.0, 7.0, 1.0, 300]
 
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
-    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
-    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
 
     opti_oracle_probablity = 0
     opti_completeRepeats = 100
+    
+    solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
+    #solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
+    #solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
 
     #-- do not change values below here --#
 
-    solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
     solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
     solv_param_types = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS
     solv_param_num_inputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS
@@ -80,7 +84,7 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     if opti_oracle_probablity == 1 :
         opti_evaluations_per_sample = 1
     else :
-        opti_evaluations_per_sample = 25
+        opti_evaluations_per_sample = 100
     opti_config = [     #configuration for the optimization algorithm: arbitrary list of additional parameters
     opti_config_params_lower_bounds,         # lower bounds for all parameters
     opti_config_params_upper_bounds,         # upper bounds for all parameters
