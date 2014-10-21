@@ -25,12 +25,10 @@ def HankeyPankeyTest(treshold,reset_algorithm,M,m_id):
 
 
 def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm, soft_reset):
-    #tp=range(10,100,10) + range(100,1000,100) + range(1000,6000,1000)
+    tp=range(10,100,10) + range(100,1000,100) + range(1000,6000,1000)
     m=M[m_id]
-    tp=[50] 
+    #tp=[50] 
     rejected=0
-    if m.moving_sum==[]:
-        m.moving_sum=[0.0 for s in tp]
     for t in range(0,len(tp)):
         s=tp[t]
         if s<m.pulls:
