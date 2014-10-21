@@ -24,33 +24,39 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     opti_learn_cases = testBatch_01_10
 
     #solv_selection_policy = GLODEF_SELECTION_EGREEDY
-    #opti_config_param_boundaries = [0.0, 0.4]
+    #solv_initial_param_values = [0.140, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+    ##opti_config_param_boundaries = [0.0, 0.4]
 
     #solv_selection_policy = GLODEF_SELECTION_SOFTMAX
     #opti_config_param_boundaries = [0.005, 0.02]       #softmax tao lower boundary must be > 0
 
-    ##solv_selection_policy = GLODEF_SELECTION_UCB1
+    #solv_selection_policy = GLODEF_SELECTION_UCB1
+    #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+
     solv_selection_policy = GLODEF_SELECTION_UCBTUNED
-    solv_initial_param_values = [0.166, 2.5, 1.0, 50, 1.0]     #if None: default will be used
+    solv_initial_param_values = [0.770, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
     #opti_selective_optimization = [1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
-    #opti_config_params_lower_bounds = [0.5]
-    #opti_config_params_upper_bounds = [9.0]
+    #opti_config_params_lower_bounds = [0.2]
+    #opti_config_params_upper_bounds = [9.9]
 
-    opti_selective_optimization = [1, 2]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
-    opti_config_params_lower_bounds = [0.5, 0.5]
-    opti_config_params_upper_bounds = [9.0, 1.0]
+    opti_selective_optimization = [1, 3]              #choosen parameters to optimize - array of indices, if none then all parameters will be optimized
+    opti_config_params_lower_bounds = [0.5, 10]
+    opti_config_params_upper_bounds = [9.0, 300]
 
     #opti_selective_optimization = [0, 1, 2, 3]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
-    #opti_config_params_lower_bounds = [0.0, 0.5, 0.5, 10]
-    #opti_config_params_upper_bounds = [3.0, 7.0, 1.0, 300]
-    
+    #opti_config_params_lower_bounds = [0.0, 0.3, 0.4, 10]
+    #opti_config_params_upper_bounds = [3.0, 9.9, 1.0, 300]
+
+    #opti_config_grid_step = [0.01, 0.05, 0.01, 10]          # [] - disabled (continuous)
+    opti_config_grid_step = [0.05, 10]
+
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
-    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
-    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
 
-    opti_oracle_probablity = 1
+    opti_oracle_probablity = 0
     opti_completeRepeats = 100
 
     #-- do not change values below here --#
@@ -70,7 +76,7 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
     opti_config = [     #configuration for the optimization algorithm: arbitrary list of additional parameters
     opti_config_params_lower_bounds,         # lower bounds for all parameters
     opti_config_params_upper_bounds,         # upper bounds for all parameters
-    [],                 # grid step (if you want discrete search); leave empty for continuous search
+    opti_config_grid_step,                 # grid step (if you want discrete search); leave empty for continuous search
     int(sqrt(len(opti_selective_optimization)))*10,                 # number of cycles (epochs) of SA
     int(sqrt(len(opti_selective_optimization)))*10,                 # number of iterations per each cycle
     0.75,               # probability of accepting worse solution at the start

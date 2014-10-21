@@ -166,7 +166,7 @@ class Optimizer() :
             print GLO_metrics_out_format[self.fitnessMetric] % fitness,
             print '  ',
             for p in xrange(len(paramValues)) :
-                print ' %f' % paramValues[p],
+                print ' %8.5f' % paramValues[p],
             print '  ',
             for c in xrange(batch.num) :
                 print GLO_metrics_out_format[self.fitnessMetric] % casesScore[self.fitnessMetric][c],
