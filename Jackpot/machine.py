@@ -16,6 +16,7 @@ class machine(object):
     moving_sum=[]
     variance=0.0
     __M2__=0.0
+    CUSUM=0.0
     #storedValue=None
     
     def __varmean__(self,pulls):
@@ -26,7 +27,7 @@ class machine(object):
                 delta=x-self.mean
                 self.mean=self.mean+float(delta)/n
                 self.__M2__=self.__M2__+delta*(x-self.mean)
-
+                self.CUSUM=max(self.CUSUM-x+self.mean,0)
             if self.pulls<2:
                 self.variance=0.0
             else:
@@ -47,6 +48,7 @@ class machine(object):
         self.id=id
         self.moving_sum=[]
         self.variance=0.0
+        self.CUSUM=0.0
         __M2__=0.0
 
     def update(self,r,p):
@@ -58,6 +60,7 @@ class machine(object):
         self.sum_total=self.sum_total+r
         #self.mean2=float(self.sum)/self.pulls
         self.__varmean__(1)
+        self.CUSUM=max(0,self.CUSUM-r+self.mean)
         
 
     def resetState(self,index,new_pulls):
@@ -89,7 +92,8 @@ class machine(object):
         #self.mean2=float(self.sum)/self.pulls
         self.mean=0.0;
         self.variance=0.0
-        self.__M2__=0.0
+        self.__M2__= 0.0
+        self.CUSUM = 0.0
         self.__varmean__(self.pulls)
         return  p_tmp
         
