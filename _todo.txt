@@ -1,6 +1,11 @@
 Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
 --------------------------------------------------------------
 
+- meritve
+	* egreedy, UCB1, UCBT brez change point
+		- pri 10 repeatih
+		- pri 25 repeatih
+
 - èe tega nismo že: implementacija neke znane/uveljavljene metode
 	* temeljito preišèi èlanke kaj je bilo na zadnje raziskovano (aktualne objave) in to implemenitraj, èe ni preveè zahtevno
 	* ali dovolj je npr. da izboljšamo UCB1 ali UCB1tuned z našo metodo changePointDetection?
@@ -13,4 +18,14 @@ Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
 
 - preizkusi "_ideje.txt"
 	* predvsem nameri razliène naèine za reset UCBjev ko je change point detectan
+	
+- naredit generator random banditov, vhodi
+	--- mogoèe vzameš bolj kakšno stvar iz èlankov?
+	* min max pulls
+	* min max banditov
+	* min max reward probability
+	* min max number of changes per bandit
+	* max allowed change (relative to previous value)
+	* max allowed change (relative to max probability)
+	-- vse našteto se izbere random
 	
