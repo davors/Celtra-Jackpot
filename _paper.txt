@@ -1,0 +1,58 @@
+TITLE
+Change point detection for non-stationary multi-armed bandit policies
+Improvement of non-stationary multi-armed bandit policies with change point detection
+Selection policies with change point detection for the non-stationary multi-armed bandit problem
+Policies with change point detection for non-stationary bandits
+Selection and change point detection in non-stationary bandits
+An improved change point detection for non-stationary bandit policies
+
+Change point detection and selection policies in non-stationary bandits with bernoulli rewards/distribution
+
+Intro
+...
+
+Background/related
+
+- Multi armed bandit
+	*EMPHASIZE: bernoulli? (ali v experiments) and not NORMAL distribution
+	
+- Selection Policies for the stationary MAB problem
+
+- non-stationary MAB and change point detection
+	*henky penky
+	*druge?
+
+Methodology
+
+- DavorTom change Point
+	*statistical tests
+	*different reset techniques
+
+- Combination with UCB1/UCBT
+	*tracking total_rejected_pulls
+	*short analysis of the effect of different reset techniques
+	
+Experiments
+
+- setting
+	*10 bernoulli testcases:
+		- inspired by real-data
+		- bernoulli dristribution (emphasize it is more challenging than normal)
+		- 5 stationary, 5 non-stationary, low-probabilites (sparse rewards), explain why the stationary (to avoid overfitting on non-stationary)
+	*several selection algorithms, change point algorithms
+	*optimization procedure: offline, annealing
+- multiple algorithms without change point
+- UCBT with change point
+	*henky penky
+	*davorTom
+	*all 4 reset policies
+- UCBT with best change point VS some other algorithm? (POKER?)
+	*ali primerjamo tukaj jabolke in hruške, bi morali POKER vkljuèit v katero zgornjo verjetno?
+(- function approximation of change point parameters and UCB exploration bias)
+
+
+Conclusion
+
+- our algorithm is the best
+- all other papers are crap
+- we win
