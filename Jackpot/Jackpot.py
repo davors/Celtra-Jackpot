@@ -34,9 +34,9 @@ testBatch_debug = BanditTestBatch( allCases, [5])
 
 ##-- experiments (for ICANNGA)
 
-test_2014_10_20_changePoint_DavorTom2par(allCases)
+#test_2014_10_20_changePoint_DavorTom2par(allCases)
 #test_2014_10_18_noChangePoint(allCases)
-#test_2014_10_20_HankeyPankey_treshold(allCases)
+test_2014_10_20_HankeyPankey_treshold(allCases)
 
 
 ##-- unit tests

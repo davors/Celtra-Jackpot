@@ -203,8 +203,10 @@ class MABsolver() :
                     print 'MABsolver: changePointDetector: Global pull at change point: %d' + i
 
         elif self.config.changePointDetector == GLODEF_CHANGEPOINT_HENKYPENKY :
-            #todo henky penky
-            todo
+            change_point_threshold = self.config.params[1].getValue()
+            change_point_minimal_samples = self.config.params[3].getValue()
+            change_point_soft_reset = self.config.params[4].getValue()
+            rejected_pulls=HankeyPankeyTest(change_point_threshold,change_point_minimal_samples,self.config.resetAlgorithm,self.machines,machine_id,change_point_soft_reset)
 
         self.total_rejected_pulls += rejected_pulls
 
