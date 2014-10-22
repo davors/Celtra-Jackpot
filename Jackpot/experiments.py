@@ -132,9 +132,9 @@ def test_2014_10_20_HankeyPankey_treshold(allCases):
     #opti_config_params_lower_bounds = [0.2]
     #opti_config_params_upper_bounds = [9.9]
 
-    opti_selective_optimization = [1]              #choosen parameters to optimize - array of indices, if none then all parameters will be optimized
-    opti_config_params_lower_bounds = [5]
-    opti_config_params_upper_bounds = [150]
+    opti_selective_optimization = [1, 2]              #choosen parameters to optimize - array of indices, if none then all parameters will be optimized
+    opti_config_params_lower_bounds = [5, 10]
+    opti_config_params_upper_bounds = [150, 500]
 
     #opti_selective_optimization = [0, 1, 2, 3]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
     #opti_config_params_lower_bounds = [0.0, 0.3, 0.4, 10]
@@ -161,7 +161,7 @@ def test_2014_10_20_HankeyPankey_treshold(allCases):
 
     #-- do not change values below here --#
 
-    solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
+    solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
     solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
     solv_param_types = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS
     solv_param_num_inputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS
