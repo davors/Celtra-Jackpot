@@ -2,6 +2,7 @@
 
 %list of available measurements (files) - scores were copied in excel file
 
+experiment_filenames{1}   = 'tmp'
 experiment_filenames{2}   = '2014_10_17 first test';
 experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
@@ -104,8 +105,8 @@ experiment_filenames{77}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep10___2014_1
 experiment_filenames{78}   = 'Reprint___2014_10_21_noCPD_Egreedy_perStep25___2014_10_21_19_03_05';
 experiment_filenames{79}   = 'Reprint___2014_10_21_noCPD_UCB1_perStep25___2014_10_21_19_04_21';
 experiment_filenames{80}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep25___2014_10_21_19_06_24';
-
-experiment_filenames{81}   = '';
+experiment_filenames{81}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep50___2014_10_21_22_15_21';
+experiment_filenames{82}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep100___2014_10_21_22_15_25';
 
 experiment_filenames{90}   = '';
 experiment_filenames{91}   = '';
@@ -113,7 +114,7 @@ experiment_filenames{91}   = '';
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 80;
+filename_to_load = 83;
 
 analyze_score_for_testCase = 0;
     % 0 ... take average of all
