@@ -2,7 +2,7 @@ from Config import *
 from machine import *
 from strategy import *
 from changePointDetection import *
-
+import types
 
 class ParamFunction() :
 
@@ -16,15 +16,30 @@ class ParamFunction() :
         self,
         function = DEFAULT_PARAM_FUNCTIONS,
         numInputs = DEFAULT_PARAM_NUMINPUTS,
-        weightValue = 0.0
+        weightValues = 0.0
         ) :
 
         self.function = function
         self.numInputs = numInputs
-        self.weights = [weightValue] * (self.numInputs + 1)
+        self.lastInputs = [None] * numInputs
+        if not isinstance(weightValues, types.ListType) :
+            self.weights = [weightValues] * (self.numInputs + 1)
+        elif len(weightValues) == (numInputs + 1):
+            self.weights = weightValues
+        else :
+            print 'ERROR: class ParamFunction(): number of specified initial values mismatches the number of weights and inputs'
 
     def updateInputs(self, newInputs, calcOutputs = 0) :
         self.lastInputs = newInputs
+        if calcOutputs == 1 :
+            self.getValue()
+
+    def updateSingleInput(self, selectedInput, newInput, calcOutputs = 0) :
+        if selectedInput < self.numInputs :
+            self.lastInputs[selectedInput] = newInput
+        else :
+            print 'WARNING: ParamFunction(): updateSingleInput(): update input out of index - IGNORED'
+
         if calcOutputs == 1 :
             self.getValue()
 
@@ -34,7 +49,7 @@ class ParamFunction() :
         elif(self.function == GLODEF_PARAM_FUNCTION_LINEAR) :
             self.lastOutput = self.weights[0]
             for i in xrange(self.numInputs) :
-                self.lastOutput += (self.weights[i]+1) * self.lastInputs[i]
+                self.lastOutput += (self.weights[i+1]) * self.lastInputs[i]
         elif(self.function == GLODEF_PARAM_FUNCTION_NEURAL) :
             #TODO
             todo
@@ -214,7 +229,11 @@ class MABsolver() :
 
         list = []
         for i in selectedParams :
-             list = list + self.config.params[i].weights
+            if not isinstance(i, types.ListType) :
+                list = list + self.config.params[i].weights
+            else :
+                for j in i[1] :
+                    list = list + [self.config.params[i[0]].weights[j]]
 
         return list
 
@@ -227,9 +246,14 @@ class MABsolver() :
 
         c = 0
         for i in selectedParams :
-            for j in range(len(self.config.params[i].weights)) :
-                self.config.params[i].weights[j] = newValues[c]
-                c += 1
+            if not isinstance(i, types.ListType) :
+                for j in xrange(len(self.config.params[i].weights)) :
+                    self.config.params[i].weights[j] = newValues[c]
+                    c += 1
+            else :
+                for j in i[1] :
+                    self.config.params[i[0]].weights[j] = newValues[c]
+                    c += 1
 
         if not (c == len(newValues)) :
            print 'MABsolver(): setParams(): ERROR: newValues list incorrect length'

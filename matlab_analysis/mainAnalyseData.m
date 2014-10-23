@@ -2,6 +2,7 @@
 
 %list of available measurements (files) - scores were copied in excel file
 
+experiment_filenames{1}   = 'tmp'
 experiment_filenames{2}   = '2014_10_17 first test';
 experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
@@ -44,7 +45,7 @@ experiment_filenames{34}   = 'Reprint___2014_10_18_SMAX_T3_Or1___2014_10_18_21_3
 experiment_filenames{35}   = 'Reprint___2014_10_18_UCB1_T3_Or1___2014_10_18_12_35_18';
 experiment_filenames{36}   = 'Reprint___2014_10_18_UCBT_T3_Or1___2014_10_18_12_37_21';
 
-%DavorTom change point experiments
+%2014_10_20 DavorTom change point experiments
 experiment_filenames{37}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetZero___2014_10_20_01_24_54';
 experiment_filenames{38}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetAllMA___2014_10_20_01_24_47';
 experiment_filenames{39}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetCut___2014_10_20_01_24_49';
@@ -75,7 +76,7 @@ experiment_filenames{58}   = '';
 experiment_filenames{59}   = '';
 
 %%%%--- USE first_data_column = 2 FROM HERE ON !!!! ---%%%%
-
+%2014_10_21
 experiment_filenames{60}   = 'Reprint___2014_10_21_UCBT_4parms_resetSingle___2014_10_21_00_30_42';
 experiment_filenames{61}   = 'Reprint___2014_10_21_UCBT_2parms_resetSingle___2014_10_21_01_19_20';
 experiment_filenames{62}   = 'Reprint___2014_10_21_Or1_UCBT_3parms_resetSingle___2014_10_20_13_19_04';
@@ -95,14 +96,27 @@ experiment_filenames{72}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetMA___2
 experiment_filenames{73}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetSingle___2014_10_21_01_19_21';
 experiment_filenames{74}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetZero___2014_10_21_10_32_18';
 
+%2014_10_21 no change point (redone with improved output)
+experiment_filenames{75}   = 'Reprint___2014_10_21_noCPD_Egreedy_perStep10___2014_10_21_19_02_42';
+experiment_filenames{76}   = 'Reprint___2014_10_21_noCPD_UCB1_perStep10___2014_10_21_19_04_47';
+experiment_filenames{77}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep10___2014_10_21_19_05_39';
 
+%2014_10_21 experiments with more than 10 evaluations per sample
+experiment_filenames{78}   = 'Reprint___2014_10_21_noCPD_Egreedy_perStep25___2014_10_21_19_03_05';
+experiment_filenames{79}   = 'Reprint___2014_10_21_noCPD_UCB1_perStep25___2014_10_21_19_04_21';
+experiment_filenames{80}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep25___2014_10_21_19_06_24';
+experiment_filenames{81}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep50___2014_10_21_22_15_21';
+experiment_filenames{82}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep100___2014_10_21_22_15_25';
+
+experiment_filenames{90}   = '';
+experiment_filenames{91}   = '';
 
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 65;
+filename_to_load = 83;
 
-analyze_score_for_testCase = 7;
+analyze_score_for_testCase = 0;
     % 0 ... take average of all
     % > 0 ... analyze for selected testCase
 
