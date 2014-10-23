@@ -158,7 +158,17 @@ class MABsolver() :
 
     # select a bandit from available stats
     def selectBandit(self, increase_pulls = 1) :
-        
+
+        #TODO PARAM_INPUTS if not direct parameter search (if linear or neural used...), update inputs in function approximator for parameters
+        #example:
+        # self.config.params[0].updateInputs( array_of_new_inputs )
+        #or
+        # self.config.params[0].lastInputs[0] = some_new_input1
+        # self.config.params[0].lastInputs[1] = some_new_input2
+        # self.config.params[1].lastInputs[0] = some_new_input1
+        # self.config.params[1].lastInputs10] = some_new_input2
+        # self.config.params[2].lastInputs[0] = some_new_input3
+
         exploration_weight = self.config.params[0].getValue()
 
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]
@@ -189,25 +199,10 @@ class MABsolver() :
 
         # change point detection
         rejected_pulls = 0
-        if self.config.changePointDetector == GLODEF_CHANGEPOINT_DAVORTOM :
-            change_point_threshold = self.config.params[1].getValue()
-            change_point_interval = self.config.params[2].getValue()
-            change_point_minimal_samples = self.config.params[3].getValue()
-            change_point_soft_reset = self.config.params[4].getValue()
-            rejected_pulls = checkChange(change_point_threshold, change_point_interval, change_point_minimal_samples,self.machines,machine_id, self.config.resetAlgorithm, change_point_soft_reset)
-            #rejected_pulls = HankeyPankeyTest(change_point_threshold,self.config.resetAlgorithm,self.machines,machine_id)
-            #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine
-            #self.total_rejected_pulls = self.total_rejected_pulls + rejected_pulls
-            if rejected_pulls > 0 :
-                if not suppress_output :
-                    print 'MABsolver: changePointDetector: Global pull at change point: %d' + i
-
-        elif self.config.changePointDetector == GLODEF_CHANGEPOINT_HENKYPENKY :
-            change_point_threshold = self.config.params[1].getValue()
-            change_point_minimal_samples = self.config.params[3].getValue()
-            change_point_soft_reset = self.config.params[4].getValue()
-            rejected_pulls=HankeyPankeyTest(change_point_threshold,change_point_minimal_samples,self.config.resetAlgorithm,self.machines,machine_id,change_point_soft_reset)
-
+        rejected_pulls = detectChangePoint(self, machine_id)   
+        if rejected_pulls > 0 :
+            if not suppress_output :
+                print 'MABsolver: changePointDetector: Global pull at change point: %d' + i   
         self.total_rejected_pulls += rejected_pulls
 
     def listParams(self, selectiveList = None) :

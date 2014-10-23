@@ -126,15 +126,15 @@ def test_2014_10_20_HankeyPankey_treshold(allCases):
     #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
     solv_selection_policy = GLODEF_SELECTION_UCBTUNED
-    solv_initial_param_values = [0.770, 10.0, 1.0, 50, 1.0]     #if None: default will be used
+    solv_initial_param_values = [0.770, 10.0, 1.0, 0, 1.0]     #if None: default will be used
 
     #opti_selective_optimization = [1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
     #opti_config_params_lower_bounds = [0.2]
     #opti_config_params_upper_bounds = [9.9]
 
-    opti_selective_optimization = [1, 2]              #choosen parameters to optimize - array of indices, if none then all parameters will be optimized
-    opti_config_params_lower_bounds = [5, 10]
-    opti_config_params_upper_bounds = [150, 500]
+    opti_selective_optimization = [1]              #choosen parameters to optimize - array of indices, if none then all parameters will be optimized
+    opti_config_params_lower_bounds = [5]
+    opti_config_params_upper_bounds = [150]
 
     #opti_selective_optimization = [0, 1, 2, 3]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
     #opti_config_params_lower_bounds = [0.0, 0.3, 0.4, 10]
