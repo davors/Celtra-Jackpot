@@ -47,21 +47,21 @@ class MABsolver_config() :
     selectionPolicy = None
     changePointDetector = None
     changePointTest = None
-    resetAlgorithm = None    
+    resetAlgorithm = None
     params = None
 
     infoNumOutputLines = 4
 
     def __init__(
-        self, 
+        self,
         paramValues = None,
-        selectionPolicy = DEFAULT_SELECTION_POLICY, 
-        changePointDetector = DEFAULT_CHANGEPOINT_DETECTOR, 
+        selectionPolicy = DEFAULT_SELECTION_POLICY,
+        changePointDetector = DEFAULT_CHANGEPOINT_DETECTOR,
         changePointTest = DEFAULT_CHANGEPOINT_TEST,
         resetAlgorithm = DEFAULT_RESET_ALGORITHM,
         paramFunctions = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS,
         paramNumInputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS
-        
+
         ) :
 
         self.selectionPolicy = selectionPolicy
@@ -77,13 +77,14 @@ class MABsolver_config() :
             return
 
         if paramValues is None :
-            
+
             paramValues = [0.0 , DEFAULT_PAR_CHANGEPOINT_THR, DEFAULT_PAR_CHANGEPOINT_INT, DEFAULT_PAR_CHANGEPOINT_NUM, DEFAULT_PAR_CHANGEPOINT_SOFT]
 
             if   selectionPolicy == GLODEF_SELECTION_EGREEDY :  paramValues[0] = DEFAULT_PAR_EGREEDY_E
             elif selectionPolicy == GLODEF_SELECTION_SOFTMAX :  paramValues[0] = DEFAULT_PAR_SOFTMAX_T
             elif selectionPolicy == GLODEF_SELECTION_UCB1 :     paramValues[0] = DEFAULT_PAR_UCB1_C
             elif selectionPolicy == GLODEF_SELECTION_UCBTUNED : paramValues[0] = DEFAULT_PAR_UCB1_C
+            elif selectionPolicy == GLODEF_SELECTION_POKER :    paramValues[0] = DEFAULT_PAR_POKER_H
 
             self.params = [ParamFunction(paramFunctions[i], paramNumInputs[i], paramValues[i]) for i in xrange(lenF)]
 
@@ -95,8 +96,8 @@ class MABsolver_config() :
 
     def info(self) :
         print 'MABsolver_config: algorithms: %s , %s , %s , %s' % (
-            GLO_labels_selection_policies[self.selectionPolicy], 
-            GLO_labels_change_point_detectors[self.changePointDetector], 
+            GLO_labels_selection_policies[self.selectionPolicy],
+            GLO_labels_change_point_detectors[self.changePointDetector],
             GLO_labels_change_point_test[self.changePointTest],
             GLO_labels_reset_algorithms[self.resetAlgorithm]
             )
@@ -127,19 +128,25 @@ class MABsolver() :
     pulls = None
     total_rejected_pulls = None
 
+    # Index of last machine played
+    lastPulledMachine = None
+    machineMeanSum = None
+    machineSigmaSum = None
+
+
     # initialization
     def __init__(
-        self, 
+        self,
         paramValues = None,
-        selectionPolicy = DEFAULT_SELECTION_POLICY, 
-        changePointDetector = DEFAULT_CHANGEPOINT_DETECTOR, 
+        selectionPolicy = DEFAULT_SELECTION_POLICY,
+        changePointDetector = DEFAULT_CHANGEPOINT_DETECTOR,
         changePointTest = DEFAULT_CHANGEPOINT_TEST,
         resetAlgorithm = DEFAULT_RESET_ALGORITHM,
         paramTypes = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS,
         paramNumInputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS,
         init_bandits = 0,
         ) :
-        
+
         self.config = MABsolver_config(paramValues, selectionPolicy, changePointDetector, changePointTest, resetAlgorithm, paramTypes, paramNumInputs)
         self.resetState(init_bandits)
 
@@ -150,6 +157,9 @@ class MABsolver() :
 
         self.pulls = 0
         self.total_rejected_pulls = 0
+        self.lastPulledMachine = 0
+        self.machineMeanSum = 0.0
+        self.machineSigmaSum = 0.0
 
         self.epsilon_soft = self.config.params[0]
         self.softMax_tao = self.config.params[1]
@@ -158,14 +168,16 @@ class MABsolver() :
 
     # select a bandit from available stats
     def selectBandit(self, increase_pulls = 1) :
-        
+
         exploration_weight = self.config.params[0].getValue()
+        POKER_params = [self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum, self.pulls - self.total_rejected_pulls]
 
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]
         elif self.config.selectionPolicy == GLODEF_SELECTION_EGREEDY :  selected_machine = EGreedy(self.machines, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_SOFTMAX :  selected_machine = SoftMax(self.machines, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
+        elif self.config.selectionPolicy == GLODEF_SELECTION_POKER : selected_machine = POKER(self.machines, POKER_params, exploration_weight)
 
         self.pulls += increase_pulls
 
@@ -186,6 +198,11 @@ class MABsolver() :
         # self.config.params[2].lastInputs[0] = some_new_input3
 
         self.machines[machine_id].update(reward, self.pulls)
+
+        # POKER stuff
+        self.lastPulledMachine = machine_id
+        self.machineMeanSum += self.machines[machine_id].mean
+        self.machineSigmaSum += sqrt(self.machines[machine_id].variance)
 
         # change point detection
         rejected_pulls = 0
@@ -208,7 +225,7 @@ class MABsolver() :
         self.total_rejected_pulls += rejected_pulls
 
     def listParams(self, selectiveList = None) :
-        
+
         if selectiveList is None :
             selectedParams = range(len(self.config.params))
         else :
@@ -221,7 +238,7 @@ class MABsolver() :
         return list
 
     def setParams(self, newValues, selectiveList = None) :
-        
+
         if selectiveList is None :
             selectedParams = range(len(self.config.params))
         else :

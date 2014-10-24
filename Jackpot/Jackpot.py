@@ -34,7 +34,7 @@ testBatch_debug = BanditTestBatch( allCases, [5])
 
 ##-- experiments (for ICANNGA)
 
-test_2014_10_20_changePoint_DavorTom2par(allCases)
+#test_2014_10_20_changePoint_DavorTom2par(allCases)
 #test_2014_10_18_noChangePoint(allCases)
 
 
@@ -43,6 +43,7 @@ test_2014_10_20_changePoint_DavorTom2par(allCases)
 
 #unitTest_OptExhaustive(allCases)
 #unitTest_OptSimulatedAnnealing(allCases)
+unitTest_Nejc(allCases)
 
 ##-- policy configuration
 
