@@ -1,16 +1,36 @@
 Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
 --------------------------------------------------------------
 
+- davor izboljšaj strukturo kode za change point detektorje
+	* glavna metoda, ki klièe ostale
+		- parametri ne grejo skozi funkcijo kot argumenti, ampak gre samo MABsolver	
+		- inputs in parametri se nastavijo znotraj procedure (updateInputs, getValue)	
+	* preimenuj changePoint v davorTom?
+
+- preizkusi kot linearna funkcija:
+	*changePointDetector DavorTom parameter threshold kot funkcija: število vozcev v moving average in število potez od zadnjega reseta
+		- ostali parametri naj bodo fiksni (shring interval 1.0, minimum moving average samples = 10)
+		- preizkusi optimizacijo pri fiksnem UCB C, in še enkrat èe optimizraš tudi tega
+	* UCB parameter C kot funkcija: število potez od zadnjega reseta
+		- poskusi še opcijo, da changePointDetector v bistvu ne sploh resetira stanja, ampak samo uravnava parameter C
+	
 - èe tega nismo že: implementacija neke znane/uveljavljene metode
 	* temeljito preišèi èlanke kaj je bilo na zadnje raziskovano (aktualne objave) in to implemenitraj, èe ni preveè zahtevno
 	* ali dovolj je npr. da izboljšamo UCB1 ali UCB1tuned z našo metodo changePointDetection?
 	* kaj toèno so uporabili pri HenkyPenky?? lahko s tisitm primerjamo?
 
-- izmeri kako dobro deluje kateri algoritem (pri optimiziranih parametrih)
-	* z razliènimi changePointDetection
-	* skupaj 4*3 = 12 optimizacij in meritev
-	* ali definiramo še kakšne lastne testcase??
-
+- !NUJNO! definirat nove testne probleme, ali naredit križne teste
+	* ugotovit je treba kateri change point detector in selection algoritm se bolj/preveè overfita na podatke: ali henkyPanky ali naš changePoint DavorTom??, ker sicer rezultati kažejo, da sta oba približno enako dobra na istih parametrih
+	- mogoèe: naredit generator random banditov, vhodi bi bili:
+		--- mogoèe vzameš bolj kakšno stvar iz èlankov?
+		* min max pulls
+		* min max banditov
+		* min max reward probability
+		* min max number of changes per bandit
+		* max allowed change (relative to previous value)
+		* max allowed change (relative to max probability)
+		-- vse našteto se izbere random
+		
 - preizkusi "_ideje.txt"
 	* predvsem nameri razliène naèine za reset UCBjev ko je change point detectan
 	

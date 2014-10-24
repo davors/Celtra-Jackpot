@@ -1,4 +1,4 @@
-Ta dokument vsebuje povezave na relevantne èlanke, algoritme in rezultate
+Ta dokument vsebuje povezave na relevantne Ã¨lanke, algoritme in rezultate
 -------------------------------------------------------------------------
 
 Non-stationary multi-armed bandit
@@ -10,10 +10,9 @@ Non-stationary multi-armed bandit
 
 2008 http://arxiv.org/pdf/0805.3415.pdf
 2008 http://www.cs.cmu.edu/~deepay/mywww/papers/nips08-mortal.pdf
-2008 http://www.sciencedirect.com/science/article/pii/S0096300307007448
+2008 http://www.win.tue.nl/~aboer/sdt/Koulouriotis.pdf
 2007 http://lane.compbio.cmu.edu/courses/slides_ucb.pdf
 2007 http://hal.inria.fr/docs/00/16/40/33/PDF/cap07.pdf
-2007 http://www.win.tue.nl/~aboer/sdt/Koulouriotis.pdf
 
 Overview
 2000 http://www.cs.mcgill.ca/~vkules/bandits.pdf

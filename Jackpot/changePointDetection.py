@@ -12,31 +12,60 @@ from math import *
 #PHt=Mt-mt=max(PH(t-1)-rt+rat-delta,0)
 
 #Treshold 80
-def HankeyPankeyTest(treshold,mt, Mt,X, Y, N):
-    delta=0.005
-    if N==0:
-        HP=0.0
-        Y=0.0
-        Mt=0
-        mt=0
-    Y=Y+X
-    mt=0.9999*mt+float(X)-float(Y)/float(N)+delta
-    #mt=0.9999*mt+float(Y)/float(N)-X+delta
-    Mt=max(Mt,mt)
-    #HP=max(float(HP)-float(X)+float(Y)/float(N)-delta,0)
-    HP=Mt-mt
-    print str(HP)
-    return (HP>Tsh, mt, Mt, Y)
+
+def detectChangePoint(solver, machine_id):
+    rejected_pulls=0
+    # self.config.params[0].updateInputs( array_of_new_inputs )
+        #or
+        # self.config.params[0].lastInputs[0] = some_new_input1
+        # self.config.params[0].lastInputs[1] = some_new_input2
+        # self.config.params[1].lastInputs[0] = some_new_input1
+        # self.config.params[1].lastInputs10] = some_new_input2
+        # self.config.params[2].lastInputs[0] = some_new_input3
+    if solver.config.changePointDetector == GLODEF_CHANGEPOINT_DAVORTOM :
+            rejected_pulls = checkChange(solver,machine_id)
+    elif solver.config.changePointDetector == GLODEF_CHANGEPOINT_HENKYPENKY :
+            rejected_pulls=HankeyPankeyTest(solver,machine_id)
+    
+    
+    return rejected_pulls
+
+def HankeyPankeyTest(solver,m_id):
+    threshold = solver.config.params[1].getValue()
+    take_last_samples = solver.config.params[3].getValue()
+    reset_algorithm=solver.config.resetAlgorithm
+    M=solver.machines
+    t=0
+    m=M[m_id] 
+    rejected=0
+    s=take_last_samples
+    if s<m.pulls:
+        m.moving_sum[t]=m.moving_sum[t]-m.R[-(s+1)]
+    m.moving_sum[t]=m.moving_sum[t]+m.R[-1]
+    if s>=m.pulls:
+        s=m.pulls-1
+    Z=abs(M[m_id].CUSUM)
+
+    #solver.config.params[1].updateInputs( [s] )
+    #treshold = solver.config.params[1].getValue()
+
+    if Z>=threshold:
+        if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M)
+        elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s)
+        elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,m.P[-s-1])
+        elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s+1)
+    return rejected
 
 
-
-def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm, soft_reset):
+def checkChange(solver,m_id):
+    threshold = solver.config.params[1].getValue()
+    shrink_interval = solver.config.params[2].getValue()
+    start_mv = solver.config.params[3].getValue()
+    reset_algorithm=solver.config.resetAlgorithm
+    M=solver.machines
     tp=range(10,100,10) + range(100,1000,100) + range(1000,6000,1000)
     m=M[m_id]
-    #tp=[50, 100, 200] 
     rejected=0
-    if m.moving_sum==[]:
-        m.moving_sum=[0.0 for s in tp]
     for t in range(0,len(tp)):
         s=tp[t]
         if s<m.pulls:
@@ -55,35 +84,35 @@ def checkChange(treshold, shrink_interval, start_mv, M, m_id, reset_algorithm, s
             Z=testIfDistDiff(x,y,xn,yn)
         #print str(Z)
         # 95 % confidence interval
-            if Z>=treshold:
-                if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M,soft_reset)
-                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s,soft_reset)
-                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,m.P[-s-1],soft_reset)
-                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s,soft_reset)
+            if Z>=threshold:
+                if(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO):  rejected=resetAllToZero(M)
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE): rejected=resetAllToMovingMean(M,t,s)
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF): rejected=resetAllToMovingMeanCutOff(M,m.P[-s-1])
+                elif(reset_algorithm==GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE): rejected=resetToMovingMean(m,t,s)
     return rejected
             
-def resetAllToZero(M,soft_reset):
+def resetAllToZero(M):
     rejected=0
     for m in M:
         rejected+=m.resetState(-1,0)
 
     return rejected
 
-def resetAllToMovingMean(M, t, s,soft_reset):
+def resetAllToMovingMean(M, t, s):
     rejected=0
     for m in M:
         rejected+=m.resetState(t,s)
 
     return rejected
 
-def resetAllToMovingMeanCutOff(M,last_pull,soft_reset):
+def resetAllToMovingMeanCutOff(M,last_pull):
     rejected=0
     for m in M:
         rejected+=m.resetState(-2,last_pull)
                
     return rejected
 
-def resetToMovingMean(m,t,s,soft_reset):
+def resetToMovingMean(m,t,s):
     rejected=m.resetState(t,s)
     return rejected
 

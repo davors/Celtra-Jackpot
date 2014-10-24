@@ -2,6 +2,7 @@
 
 %list of available measurements (files) - scores were copied in excel file
 
+experiment_filenames{1}   = 'tmp'
 experiment_filenames{2}   = '2014_10_17 first test';
 experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
@@ -44,7 +45,7 @@ experiment_filenames{34}   = 'Reprint___2014_10_18_SMAX_T3_Or1___2014_10_18_21_3
 experiment_filenames{35}   = 'Reprint___2014_10_18_UCB1_T3_Or1___2014_10_18_12_35_18';
 experiment_filenames{36}   = 'Reprint___2014_10_18_UCBT_T3_Or1___2014_10_18_12_37_21';
 
-%DavorTom change point experiments
+%2014_10_20 DavorTom change point experiments
 experiment_filenames{37}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetZero___2014_10_20_01_24_54';
 experiment_filenames{38}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetAllMA___2014_10_20_01_24_47';
 experiment_filenames{39}   = 'Reprint___2014_10_20_UCBT_T3_Or1_parTHR_ResetCut___2014_10_20_01_24_49';
@@ -75,23 +76,71 @@ experiment_filenames{58}   = '';
 experiment_filenames{59}   = '';
 
 %%%%--- USE first_data_column = 2 FROM HERE ON !!!! ---%%%%
+%2014_10_21
+experiment_filenames{60}   = 'Reprint___2014_10_21_UCBT_4parms_resetSingle___2014_10_21_00_30_42';
+experiment_filenames{61}   = 'Reprint___2014_10_21_UCBT_2parms_resetSingle___2014_10_21_01_19_20';
+experiment_filenames{62}   = 'Reprint___2014_10_21_Or1_UCBT_3parms_resetSingle___2014_10_20_13_19_04';
 
-experiment_filenames{60}   = '';
+experiment_filenames{63}   = 'Reprint___2014_10_21_T3_Or0_Egre_CPthr_resetCut___2014_10_21_01_19_20';
+experiment_filenames{64}   = 'Reprint___2014_10_21_T3_Or0_Egre_CPthr_resetMA___2014_10_21_01_19_20';
+experiment_filenames{65}   = 'Reprint___2014_10_21_T3_Or0_Egre_CPthr_resetSingle___2014_10_21_01_19_20';
+experiment_filenames{66}   = 'Reprint___2014_10_21_T3_Or0_Egre_CPthr_resetZero___2014_10_21_01_19_20';
+
+experiment_filenames{67}   = 'Reprint___2014_10_21_T3_Or0_UCB1_CPthr_resetCut___2014_10_21_01_19_20';
+experiment_filenames{68}   = 'Reprint___2014_10_21_T3_Or0_UCB1_CPthr_resetMA___2014_10_21_01_19_20';
+experiment_filenames{69}   = 'Reprint___2014_10_21_T3_Or0_UCB1_CPthr_resetSingle___2014_10_21_01_19_21';
+experiment_filenames{70}   = 'Reprint___2014_10_21_T3_Or0_UCB1_CPthr_resetZero___2014_10_21_01_19_20';
+
+experiment_filenames{71}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetCut___2014_10_21_01_19_21';
+experiment_filenames{72}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetMA___2014_10_21_01_19_21';
+experiment_filenames{73}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetSingle___2014_10_21_01_19_21';
+experiment_filenames{74}   = 'Reprint___2014_10_21_T3_Or0_UCBT_CPthr_resetZero___2014_10_21_10_32_18';
+
+%2014_10_21 no change point (redone with improved output)
+experiment_filenames{75}   = 'Reprint___2014_10_21_noCPD_Egreedy_perStep10___2014_10_21_19_02_42';
+experiment_filenames{76}   = 'Reprint___2014_10_21_noCPD_UCB1_perStep10___2014_10_21_19_04_47';
+experiment_filenames{77}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep10___2014_10_21_19_05_39';
+
+%2014_10_21 experiments with more than 10 evaluations per sample
+experiment_filenames{78}   = 'Reprint___2014_10_21_noCPD_Egreedy_perStep25___2014_10_21_19_03_05';
+experiment_filenames{79}   = 'Reprint___2014_10_21_noCPD_UCB1_perStep25___2014_10_21_19_04_21';
+experiment_filenames{80}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep25___2014_10_21_19_06_24';
+experiment_filenames{81}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep50___2014_10_21_22_15_21';
+experiment_filenames{82}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep100___2014_10_21_22_15_25';
+
+%2014_10_23 henky penky 
+experiment_filenames{83}   = 'Reprint___2014_10_23_changeHP_UCBT_3params_resetSingle___2014_10_23_00_21_19';
+experiment_filenames{84}   = 'Reprint___2014_10_23_changeHP_UCBT_2params_resetCut___2014_10_23_00_31_18';
+experiment_filenames{85}   = 'Reprint___2014_10_23_changeHP_UCBT_2params_resetMA___2014_10_23_00_25_45';
+experiment_filenames{86}   = 'Reprint___2014_10_23_changeHP_UCBT_2params_resetSingle___2014_10_23_00_25_42';
+experiment_filenames{87}   = 'Reprint___2014_10_23_changeHP_UCBT_2params_resetZero___2014_10_23_00_25_39';
+experiment_filenames{88}   = 'Reprint___2014_10_23_changeHP_UCBT_1par_resetSingleZero___2014_10_23_11_04_28';
+
+%2014_10_23 linear func C first test
 
 
+experiment_filenames{90}   = 'Reprint___linear1.0___2014_10_23_09_22_08';
+
+
+
+experiment_filenames{600}   = '';
 
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 56;
+filename_to_load = 90;
 
-analyze_score_for_testCase = 9;
-    % 0 ... take average of all
+analyze_score_for_testCase = 0;
+    % 0 ... take average of all cases
     % > 0 ... analyze for selected testCase
 
 num_header_lines = 17;  %old txt data files had 21
 data_delimiter = ' ';
-first_data_column = 1;  %if filename_to_load > 60 then it must be 1; otherwise 2
+if filename_to_load < 60
+    first_data_column = 1;  %if filename_to_load < 60 then it must be 1; otherwise 2
+else 
+    first_data_column = 2;
+end
 
 position_num_final_evaluations = [7 3];    %row and column in file
 %position_num_samples = [1 2];               %for safety check

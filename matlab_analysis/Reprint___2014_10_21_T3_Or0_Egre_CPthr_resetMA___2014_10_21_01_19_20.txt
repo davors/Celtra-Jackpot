@@ -1,0 +1,17 @@
+constructTestCases(): generating 11 specified cases ...  DONE
+Procedure Optimizer.Optimize()
+Oracle probabilites : disabled
+Optimizer(): Simulated Annealing , Random-normalized optimality [%]
+Optimizer(): config:  [[0.2], [9.9], [], 10, 10, 0.75, 0.01, 0.5, 0.01]
+Optimizer(): selective: [  1  ]
+Optimizer(): evals/step: 10
+Optimizer(): numParams: 1 , completeRepeats: 100
+MABsolver_config: algorithms: EpsGreedy , CP DavorTom , CPT Davor , Reset AllMovingAvg
+MABsolver_config: params: types:  Direct  Direct  Direct  Direct  Direct  
+MABsolver_config: params: numInputs:  0  0  0  0  0  
+MABsolver_config: params: weights:  [  0.140000  ]  [  2.000000  ]  [  1.000000  ]  [  50.000000  ]  [  1.000000  ]  
+BanditTestBatch: casesIDs:  0  1  2  3  4  5  6  7  8  9  
+BanditTestBatch: numCases: 10
+BanditTestBatch: maxim sum reward: 3919.0
+BanditTestBatch: random reward: 2805.0
+ Evals       Score          p01       case01    case02    case03    case04    case05    case06    case07    case08    case09    case10 

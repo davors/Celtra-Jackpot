@@ -2,7 +2,7 @@ from Config import *
 from machine import *
 from strategy import *
 from changePointDetection import *
-
+import types
 
 class ParamFunction() :
 
@@ -16,15 +16,30 @@ class ParamFunction() :
         self,
         function = DEFAULT_PARAM_FUNCTIONS,
         numInputs = DEFAULT_PARAM_NUMINPUTS,
-        weightValue = 0.0
+        weightValues = 0.0
         ) :
 
         self.function = function
         self.numInputs = numInputs
-        self.weights = [weightValue] * (self.numInputs + 1)
+        self.lastInputs = [None] * numInputs
+        if not isinstance(weightValues, types.ListType) :
+            self.weights = [weightValues] * (self.numInputs + 1)
+        elif len(weightValues) == (numInputs + 1):
+            self.weights = weightValues
+        else :
+            print 'ERROR: class ParamFunction(): number of specified initial values mismatches the number of weights and inputs'
 
     def updateInputs(self, newInputs, calcOutputs = 0) :
         self.lastInputs = newInputs
+        if calcOutputs == 1 :
+            self.getValue()
+
+    def updateSingleInput(self, selectedInput, newInput, calcOutputs = 0) :
+        if selectedInput < self.numInputs :
+            self.lastInputs[selectedInput] = newInput
+        else :
+            print 'WARNING: ParamFunction(): updateSingleInput(): update input out of index - IGNORED'
+
         if calcOutputs == 1 :
             self.getValue()
 
@@ -34,7 +49,7 @@ class ParamFunction() :
         elif(self.function == GLODEF_PARAM_FUNCTION_LINEAR) :
             self.lastOutput = self.weights[0]
             for i in xrange(self.numInputs) :
-                self.lastOutput += (self.weights[i]+1) * self.lastInputs[i]
+                self.lastOutput += (self.weights[i+1]) * self.lastInputs[i]
         elif(self.function == GLODEF_PARAM_FUNCTION_NEURAL) :
             #TODO
             todo
@@ -169,6 +184,16 @@ class MABsolver() :
     # select a bandit from available stats
     def selectBandit(self, increase_pulls = 1) :
 
+        #TODO PARAM_INPUTS if not direct parameter search (if linear or neural used...), update inputs in function approximator for parameters
+        #example:
+        # self.config.params[0].updateInputs( array_of_new_inputs )
+        #or
+        # self.config.params[0].lastInputs[0] = some_new_input1
+        # self.config.params[0].lastInputs[1] = some_new_input2
+        # self.config.params[1].lastInputs[0] = some_new_input1
+        # self.config.params[1].lastInputs10] = some_new_input2
+        # self.config.params[2].lastInputs[0] = some_new_input3
+
         exploration_weight = self.config.params[0].getValue()
         POKER_params = [self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum, self.pulls - self.total_rejected_pulls]
 
@@ -206,22 +231,10 @@ class MABsolver() :
 
         # change point detection
         rejected_pulls = 0
-        if self.config.changePointDetector == GLODEF_CHANGEPOINT_DAVORTOM :
-            change_point_threshold = self.config.params[1].getValue()
-            change_point_interval = self.config.params[2].getValue()
-            change_point_minimal_samples = self.config.params[3].getValue()
-            change_point_soft_reset = self.config.params[4].getValue()
-            rejected_pulls = checkChange(change_point_threshold, change_point_interval, change_point_minimal_samples,self.machines,machine_id, self.config.resetAlgorithm, change_point_soft_reset)
-            #TODO: in checkChange() implement different kinds of reset_algorithm (put it out of checkChange()), input gets selected_machine
-            #self.total_rejected_pulls = self.total_rejected_pulls + rejected_pulls
-            if rejected_pulls > 0 :
-                if not suppress_output :
-                    print 'MABsolver: changePointDetector: Global pull at change point: %d' + i
-
-        elif self.config.changePointDetector == GLODEF_CHANGEPOINT_HENKYPENKY :
-            #todo henky penky
-            todo
-
+        rejected_pulls = detectChangePoint(self, machine_id)   
+        if rejected_pulls > 0 :
+            if not suppress_output :
+                print 'MABsolver: changePointDetector: Global pull at change point: %d' + i   
         self.total_rejected_pulls += rejected_pulls
 
     def listParams(self, selectiveList = None) :
@@ -233,7 +246,11 @@ class MABsolver() :
 
         list = []
         for i in selectedParams :
-             list = list + self.config.params[i].weights
+            if not isinstance(i, types.ListType) :
+                list = list + self.config.params[i].weights
+            else :
+                for j in i[1] :
+                    list = list + [self.config.params[i[0]].weights[j]]
 
         return list
 
@@ -246,9 +263,14 @@ class MABsolver() :
 
         c = 0
         for i in selectedParams :
-            for j in range(len(self.config.params[i].weights)) :
-                self.config.params[i].weights[j] = newValues[c]
-                c += 1
+            if not isinstance(i, types.ListType) :
+                for j in xrange(len(self.config.params[i].weights)) :
+                    self.config.params[i].weights[j] = newValues[c]
+                    c += 1
+            else :
+                for j in i[1] :
+                    self.config.params[i[0]].weights[j] = newValues[c]
+                    c += 1
 
         if not (c == len(newValues)) :
            print 'MABsolver(): setParams(): ERROR: newValues list incorrect length'

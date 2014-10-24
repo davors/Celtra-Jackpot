@@ -21,12 +21,10 @@ def evaluateSingleCase(
         #TODO PARAM_INPUTS if not direct parameter search (if linear or neural used...), update inputs in function approximator for parameters
         #example:
         # solver.config.params[0].updateInputs( array_of_new_inputs )
-        #or
-        # solver.config.params[0].lastInputs[0] = some_new_input1
-        # solver.config.params[0].lastInputs[1] = some_new_input2
-        # solver.config.params[1].lastInputs[0] = some_new_input1
-        # solver.config.params[1].lastInputs10] = some_new_input2
-        # solver.config.params[2].lastInputs[0] = some_new_input3
+        if solver.config.params[0].function != GLODEF_PARAM_FUNCTION_DIRECT :
+            solver.config.params[0].updateSingleInput ( 0 , case.maxPulls/30000.0)
+            solver.config.params[0].updateSingleInput ( 1 , case.numBandits/10.0)
+            solver.config.params[0].updateSingleInput ( 2 , float(p)/case.maxPulls)
 
         selected_bandit = solver.selectBandit()         #apply selection policy
 

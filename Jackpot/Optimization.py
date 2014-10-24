@@ -5,6 +5,7 @@ from Evaluator import *
 import random
 import math
 import sys
+import types
 
 class Optimizer() :
 
@@ -70,8 +71,18 @@ class Optimizer() :
             self.MABsolver.config.info()
             batch.info()
             print ' Evals       Score   ',
-            for p in xrange(numParams) :
-                print '      p%02d' % self.selectiveOptimization[p],
+            for i in xrange(len(self.selectiveOptimization)) :
+                p = self.selectiveOptimization[i]
+                if not isinstance(p, types.ListType) :
+                    if len(self.MABsolver.config.params[i].weights) == 1 :
+                        print '      p%02d' % p,
+                    else :
+                        for j in xrange(len(self.MABsolver.config.params[i].weights)) :
+                            print '   p%02dw%02d' % (p, j),
+                else :
+                    for j in p[1] :
+                        print '   p%02dw%02d' % (p[0], j),
+
             print '  ',
             for c in xrange(batch.num) :
                 print '   case%02d' % (c+1),
@@ -146,10 +157,8 @@ class Optimizer() :
 
         print 'Optimizer(): config: ',
         PrintStrings(self.optimizationConfig)
-        print 'Optimizer(): selective: [ ',
-        for i in range(len(self.selectiveOptimization)) :
-            print '%d ' % self.selectiveOptimization[i],
-        print ']'
+        print 'Optimizer(): selective: ',
+        PrintStrings(self.selectiveOptimization)
         print 'Optimizer(): evals/step: %d' % self.evaluationsPerSample
 
     # fitness function (returns score)
@@ -216,6 +225,15 @@ class Optimizer() :
                            # when choosing next candidate, search only the neighbourhood
                            # of current solution. NEIGH_RADIUS is a ratio of full interval
                            # span, i.e.: NEIGH_RADIUS * (BOUND_UPPER - BOUND_LOWER)
+
+        # safety checks
+        numParams = len(paramValues)
+        if numParams != len(BOUND_LOWER) :
+            print 'WARNING: simulatedAnnealing(): BOUND_LOWER inequal length with paramValues'
+        elif numParams != len(BOUND_UPPER) :
+            print 'WARNING: simulatedAnnealing(): BOUND_UPPER inequal length with paramValues'
+        elif (len(GRID_STEP) > 0) and (numParams != len(GRID_STEP)) :
+            print 'WARNING: simulatedAnnealing(): GRID_STEP inequal length with paramValues'
 
         # define function that returns new trial point (solution candidate)
         def get_new_candidate(x_curr,neigh_radius):
