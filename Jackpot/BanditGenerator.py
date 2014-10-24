@@ -168,10 +168,18 @@ def constructTestCases(all_cases, suppress_output = 0) :
         cases[c].ID = c
         cases[c].numBandits = generate_cases[c][0]
         cases[c].maxPulls = generate_cases[c][1]
+        if cases[c].numBandits != len(generate_cases[c][2]) :
+            print 'ERROR: constructTestCases(): case %d : number of bandits does not match number of specified intervals' % c
+        elif cases[c].numBandits != len(generate_cases[c][3]) :
+            print 'ERROR: constructTestCases(): case %d : number of bandits does not match number of specified probabilities' % c
+
         cases[c].bandits = [BanditGenerator() for count in xrange(cases[c].numBandits)]
         for b in xrange(cases[c].numBandits) :
             cases[c].bandits[b].intervals = generate_cases[c][2][b]
             cases[c].bandits[b].probabilities = generate_cases[c][3][b]
+            if len(cases[c].bandits[b].intervals) != len(cases[c].bandits[b].probabilities) :
+                print 'ERROR: constructTestCases(): case %d bandit %d : number of intervals and probabilities does not match' % (c, b)
+        
         cases[c].calcMaxReward()
         cases[c].calcRandomReward()
 

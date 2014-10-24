@@ -34,7 +34,8 @@ testBatch_debug = BanditTestBatch( allCases, [5])
 
 ##-- experiments (for ICANNGA)
 
-test_2014_10_23_linear_3inp_exploration(allCases)
+test_2014_10_24_addedEvalCases(allCases)
+#test_2014_10_23_linear_3inp_exploration(allCases)
 #test_2014_10_20_changePoint_DavorTom2par(allCases)
 #test_2014_10_18_noChangePoint(allCases)
 #test_2014_10_20_HankeyPankey_treshold(allCases)

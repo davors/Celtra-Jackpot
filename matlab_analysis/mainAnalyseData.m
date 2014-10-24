@@ -108,16 +108,30 @@ experiment_filenames{80}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep25___2014_1
 experiment_filenames{81}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep50___2014_10_21_22_15_21';
 experiment_filenames{82}   = 'Reprint___2014_10_21_noCPD_UCBT_perStep100___2014_10_21_22_15_25';
 
-experiment_filenames{90}   = '';
-experiment_filenames{91}   = '';
+%2014_10_23 henky penky 
+experiment_filenames{83}   = 'Reprint___2014_10_23_changeHP_UCBT_3params_resetSingle___2014_10_23_00_21_19';
+experiment_filenames{84}   = 'Reprint___2014_10_23_changeHP_UCBT_2params_resetCut___2014_10_23_00_31_18';
+experiment_filenames{85}   = 'Reprint___2014_10_23_changeHP_UCBT_2params_resetMA___2014_10_23_00_25_45';
+experiment_filenames{86}   = 'Reprint___2014_10_23_changeHP_UCBT_2params_resetSingle___2014_10_23_00_25_42';
+experiment_filenames{87}   = 'Reprint___2014_10_23_changeHP_UCBT_2params_resetZero___2014_10_23_00_25_39';
+experiment_filenames{88}   = 'Reprint___2014_10_23_changeHP_UCBT_1par_resetSingleZero___2014_10_23_11_04_28';
+
+%2014_10_23 linear func C first test
+
+
+experiment_filenames{90}   = 'Reprint___linear1.0___2014_10_23_09_22_08';
+
+
+
+experiment_filenames{600}   = '';
 
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 83;
+filename_to_load = 90;
 
 analyze_score_for_testCase = 0;
-    % 0 ... take average of all
+    % 0 ... take average of all cases
     % > 0 ... analyze for selected testCase
 
 num_header_lines = 17;  %old txt data files had 21

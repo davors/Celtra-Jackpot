@@ -75,7 +75,7 @@ class Optimizer() :
                 p = self.selectiveOptimization[i]
                 if not isinstance(p, types.ListType) :
                     if len(self.MABsolver.config.params[i].weights) == 1 :
-                        print '      p%02d' % self.selectiveOptimization[p],
+                        print '      p%02d' % p,
                     else :
                         for j in xrange(len(self.MABsolver.config.params[i].weights)) :
                             print '   p%02dw%02d' % (p, j),
