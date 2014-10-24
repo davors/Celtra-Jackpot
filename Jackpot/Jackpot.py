@@ -45,7 +45,9 @@ test_2014_10_24_addedEvalCases(allCases)
 
 #unitTest_OptExhaustive(allCases)
 #unitTest_OptSimulatedAnnealing(allCases)
-unitTest_Nejc(allCases)
+#unitTest_Nejc_POKER(allCases)
+#unitTest_Nejc_UCBT(allCases)
+#unitTest_Nejc_SOFTMAX(allCases)
 
 ##-- policy configuration
 

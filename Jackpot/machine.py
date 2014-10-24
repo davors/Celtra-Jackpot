@@ -11,6 +11,7 @@ class machine(object):
     mean=0.0
     mean2=0.0
     sum=0.0
+    sum_squared=0.0
     sum_total=0.0
     id=0
     moving_sum=[]
@@ -45,6 +46,7 @@ class machine(object):
         self.mean=0.0
         self.mean2=0.0
         self.sum=0.0
+        self.sum_squared = 0.0
         self.sum_total=0.0
         self.id=id
         self.variance=0.0
@@ -59,11 +61,12 @@ class machine(object):
         self.pulls=self.pulls+1
         self.pulls_total=self.pulls_total+1
         self.sum=self.sum+r
+        self.sum_squared = self.sum_squared + r*r
         self.sum_total=self.sum_total+r
         #self.mean2=float(self.sum)/self.pulls
         self.__varmean__(1)
         self.CUSUM=max(0,self.CUSUM-r+self.mean)
-        
+
 
 
     def resetState(self,index,new_pulls):
@@ -89,7 +92,8 @@ class machine(object):
 
         self.pulls=new_pulls
         #self.mean2=float(self.sum)/self.pulls
-        self.mean=0.0;
+        self.sum_squared = 0.0 # ??? Should it reset similar to self.sum?
+        self.mean=0.0
         self.variance=0.0
         self.__M2__= 0.0
         self.CUSUM = 0.0

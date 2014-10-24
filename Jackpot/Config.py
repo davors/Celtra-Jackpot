@@ -69,7 +69,7 @@ DEFAULT_FITNESS_METRIC = GLODEF_FITNESS_OPTIMALITY_RANDNOR
 DEFAULT_PAR_EGREEDY_E = 0.1         # epsilon-greedy parameter: Epsilon
 DEFAULT_PAR_SOFTMAX_T = 0.01        # softMax parameter: tau
 DEFAULT_PAR_UCB1_C = 1.0            # UCB parameter: C
-DEFAULT_PAR_POKER_H = 500          # POKER parameter: H (horizon = number of rounds that remains to be played)
+DEFAULT_PAR_POKER_H = 0             # POKER parameter: H (horizon = number of rounds that remains to be played)
 DEFAULT_PAR_CHANGEPOINT_THR = 2.5   # change point detector parameter: Z-Threshold
 DEFAULT_PAR_CHANGEPOINT_INT = 1.0   # change point detector parameter: interval shrink (e.g., 0.6 translates interval [0,1] to [0.2,0.8]
 DEFAULT_PAR_CHANGEPOINT_NUM = 50    # change point detector parameter: lowest number of moving average samples that may trigger reset

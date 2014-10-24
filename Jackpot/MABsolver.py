@@ -176,10 +176,10 @@ class MABsolver() :
         self.machineMeanSum = 0.0
         self.machineSigmaSum = 0.0
 
-        self.epsilon_soft = self.config.params[0]
-        self.softMax_tao = self.config.params[1]
-        self.UCB1_parC = self.config.params[2]
-        self.change_point_threshold = self.config.params[3]
+        #self.epsilon_soft = self.config.params[0]
+        #self.softMax_tao = self.config.params[1]
+        #self.UCB1_parC = self.config.params[2]
+        #self.change_point_threshold = self.config.params[3]
 
     # select a bandit from available stats
     def selectBandit(self, increase_pulls = 1) :
@@ -195,7 +195,7 @@ class MABsolver() :
         # self.config.params[2].lastInputs[0] = some_new_input3
 
         exploration_weight = self.config.params[0].getValue()
-        POKER_params = [self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum, self.pulls - self.total_rejected_pulls]
+        POKER_params = [self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum]
 
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]
         elif self.config.selectionPolicy == GLODEF_SELECTION_EGREEDY :  selected_machine = EGreedy(self.machines, exploration_weight)
@@ -231,10 +231,10 @@ class MABsolver() :
 
         # change point detection
         rejected_pulls = 0
-        rejected_pulls = detectChangePoint(self, machine_id)   
+        rejected_pulls = detectChangePoint(self, machine_id)
         if rejected_pulls > 0 :
             if not suppress_output :
-                print 'MABsolver: changePointDetector: Global pull at change point: %d' + i   
+                print 'MABsolver: changePointDetector: Global pull at change point: %d' + i
         self.total_rejected_pulls += rejected_pulls
 
     def listParams(self, selectiveList = None) :

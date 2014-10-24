@@ -165,7 +165,7 @@ def EGreedy(M, E):
             return (M[i])
 
 # Algorithm POKER (Vermorel & Mohri 2005)
-def POKER(M,params,H):
+def POKER(M,params,horizon):
 
     # Cummulative Normal Function
     def normcdf(x, mu, sigma):
@@ -181,9 +181,8 @@ def POKER(M,params,H):
     lastPulledLever = params[0]
     leverMeanSum = params[1]
     leverSigmaSum = params[2]
-    allPulls = params[3]
-
-    horizon = H - allPulls
+    #allPulls = params[3]
+    #horizon = H - allPulls
 
 
     # determine observedLeverCount and twiceObservedLeverCount
@@ -192,6 +191,7 @@ def POKER(M,params,H):
     twiceObservedLeverCount = sum([obs>1 for obs in observationCounts])
 
     rewardSums = [m.sum for m in M]
+    rewardSquareSums = [m.sum_squared for m in M]
     rewardMeans = [m.mean for m in M]
 
     # initialization: observing at least two levers twice
@@ -239,7 +239,7 @@ def POKER(M,params,H):
     		# empirical estimate of the standard deviation is avaiblable
             sigma = 0
             if observationCounts[i] > 1:
-            	sigma = sqrt(M[i].variance)
+            	sigma = sqrt(rewardSquareSums[i] / observationCounts[i] - mean * mean) #sqrt(M[i].variance)
 
     			# FIX: sigma must not be null
             	if sigma == 0:

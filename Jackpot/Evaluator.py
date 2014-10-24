@@ -21,10 +21,14 @@ def evaluateSingleCase(
         #TODO PARAM_INPUTS if not direct parameter search (if linear or neural used...), update inputs in function approximator for parameters
         #example:
         # solver.config.params[0].updateInputs( array_of_new_inputs )
-        if solver.config.params[0].function != GLODEF_PARAM_FUNCTION_DIRECT :
-            solver.config.params[0].updateSingleInput ( 0 , case.maxPulls/30000.0)
-            solver.config.params[0].updateSingleInput ( 1 , case.numBandits/10.0)
-            solver.config.params[0].updateSingleInput ( 2 , float(p)/case.maxPulls)
+        if solver.config.selectionPolicy == GLODEF_SELECTION_POKER:
+            if solver.config.params[0].function != GLODEF_PARAM_FUNCTION_DIRECT :
+                solver.config.params[0].updateSingleInput ( 0 , case.maxPulls-p)
+        else:
+            if solver.config.params[0].function != GLODEF_PARAM_FUNCTION_DIRECT :
+                solver.config.params[0].updateSingleInput ( 0 , case.maxPulls/30000.0)
+                solver.config.params[0].updateSingleInput ( 1 , case.numBandits/10.0)
+                solver.config.params[0].updateSingleInput ( 2 , float(p)/case.maxPulls)
 
         selected_bandit = solver.selectBandit()         #apply selection policy
 
@@ -95,7 +99,7 @@ def evaluateBatch(
         #reset averaged (through cases) metrics
         for i in xrange(num_metrics):
             new_avg_metrics[i] = 0.0
-        
+
         for c in xrange(0,batch.num) :
             #execute bandit game (case)
             new_result = evaluateSingleCase(solver, batch.list[c], 1, oracleProbablity)
