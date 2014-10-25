@@ -7,6 +7,40 @@ from Evaluator import *
 from Optimization import *
 from unitTests import *
 
+
+def test_2014_10_25_UCBT_HP_resetSingle(allCases):
+    eval_cases = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_initial_param_values = [0.7087, 42.83, 50.0]
+    solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+    solv_param_types = [GLODEF_PARAM_FUNCTION_DIRECT] * 3
+    solv_param_num_inputs = [0] * 3
+    solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, GLODEF_CHANGEPOINT_TEST_DAVOR, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
+    evaluateBatch(solver, eval_cases, 1000, 0, 0)
+
+def test_2014_10_25_UCBT_davorTom_resetSingle(allCases):
+    eval_cases = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_initial_param_values = [0.800, 1.600, 0.900, 30.000]
+    solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+    solv_param_types = [GLODEF_PARAM_FUNCTION_DIRECT] * 4
+    solv_param_num_inputs = [0] * 4
+    solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, GLODEF_CHANGEPOINT_TEST_DAVOR, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
+    evaluateBatch(solver, eval_cases, 1000, 0, 0)
+
+
+def test_2014_10_25_UCBT_noCP_linearC(allCases):
+    eval_cases = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_initial_param_values = [[0.4523,   -0.4439,    0.1721 ,   0.2491 ]]
+    solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
+    solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR] * 1
+    solv_param_num_inputs = [3] * 1
+    solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, DEFAULT_CHANGEPOINT_TEST, DEFAULT_RESET_ALGORITHM, solv_param_types, solv_param_num_inputs)
+    evaluateBatch(solver, eval_cases, 1000, 0, 0)
+
 def test_2014_10_24_addedEvalCases(allCases):
 
     testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) ) #All

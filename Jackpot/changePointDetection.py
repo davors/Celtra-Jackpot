@@ -32,7 +32,7 @@ def detectChangePoint(solver, machine_id):
 
 def HankeyPankeyTest(solver,m_id):
     threshold = solver.config.params[1].getValue()
-    take_last_samples = solver.config.params[3].getValue()
+    take_last_samples = int(solver.config.params[2].getValue())
     reset_algorithm=solver.config.resetAlgorithm
     M=solver.machines
     t=0

@@ -2,7 +2,7 @@
 
 %list of available measurements (files) - scores were copied in excel file
 
-experiment_filenames{1}   = 'tmp'
+experiment_filenames{1}   = 'tmp';
 experiment_filenames{2}   = '2014_10_17 first test';
 experiment_filenames{3}   = '2014_10_17 first test, case5 start 1.0 2.5';
 experiment_filenames{4}   = '2014_10_17 first test, case5 start 0.3 1.5';
@@ -118,9 +118,8 @@ experiment_filenames{88}   = 'Reprint___2014_10_23_changeHP_UCBT_1par_resetSingl
 
 %2014_10_23 linear func C first test
 
-
 experiment_filenames{90}   = 'Reprint___linear1.0___2014_10_23_09_22_08';
-
+experiment_filenames{91}   = 'Reprint___2014_10_23_UCBT_noChangePoint_Clinear3inp___2014_10_23_16_59_56';
 
 
 experiment_filenames{600}   = '';
@@ -128,7 +127,7 @@ experiment_filenames{600}   = '';
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 90;
+filename_to_load = 83;
 
 analyze_score_for_testCase = 0;
     % 0 ... take average of all cases

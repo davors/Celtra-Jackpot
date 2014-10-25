@@ -166,11 +166,6 @@ class MABsolver() :
         self.pulls = 0
         self.total_rejected_pulls = 0
 
-        self.epsilon_soft = self.config.params[0]
-        self.softMax_tao = self.config.params[1]
-        self.UCB1_parC = self.config.params[2]
-        self.change_point_threshold = self.config.params[3]
-
     # select a bandit from available stats
     def selectBandit(self, increase_pulls = 1) :
 

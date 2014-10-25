@@ -22,6 +22,7 @@ def evaluateSingleCase(
         #example:
         # solver.config.params[0].updateInputs( array_of_new_inputs )
         if solver.config.params[0].function != GLODEF_PARAM_FUNCTION_DIRECT :
+            #setting: 2014_10_25 UCBT noCP linearC
             solver.config.params[0].updateSingleInput ( 0 , case.maxPulls/30000.0)
             solver.config.params[0].updateSingleInput ( 1 , case.numBandits/10.0)
             solver.config.params[0].updateSingleInput ( 2 , float(p)/case.maxPulls)

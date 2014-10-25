@@ -7,6 +7,8 @@ Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
 		- inputs in parametri se nastavijo znotraj procedure (updateInputs, getValue)	
 	* preimenuj changePoint v davorTom?
 
+- izmeri najboljše parametre na vseh testcasih (brez dodatne optimizacije)
+
 - preizkusi kot linearna funkcija:
 	*changePointDetector DavorTom parameter threshold kot funkcija: število vozcev v moving average in število potez od zadnjega reseta
 		- ostali parametri naj bodo fiksni (shring interval 1.0, minimum moving average samples = 10)
