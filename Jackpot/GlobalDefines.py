@@ -5,6 +5,7 @@ GLODEF_SELECTION_EGREEDY = 1
 GLODEF_SELECTION_SOFTMAX = 2
 GLODEF_SELECTION_UCB1 = 3
 GLODEF_SELECTION_UCBTUNED = 4
+GLODEF_SELECTION_POKER = 5
 
 GLODEF_CHANGEPOINT_NONE = 0
 GLODEF_CHANGEPOINT_PERIODICRESET = 1
@@ -38,7 +39,8 @@ GLO_labels_selection_policies = [
     'EpsGreedy',
     'SoftMax',
     'UCB1',
-    'UCBtuned'
+    'UCBtuned',
+    'POKER'
     ]
 
 GLO_labels_change_point_detectors = [

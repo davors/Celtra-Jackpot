@@ -48,6 +48,9 @@ test_2014_10_25_UCBT_HP_resetSingle(allCases)
 
 #unitTest_OptExhaustive(allCases)
 #unitTest_OptSimulatedAnnealing(allCases)
+#unitTest_Nejc_POKER(allCases)
+#unitTest_Nejc_UCBT(allCases)
+#unitTest_Nejc_SOFTMAX(allCases)
 
 ##-- policy configuration
 
