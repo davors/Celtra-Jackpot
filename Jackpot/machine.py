@@ -26,6 +26,7 @@ class machine(object):
             for x in self.R[-(pulls):]:
                 n=n+1
                 delta=x-self.mean
+                self.sum_squared=self.sum_squared+x*x
                 self.mean=self.mean+float(delta)/n
                 self.__M2__=self.__M2__+delta*(x-self.mean)
                 self.CUSUM=max(self.CUSUM-x+self.mean,0)
@@ -92,7 +93,7 @@ class machine(object):
 
         self.pulls=new_pulls
         #self.mean2=float(self.sum)/self.pulls
-        self.sum_squared = 0.0 # ??? Should it reset similar to self.sum?
+        self.sum_squared = 0# ??? Should it reset similar to self.sum?
         self.mean=0.0
         self.variance=0.0
         self.__M2__= 0.0

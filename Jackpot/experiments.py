@@ -61,21 +61,24 @@ def test_2014_10_24_addedEvalCases(allCases):
     #solv_selection_policy = GLODEF_SELECTION_UCB1
     #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
-    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
-    solv_initial_param_values = [0.770, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+    #solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    #solv_initial_param_values = [0.770, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+
+    solv_selection_policy = GLODEF_SELECTION_POKER
+    solv_initial_param_values = [[0,1], 43 ,50]     #if None: default will be used
 
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
-    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
-    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
 
-    solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
+    #solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
     #solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
-    #solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
+    solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
 
     solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
-    solv_param_types = [DEFAULT_PARAM_FUNCTIONS] * DEFAULT_SOLVER_NUMPARAMS
-    solv_param_num_inputs = [DEFAULT_PARAM_NUMINPUTS] * DEFAULT_SOLVER_NUMPARAMS
+    solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR , GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT] 
+    solv_param_num_inputs = [1, 0, 0]
     
     eval_repeats = 1000
     eval_oracle_probablity = 0
