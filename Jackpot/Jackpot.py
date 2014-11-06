@@ -37,11 +37,11 @@ testBatch_debug = BanditTestBatch( allCases, [5])
 #test_2014_10_25_UCBT_HP_resetSingle(allCases)
 #test_2014_10_25_UCBT_davorTom_resetSingle(allCases)
 #test_2014_10_25_UCBT_noCP_linearC(allCases)
-test_2014_10_24_addedEvalCases(allCases)
+#test_2014_10_24_addedEvalCases(allCases)
 #test_2014_10_23_linear_3inp_exploration(allCases)
 #test_2014_10_20_changePoint_DavorTom2par(allCases)
 #test_2014_10_18_noChangePoint(allCases)
-#test_2014_10_20_HankeyPankey_treshold(allCases)
+test_2014_10_20_HankeyPankey_treshold(allCases)
 
 
 ##-- unit tests
