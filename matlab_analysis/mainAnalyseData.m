@@ -127,7 +127,7 @@ experiment_filenames{600}   = '';
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 83;
+filename_to_load = 60;
 
 analyze_score_for_testCase = 0;
     % 0 ... take average of all cases
