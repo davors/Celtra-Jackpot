@@ -194,6 +194,7 @@ def POKER(M,params,horizon):
     rewardSquareSums = [m.sum_squared for m in M]
     rewardMeans = [m.mean for m in M]
 
+
     # initialization: observing at least two levers twice
     # FIX: the default sigma must not be null
     if (observedLeverCount < 1 or leverSigmaSum == 0):
