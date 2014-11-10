@@ -44,12 +44,14 @@ def UCB1(actions, all_pulls, parC = 1.0):
     return actions[indicesBest[0]]
 
 
-def UCBT(actions, all_pulls, parC = 1.0):
+def UCBT(actions, all_pulls, max_pulls, parCp = [1.0, 1.0]):
 
     bestVal = -1e30000
     numEqualBest = 1
     indicesBest = [-1]*len(actions)
 
+    parC=((parCp[1]-parCp[0])/max_pulls)*all_pulls+parCp[0]
+    
     #find best action among all available
     for i in range(len(actions)) :
 
@@ -194,6 +196,7 @@ def POKER(M,params,horizon):
     rewardSquareSums = [m.sum_squared for m in M]
     rewardMeans = [m.mean for m in M]
 
+
     # initialization: observing at least two levers twice
     # FIX: the default sigma must not be null
     if (observedLeverCount < 1 or leverSigmaSum == 0):
@@ -247,7 +250,7 @@ def POKER(M,params,horizon):
 
     			# FIX: sigma must not be null
             if sigma == 0:
-    			sigma = leverSigmaSum / twiceObservedLeverCount
+    			    sigma = leverSigmaSum / twiceObservedLeverCount
 
             # using the avg standard deviation among the levers
             else:

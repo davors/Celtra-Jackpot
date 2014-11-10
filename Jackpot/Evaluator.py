@@ -14,7 +14,7 @@ def evaluateSingleCase(
 
     #init stats
     total_reward = 0.0
-
+    solver.max_pulls=case.maxPulls
     #compute single case evaluation
     for p in xrange(case.maxPulls) :
 
