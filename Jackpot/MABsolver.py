@@ -233,6 +233,10 @@ class MABsolver() :
         rejected_pulls = 0
         rejected_pulls = detectChangePoint(self, machine_id)
         if rejected_pulls > 0 :
+            # POKER reset to zero
+            self.machineMeanSum = 0.0
+            self.machineSigmaSum = 0.0
+
             if not suppress_output :
                 print 'MABsolver: changePointDetector: Global pull at change point: %d' + i
         self.total_rejected_pulls += rejected_pulls
