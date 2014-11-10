@@ -127,7 +127,7 @@ experiment_filenames{600}   = '';
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 60;
+filename_to_load = 91;
 
 analyze_score_for_testCase = 0;
     % 0 ... take average of all cases
@@ -135,8 +135,8 @@ analyze_score_for_testCase = 0;
 
 num_header_lines = 17;  %old txt data files had 21
 data_delimiter = ' ';
-if filename_to_load < 60
-    first_data_column = 1;  %if filename_to_load < 60 then it must be 1; otherwise 2
+if ((filename_to_load > 1) && (filename_to_load < 60))
+    first_data_column = 1;  %if filename_to_load < 60 then it must be 1; otherwise 2 ... exception is filename_to_load = 1 ('tmp')
 else 
     first_data_column = 2;
 end
