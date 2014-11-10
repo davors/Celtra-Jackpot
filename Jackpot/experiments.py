@@ -49,10 +49,10 @@ def test_2014_10_24_addedEvalCases(allCases):
     testBatch_01_05 = BanditTestBatch( allCases, xrange(5) ) 
     #-- change configuration here
 
-    #eval_cases = testBatch_01_10
+    eval_cases = testBatch_01_10
     #eval_cases = testBatch_above10
     #eval_cases = testBatch_Complete
-    eval_cases = testBatch_01_05
+    #eval_cases = testBatch_01_05
 
     #solv_selection_policy = GLODEF_SELECTION_EGREEDY
     #solv_initial_param_values = [0.140, 2.0, 1.0, 50, 1.0]     #if None: default will be used
@@ -66,12 +66,12 @@ def test_2014_10_24_addedEvalCases(allCases):
     #solv_initial_param_values = [0.770, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
     solv_selection_policy = GLODEF_SELECTION_POKER
-    solv_initial_param_values = [[0,1], 70, 50]     #if None: default will be used
+    solv_initial_param_values = [[0,1], 40, 50]     #if None: default will be used
 
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
-    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
-    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
 
     #solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
     #solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM

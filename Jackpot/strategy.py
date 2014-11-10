@@ -247,8 +247,10 @@ def POKER(M,params,horizon):
 
     			# FIX: sigma must not be null
             if sigma == 0:
-    			sigma = leverSigmaSum / twiceObservedLeverCount
-
+                try:
+    			    sigma = leverSigmaSum / twiceObservedLeverCount
+                except:
+                    print "error"
             # using the avg standard deviation among the levers
             else:
     			sigma = leverSigmaSum / twiceObservedLeverCount
