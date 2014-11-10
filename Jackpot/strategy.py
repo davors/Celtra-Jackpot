@@ -239,11 +239,11 @@ def POKER(M,params,horizon):
     		# empirical estimate of the standard deviation is avaiblable
             sigma = 0
             if observationCounts[i] > 1:
-                    try:
-            	        sigma = sqrt(rewardSquareSums[i] / observationCounts[i] - mean * mean) #sqrt(M[i].variance)
-                    except:
-                        print "rewardSquareSum= "+str(rewardSquareSums[i])+"Observation counts= "+str(observationCounts[i])+"mean= "+str(mean)
-                        raise
+                    #try:
+            	    sigma = sqrt(rewardSquareSums[i] / observationCounts[i] - mean * mean) #sqrt(M[i].variance)
+                    #except:
+                       # print "rewardSquareSum= "+str(rewardSquareSums[i])+"Observation counts= "+str(observationCounts[i])+"mean= "+str(mean)
+                       # raise
 
     			# FIX: sigma must not be null
             if sigma == 0:
