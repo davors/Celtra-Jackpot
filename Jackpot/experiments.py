@@ -65,7 +65,7 @@ def test_2014_10_24_addedEvalCases(allCases):
     #solv_initial_param_values = [0.770, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
     solv_selection_policy = GLODEF_SELECTION_POKER
-    solv_initial_param_values = [[0,1], 43 ,50]     #if None: default will be used
+    solv_initial_param_values = [[0,1], 2.5 , 1.0, 50]     #if None: default will be used
 
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
@@ -73,16 +73,16 @@ def test_2014_10_24_addedEvalCases(allCases):
     solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
 
     #solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
-    #solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
-    solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
+    solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
+    #solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
 
     solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
-    solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR , GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT] 
-    solv_param_num_inputs = [1, 0, 0]
-    
+    solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR , GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT]
+    solv_param_num_inputs = [1, 0, 0, 0]
+
     eval_repeats = 1000
     eval_oracle_probablity = 0
-    
+
     #-- do not change values below here --#
 
     solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, solv_change_point_test, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
@@ -116,7 +116,7 @@ def test_2014_10_23_linear_3inp_exploration(allCases):
     opti_selective_optimization = [0]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
     opti_config_params_lower_bounds = [0.0, -5, -5, -5]
     opti_config_params_upper_bounds = [3.0,  5,  5,  5]
-    
+
     #opti_selective_optimization = [[0, [0]]]       #choosen parameters to optimize - double level indices (may specify the choosen weights of a certain parameter function)
     #opti_config_params_lower_bounds = [0.0]
     #opti_config_params_upper_bounds = [3.0]
@@ -126,7 +126,7 @@ def test_2014_10_23_linear_3inp_exploration(allCases):
 
     opti_oracle_probablity = 0
     opti_completeRepeats = 100
-    
+
 
     #-- do not change values below here --#
 
@@ -230,7 +230,7 @@ def test_2014_10_20_changePoint_DavorTom2par(allCases):
 
     opti_oracle_probablity = 0
     opti_completeRepeats = 100
-    
+
     #solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
     #solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
     solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
