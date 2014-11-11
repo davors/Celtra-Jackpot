@@ -62,11 +62,11 @@ def test_2014_10_24_addedEvalCases(allCases):
     #solv_selection_policy = GLODEF_SELECTION_UCB1
     #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
-    solv_selection_policy = GLODEF_SELECTION_VOTER
+    #solv_selection_policy = GLODEF_SELECTION_VOTER
     solv_initial_param_values = [1.0, 0.77, [0,1]]     #if None: default will be used
 
-    #solv_selection_policy = GLODEF_SELECTION_POKER
-    #solv_initial_param_values = [[0,1], 35, 50]     #if None: default will be used
+    solv_selection_policy = GLODEF_SELECTION_POKER
+    #solv_initial_param_values = [1.0, 0., 50]     #if None: default will be used
 
     solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
     #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
