@@ -167,13 +167,11 @@ def UCB1(actions, all_pulls, parC = 1.0):
     return actions[indicesBest[0]]
 
 
-def UCBT(actions, all_pulls, max_pulls, parCp = [1.0, 1.0]):
+def UCBT(actions, all_pulls, parC = 1.0):
 
     bestVal = -1e30000
     numEqualBest = 1
     indicesBest = [-1]*len(actions)
-
-    parC=((parCp[1]-parCp[0])/max_pulls)*all_pulls+parCp[0]
     
     #find best action among all available
     for i in range(len(actions)) :

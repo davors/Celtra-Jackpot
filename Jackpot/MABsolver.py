@@ -195,14 +195,21 @@ class MABsolver() :
         # self.config.params[1].lastInputs10] = some_new_input2
         # self.config.params[2].lastInputs[0] = some_new_input3
 
-        exploration_weight = [self.config.params[0].getValue(), self.config.params[1].getValue()]
+        p0 = self.config.params[0].getValue()
+        exploration_weight = p0
+        
+        # exploration_weight defined with both p0 and p1, where p0 is the initial value and p1 the final
+        # (comment out to disable)
+        p1 = self.config.params[1].getValue()
+        exploration_weight = ( ( p1 - p0 ) / ( self.max_pulls - self.total_rejected_pulls ) ) * (self.pulls - self.total_rejected_pulls) + p0
+
         POKER_params = [self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum]
 
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]
         elif self.config.selectionPolicy == GLODEF_SELECTION_EGREEDY :  selected_machine = EGreedy(self.machines, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_SOFTMAX :  selected_machine = SoftMax(self.machines, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
-        elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, self.max_pulls, exploration_weight)
+        elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_POKER : selected_machine = POKER(self.machines, POKER_params, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_VOTER : selected_machine = voter.UCBTVoter(self.machines, self.pulls - self.total_rejected_pulls, self.max_pulls, [exploration_weight])
         self.pulls += increase_pulls
