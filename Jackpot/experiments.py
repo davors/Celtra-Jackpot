@@ -195,20 +195,19 @@ def test_2014_10_20_UCBTLinearC(allCases):
     optimizer.Optimize(opti_learn_cases, opti_config, opti_completeRepeats, opti_suppress_output, opti_oracle_probablity)
 
 
-def test_2014_10_23_linear_3inp_exploration_EVAL(allCases):
+def test_2014_11_11_linear_3inp_exploration_EVAL(allCases):
     eval_cases = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    #eval_cases = BanditTestBatch( allCases, xrange(10) )  #Celtra
     solv_selection_policy = GLODEF_SELECTION_UCBTUNED
-    solv_initial_param_values = [[0.4523,   -0.4439,    0.1721 ,   0.2491 ]]
 
-   # #best samples from Matlab-analysis (score + params)
-   #59.2200    0.9000   -0.3000   -0.4000    1.2000   -0.1000   -0.4000
-   #60.7500    0.9000   -0.2000   -0.4000    0.9000   -0.3000   -0.1000
-   #61.8200    0.7000    0.5000    0.3000    0.9000   -0.2000    0.1000
-   #61.9400    1.5000   -0.3000    0.3000    1.0000   -0.2000   -0.4000
+    #solv_initial_param_values = [[1.5000,   -0.3000,    0.3000],   [1.0000,   -0.2000,   -0.4000]] #eval1
+    #solv_initial_param_values = [[0.7000,    0.5000,    0.3000],   [0.9000   ,-0.2000    ,0.1000]] #eval2
+    #solv_initial_param_values = [[0.9000,   -0.2000,   -0.4000],   [0.9000,   -0.3000,   -0.1000]] #eval3
+    solv_initial_param_values = [[0.9000,   -0.3000,   -0.4000],   [1.2000,   -0.1000,   -0.4000]]  #eval4
 
     solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
     solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR] * 2
-    solv_param_num_inputs = [3] * 1
+    solv_param_num_inputs = [2] * 2
     solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, DEFAULT_CHANGEPOINT_TEST, DEFAULT_RESET_ALGORITHM, solv_param_types, solv_param_num_inputs)
     evaluateBatch(solver, eval_cases, 1000, 0, 0)
 

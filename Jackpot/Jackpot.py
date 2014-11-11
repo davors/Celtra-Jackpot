@@ -46,7 +46,8 @@ testBatch_debug = BanditTestBatch( allCases, [5])
 #test_2014_10_20_HankeyPankey_treshold(allCases)
 #test_2014_10_20_UCBTLinearC(allCases)
 
-test_2014_11_10_UCBT_linearC1C2_6par(allCases)
+#test_2014_11_10_UCBT_linearC1C2_6par(allCases)
+test_2014_11_11_linear_3inp_exploration_EVAL(allCases[0:37])
 
 ##-- unit tests
 
