@@ -120,14 +120,14 @@ experiment_filenames{88}   = 'Reprint___2014_10_23_changeHP_UCBT_1par_resetSingl
 
 experiment_filenames{90}   = 'Reprint___linear1.0___2014_10_23_09_22_08';
 experiment_filenames{91}   = 'Reprint___2014_10_23_UCBT_noChangePoint_Clinear3inp___2014_10_23_16_59_56';
-
+experiment_filenames{92}   = 'Reprint___2014_11_10_UCBT_linearC1C2_6par___2014_11_11_00_38_12';
 
 experiment_filenames{600}   = '';
 
 %-------------------- SETTINGS --------------------%
 %file read settings
 
-filename_to_load = 91;
+filename_to_load = 92;
 
 analyze_score_for_testCase = 0;
     % 0 ... take average of all cases

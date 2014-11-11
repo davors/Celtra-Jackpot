@@ -195,6 +195,23 @@ def test_2014_10_20_UCBTLinearC(allCases):
     optimizer.Optimize(opti_learn_cases, opti_config, opti_completeRepeats, opti_suppress_output, opti_oracle_probablity)
 
 
+def test_2014_10_23_linear_3inp_exploration_EVAL(allCases):
+    eval_cases = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_initial_param_values = [[0.4523,   -0.4439,    0.1721 ,   0.2491 ]]
+
+   # #best samples from Matlab-analysis (score + params)
+   #59.2200    0.9000   -0.3000   -0.4000    1.2000   -0.1000   -0.4000
+   #60.7500    0.9000   -0.2000   -0.4000    0.9000   -0.3000   -0.1000
+   #61.8200    0.7000    0.5000    0.3000    0.9000   -0.2000    0.1000
+   #61.9400    1.5000   -0.3000    0.3000    1.0000   -0.2000   -0.4000
+
+    solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
+    solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR] * 2
+    solv_param_num_inputs = [3] * 1
+    solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, DEFAULT_CHANGEPOINT_TEST, DEFAULT_RESET_ALGORITHM, solv_param_types, solv_param_num_inputs)
+    evaluateBatch(solver, eval_cases, 1000, 0, 0)
+
 # 2014.10.23 first test of a linear function: exploration weight defined with 3 inputs + bias
 def test_2014_10_23_linear_3inp_exploration(allCases):
 
@@ -263,6 +280,89 @@ def test_2014_10_23_linear_3inp_exploration(allCases):
     opti_config_grid_step,                 # grid step (if you want discrete search); leave empty for continuous search
     int(sqrt(len(opti_selective_optimization)))*10,                 # number of cycles (epochs) of SA
     int(sqrt(len(opti_selective_optimization)))*10,                 # number of iterations per each cycle
+    0.75,               # probability of accepting worse solution at the start
+    0.01,               # probability of accepting worse solution at the end
+    0.50,               # neighbourhood radius at the start (ratio of interval)
+    0.01                # neighbourhood radius at the end (ratio of interval)
+    ]
+    opti_algorithm = GLODEF_OPTIMIZATION_ANNEALING
+    opti_fitness_metric = GLODEF_FITNESS_OPTIMALITY_RANDNOR
+
+
+    optimizer = Optimizer(opti_solver, opti_evaluations_per_sample, opti_config, opti_fitness_metric, opti_algorithm, opti_selective_optimization)
+
+    opti_suppress_output = 0
+
+    optimizer.Optimize(opti_learn_cases, opti_config, opti_completeRepeats, opti_suppress_output, opti_oracle_probablity)
+
+
+
+# 2014.11.10 using UCBT with linear change of C, set by par0 and par1, where both are defined by 2 inputs (num_machines, max_pulls)
+def test_2014_11_10_UCBT_linearC1C2_6par(allCases):
+
+    testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )  #Celtra
+
+    #-- change configuration here
+
+    #opti_learn_cases = testBatch_Complete
+    opti_learn_cases = testBatch_01_10
+
+    #solv_selection_policy = GLODEF_SELECTION_EGREEDY
+    #solv_initial_param_values = [0.140, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+    #opti_config_params_lower_bounds = [0.0]
+    #opti_config_params_upper_bounds = [0.4]
+
+    #solv_selection_policy = GLODEF_SELECTION_SOFTMAX
+    #opti_config_param_boundaries = [0.005, 0.02]       #softmax tao lower boundary must be > 0
+
+    #solv_selection_policy = GLODEF_SELECTION_UCB1
+    #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+
+    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_initial_param_values = [[1.3, 0.0, 0.0], [0.8, 0.0, 0.0]]     #if None: default will be used
+
+    opti_selective_optimization = None
+    #opti_selective_optimization = [0 , 1]              #choosen parameters to optimize - array of indices, if opti_selective_optimization=None then all parameters will be optimized
+    opti_config_params_lower_bounds = [0.3, -0.5, -0.5,  0.3, -0.5, -0.5]
+    opti_config_params_upper_bounds = [2.3,  0.5,  0.5,  2.3,  0.5,  0.5]
+
+    #opti_selective_optimization = [[0, [0]]]       #choosen parameters to optimize - double level indices (may specify the choosen weights of a certain parameter function)
+    #opti_config_params_lower_bounds = [0.0]
+    #opti_config_params_upper_bounds = [3.0]
+
+    opti_config_grid_step = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]          # [] - disabled (continuous)
+    #opti_config_grid_step = []
+
+    opti_oracle_probablity = 0
+    opti_completeRepeats = 100
+
+    solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR] * 2
+    solv_param_num_inputs = [2] * 2
+
+    #-- do not change values below here --#
+
+    solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
+    solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
+
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+
+    solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, solv_change_point_test, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
+
+    opti_solver = solver
+    if opti_oracle_probablity == 1 :
+        opti_evaluations_per_sample = 1
+    else :
+        opti_evaluations_per_sample = 10
+    opti_config = [     #configuration for the optimization algorithm: arbitrary list of additional parameters
+    opti_config_params_lower_bounds,         # lower bounds for all parameters
+    opti_config_params_upper_bounds,         # upper bounds for all parameters
+    opti_config_grid_step,                 # grid step (if you want discrete search); leave empty for continuous search
+    20,                 # number of cycles (epochs) of SA
+    20,                 # number of iterations per each cycle
     0.75,               # probability of accepting worse solution at the start
     0.01,               # probability of accepting worse solution at the end
     0.50,               # neighbourhood radius at the start (ratio of interval)

@@ -25,6 +25,8 @@ testBatch_01_05 = BanditTestBatch( allCases, [0, 1, 2, 3, 4] )  #Celtra
 testBatch_06_10 = BanditTestBatch( allCases, [5, 6, 7, 8, 9] )  #Celtra
 testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )       #Celtra
 
+finalEvalBatch = BanditTestBatch( allCases, xrange(10) )
+
 testBatch_tmp = BanditTestBatch( allCases, [1,10] )
 testBatch_tmp2 = BanditTestBatch( allCases, [2,5] )
 testBatch_tmp3 = BanditTestBatch( allCases, [6] )
@@ -37,13 +39,14 @@ testBatch_debug = BanditTestBatch( allCases, [5])
 #test_2014_10_25_UCBT_HP_resetSingle(allCases)
 #test_2014_10_25_UCBT_davorTom_resetSingle(allCases)
 #test_2014_10_25_UCBT_noCP_linearC(allCases)
-test_2014_10_24_addedEvalCases(allCases)
+#test_2014_10_24_addedEvalCases(allCases)
 #test_2014_10_23_linear_3inp_exploration(allCases)
 #test_2014_10_20_changePoint_DavorTom2par(allCases)
 #test_2014_10_18_noChangePoint(allCases)
 #test_2014_10_20_HankeyPankey_treshold(allCases)
 #test_2014_10_20_UCBTLinearC(allCases)
 
+test_2014_11_10_UCBT_linearC1C2_6par(allCases)
 
 ##-- unit tests
 
