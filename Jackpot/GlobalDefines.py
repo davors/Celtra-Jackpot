@@ -42,7 +42,7 @@ GLO_labels_selection_policies = [
     'UCB1',
     'UCBtuned',
     'POKER',
-    'Voter'
+    'VoterUCBT'
     ]
 
 GLO_labels_change_point_detectors = [
