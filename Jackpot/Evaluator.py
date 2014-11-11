@@ -21,9 +21,9 @@ def evaluateSingleCase(
         #TODO PARAM_INPUTS if not direct parameter search (if linear or neural used...), update inputs in function approximator for parameters
         #example:
         # solver.config.params[0].updateInputs( array_of_new_inputs )
-        if solver.config.selectionPolicy == GLODEF_SELECTION_POKER:
-            if solver.config.params[0].function != GLODEF_PARAM_FUNCTION_DIRECT :
-                solver.config.params[0].updateSingleInput ( 0 , case.maxPulls-p)
+        if solver.config.selectionPolicy == GLODEF_SELECTION_POKER or solver.config.selectionPolicy == GLODEF_SELECTION_VOTER:
+            if solver.config.params[2].function != GLODEF_PARAM_FUNCTION_DIRECT :
+                solver.config.params[2].updateSingleInput ( 0 , case.maxPulls-p)
         else:
             if solver.config.params[0].function != GLODEF_PARAM_FUNCTION_DIRECT :
                 solver.config.params[0].updateSingleInput ( 0 , case.maxPulls/30000.0)

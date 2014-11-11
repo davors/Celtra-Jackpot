@@ -62,8 +62,8 @@ def test_2014_10_24_addedEvalCases(allCases):
     #solv_selection_policy = GLODEF_SELECTION_UCB1
     #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
-    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
-    solv_initial_param_values = [1.3, 0.5, 1.0, 50, 1.0]     #if None: default will be used
+    solv_selection_policy = GLODEF_SELECTION_VOTER
+    solv_initial_param_values = [1.0, 0.77, [0,1]]     #if None: default will be used
 
     #solv_selection_policy = GLODEF_SELECTION_POKER
     #solv_initial_param_values = [[0,1], 35, 50]     #if None: default will be used
@@ -81,8 +81,8 @@ def test_2014_10_24_addedEvalCases(allCases):
     #solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR , GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT]
     #solv_param_num_inputs = [1, 0, 0]
 
-    solv_param_types = [GLODEF_PARAM_FUNCTION_DIRECT , GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT]
-    solv_param_num_inputs = [0, 0, 0, 0, 0]
+    solv_param_types = [GLODEF_PARAM_FUNCTION_DIRECT , GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_LINEAR]
+    solv_param_num_inputs = [0, 0, 1]
 
     eval_repeats = 1000
     eval_oracle_probablity = 0
@@ -121,7 +121,7 @@ def test_2014_10_20_UCBTLinearC(allCases):
     #solv_selection_policy = GLODEF_SELECTION_POKER
     #solv_initial_param_values = [[0, 1], 40, 50]     #if None: default will be used
 
-    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_selection_policy = GLODEF_SELECTION_POKER
     solv_initial_param_values = [2.0, 0.5, 1.0, 50, 1.0]
 
     opti_selective_optimization = [1]              #choosen parameters to optimize - array of indices, if None then all parameters will be optimized
