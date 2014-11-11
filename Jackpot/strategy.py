@@ -3,6 +3,129 @@ from Config import *
 import random
 from math import *
 
+
+class ensemble():
+    machines = None
+    numMachines = None
+
+    pulls = None
+    total_rejected_pulls = None
+    lastPolicy = None
+    # Index of last machine played
+    lastPulledMachine = None
+    machineMeanSum = None
+    machineSigmaSum = None
+    def __init__(self,nMachines=2):
+        self.numMachines=nMachines
+        pulls=0
+        self.lastPulledMachine = 0
+        self.machineMeanSum = 0.0
+        self.machineSigmaSum = 0.0
+        self.machines = [machine(m) for m in xrange(self.numMachines)]
+        self.lastPolicy=0
+
+    #params [voter C; main UCBT C; POKER param; POKER horizon]
+    def UCBTVoter(self,secondary_actions, all_pulls, max_pulls, params= [1.0, 1.0, 1.0, 1.0, 1.0]):
+
+        actions=self.machines
+        bestVal = -1e30000
+        numEqualBest = 1
+        indicesBest = [-1]*len(actions)
+
+        parC=((params[1]-params[0])/max_pulls)*self.pulls+params[0]
+    
+        #find best action among all available
+        for i in range(len(actions)) :
+
+            a = actions[i]
+
+            #first try all the unexplored actions (those with zero visits)
+            if a.pulls <= 0 :
+                indicesBest[0] = i
+                break
+
+            #if all actions already explored, calculate their values
+            else :
+                try:
+                    #UCBvalue = a.mean + parC*sqrt(2.0*log(all_pulls)/a.pulls)   #the UCB1 equation
+                    V = a.variance+sqrt(2.0*log(self.pulls)/a.pulls)
+                    UCBvalue = a.mean + parC * sqrt((log(self.pulls)/a.pulls)*min(1.0/4.0,V))
+
+                    #store calculated value
+                    a.storedValue = UCBvalue
+
+                    #find action with highest value
+                    if UCBvalue > bestVal :
+                        bestVal = UCBvalue
+                        numEqualBest = 1
+                        indicesBest[numEqualBest-1] = i
+
+                    #remember best
+                    elif UCBvalue == bestVal :
+                        numEqualBest += 1
+                        indicesBest[numEqualBest-1] = i
+
+                except:
+                    print 'UCBT(): lol'
+
+        #break ties randomly
+        indicesBest[0] = indicesBest[random.randint(0,numEqualBest-1)]
+
+        selected_policy = actions[indicesBest[0]] 
+        not_selected_policy = actions[1-indicesBest[0]]
+
+        #0 - UCBT
+        #1 - POKER
+
+        secondary_machine_selection=[UCBT(secondary_machines,all_pulls,max_pulls,[parCp[2], parCp[3]]), POKER(secondary_machines,params[4], params[5])]
+        if secondary_machine_selection[0]==secondary_machine_selection[1]:
+           self.lastPolicy=2
+           selected_bandit=secondary_machine_selection[0]
+           self.lastPulledMachine=selected_bandit.id
+        elif selected_policy.id==0:
+             self.lastPolicy=0
+             selected_bandit=secondary_machine_selection[0]
+        else: 
+            self.lastPolicy=1
+            selected_bandit=secondary_machine_selection[1]
+            self.lastPulledMachine=selected_bandit.id
+        
+        return selected_bandit
+        
+    
+    def resetState():
+
+        self.machines = [machine(m) for m in range(self.numMachines)]
+        self.pulls = 0
+        self.total_rejected_pulls = 0
+        self.lastPulledMachine = 0
+        self.machineMeanSum = 0.0
+        self.machineSigmaSum = 0.0
+        self.lastPolicy=0
+
+    def update(reward, pull):
+        if self.lastPolicy==2:
+            for m in self.machines:
+                m.update(reward,pull)
+            self.machineMeanSum += self.machines[self.lastPulledMachine].mean
+            self.machineSigmaSum += sqrt(self.machines[self.lastPulledMachine].variance)
+            self.pulls+=2
+        elif self.lastPolicy==0:
+            self.machines[0].update(reward,pull)
+            self.pulls+=1
+        elif self.lastPolicy==1:
+            self.machines[1].update(reward,pull)
+            self.machineMeanSum += self.machines[self.lastPulledMachine].mean
+            self.machineSigmaSum += sqrt(self.machines[self.lastPulledMachine].variance)
+            self.pulls+=1
+            
+
+
+
+
+
+
+
 #the UCB algorithm by Auer et al., 2002
 def UCB1(actions, all_pulls, parC = 1.0):
 

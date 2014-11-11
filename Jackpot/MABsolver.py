@@ -148,7 +148,7 @@ class MABsolver() :
     lastPulledMachine = None
     machineMeanSum = None
     machineSigmaSum = None
-
+    voter=None
 
     # initialization
     def __init__(
@@ -165,7 +165,7 @@ class MABsolver() :
 
         self.config = MABsolver_config(paramValues, selectionPolicy, changePointDetector, changePointTest, resetAlgorithm, paramTypes, paramNumInputs)
         self.resetState(init_bandits)
-
+        voter=ensemble()
     # reset memory structures (preparation for new testcase)
     def resetState(self, num_bandits) :
         self.machines = [machine(m) for m in range(num_bandits)]
@@ -204,7 +204,7 @@ class MABsolver() :
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, self.max_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_POKER : selected_machine = POKER(self.machines, POKER_params, exploration_weight)
-
+        elif self.config.selectionPolicy == GLODEF_SELECTION_VOTER : selected_machine = voter.UCBTVoter(self.machines, self.pulls - self.total_rejected_pulls, self.max_pulls, [exploration_weight])
         self.pulls += increase_pulls
 
         return selected_machine.id
