@@ -100,6 +100,7 @@ class MABsolver_config() :
             elif selectionPolicy == GLODEF_SELECTION_UCB1 :     paramValues[0] = DEFAULT_PAR_UCB1_C
             elif selectionPolicy == GLODEF_SELECTION_UCBTUNED : paramValues[0] = DEFAULT_PAR_UCB1_C
             elif selectionPolicy == GLODEF_SELECTION_POKER :    paramValues[0] = DEFAULT_PAR_POKER_H
+            elif selectionPolicy == GLODEF_SELECTION_VOTER :    paramValues[0] = DEFAULT_PAR_VOTER
 
             self.params = [ParamFunction(paramFunctions[i], paramNumInputs[i], paramValues[i]) for i in xrange(lenF)]
 
@@ -148,7 +149,7 @@ class MABsolver() :
     lastPulledMachine = None
     machineMeanSum = None
     machineSigmaSum = None
-
+    voter=None
 
     # initialization
     def __init__(
@@ -164,7 +165,9 @@ class MABsolver() :
         ) :
 
         self.config = MABsolver_config(paramValues, selectionPolicy, changePointDetector, changePointTest, resetAlgorithm, paramTypes, paramNumInputs)
+        self.voter=ensemble()
         self.resetState(init_bandits)
+        
 
     # reset memory structures (preparation for new testcase)
     def resetState(self, num_bandits) :
@@ -176,6 +179,7 @@ class MABsolver() :
         self.lastPulledMachine = 0
         self.machineMeanSum = 0.0
         self.machineSigmaSum = 0.0
+        self.voter.resetState()
 
         #self.epsilon_soft = self.config.params[0]
         #self.softMax_tao = self.config.params[1]
@@ -195,14 +199,18 @@ class MABsolver() :
         # self.config.params[1].lastInputs10] = some_new_input2
         # self.config.params[2].lastInputs[0] = some_new_input3
 
+        #UCBTVoter C
         p0 = self.config.params[0].getValue()
         exploration_weight = p0
         
         # exploration_weight defined with both p0 and p1, where p0 is the initial value and p1 the final
         # (comment out to disable)
+        #UCBTMain C
         p1 = self.config.params[1].getValue()
         exploration_weight = ( ( p1 - p0 ) / ( self.max_pulls - self.total_rejected_pulls ) ) * (self.pulls - self.total_rejected_pulls) + p0
-
+        #Poker horizon
+        horizon = self.config.params[2].getValue()
+        
         POKER_params = [self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum]
 
         if   self.config.selectionPolicy == GLODEF_SELECTION_RANDOM:    selected_machine = self.machines[random.randint(0, self.numMachines - 1)]
@@ -210,8 +218,8 @@ class MABsolver() :
         elif self.config.selectionPolicy == GLODEF_SELECTION_SOFTMAX :  selected_machine = SoftMax(self.machines, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
-        elif self.config.selectionPolicy == GLODEF_SELECTION_POKER : selected_machine = POKER(self.machines, POKER_params, exploration_weight)
-
+        elif self.config.selectionPolicy == GLODEF_SELECTION_POKER : selected_machine = POKER(self.machines, POKER_params, horizon)
+        elif self.config.selectionPolicy == GLODEF_SELECTION_VOTER : selected_machine = self.voter.UCBTVoter(self.machines, self.pulls - self.total_rejected_pulls, [p0, p1, horizon])
         self.pulls += increase_pulls
 
         return selected_machine.id
@@ -231,6 +239,7 @@ class MABsolver() :
         # self.config.params[2].lastInputs[0] = some_new_input3
 
         self.machines[machine_id].update(reward, self.pulls)
+        self.voter.update(self.machines, reward, self.pulls)
 
         # POKER stuff
         self.lastPulledMachine = machine_id
