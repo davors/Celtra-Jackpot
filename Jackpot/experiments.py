@@ -200,11 +200,17 @@ def test_2014_11_11_linear_3inp_exploration_EVAL(allCases):
     #eval_cases = BanditTestBatch( allCases, xrange(10) )  #Celtra
     solv_selection_policy = GLODEF_SELECTION_UCBTUNED
 
-    #solv_initial_param_values = [[1.5000,   -0.3000,    0.3000],   [1.0000,   -0.2000,   -0.4000]] #eval1
-    #solv_initial_param_values = [[0.7000,    0.5000,    0.3000],   [0.9000   ,-0.2000    ,0.1000]] #eval2
-    #solv_initial_param_values = [[0.9000,   -0.2000,   -0.4000],   [0.9000,   -0.3000,   -0.1000]] #eval3
-    solv_initial_param_values = [[0.9000,   -0.3000,   -0.4000],   [1.2000,   -0.1000,   -0.4000]]  #eval4
+    #initParams = [1.5000,   -0.3000,    0.3000,   1.0000,   -0.2000,   -0.4000] #eval1
+    #initParams = [0.7000,    0.5000,    0.3000,   0.9000   ,-0.2000    ,0.1000] #eval2
+    #initParams = [0.9000,   -0.2000,   -0.4000,   0.9000,   -0.3000,   -0.1000] #eval3
+    #initParams = [0.9000,   -0.3000,   -0.4000,   1.2000,   -0.1000,   -0.4000] #eval4
+    #initParams = [ 1.50, 0.50, 0.41, 1.29, 0.30, 0.21 ]         #eval5
+    #initParams = [ 0.59, -0.40, -0.44, 0.56, -0.27, -0.47 ]         #eval6
+    #initParams = [ 1.08, -0.13, 0.10, 1.00, -0.10, 0.00 ]         #eval7
+    #initParams = [ 1.12, -0.06, 0.30, 1.06, 0.06, 0.10 ]         #eval8
+    initParams = [ 0.90, -0.20, -0.18, 0.90, -0.20, -0.25 ]         #eval9
 
+    solv_initial_param_values = [initParams[0:3], initParams[3:6]]
     solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
     solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR] * 2
     solv_param_num_inputs = [2] * 2
