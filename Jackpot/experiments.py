@@ -194,6 +194,71 @@ def test_2014_10_20_UCBTLinearC(allCases):
 
     optimizer.Optimize(opti_learn_cases, opti_config, opti_completeRepeats, opti_suppress_output, opti_oracle_probablity)
 
+def test_2014_11_11_linear_3inp_exploration_EVALmany(allCases):
+
+    eval_cases = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    #eval_cases = BanditTestBatch( allCases, xrange(10) )  #Celtra
+    solv_selection_policy = GLODEF_SELECTION_UCBTUNED
+    solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
+    solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR] * 2
+    solv_param_num_inputs = [2] * 2
+
+    repeats_per_setting = 100
+
+    paramsList = [
+        [1.6000,-0.1000,-0.2000,1.0000,-0.2000,0.2000],
+        [0.5000,-0.1000,0.4000,0.8000,0.1000,0.3000],
+        [1.5000,-0.1000,0,1.4000,-0.2000,-0.5000],
+        [1.5000,-0.1000,0,1.3000,-0.2000,-0.5000],
+        [0.8000,0.5000,0.3000,1.0000,-0.2000,0.1000],
+        [1.1000,-0.4000,-0.2000,0.9000,0.2000,-0.4000],
+        [1.1000,-0.3000,-0.5000,1.2000,-0.2000,-0.5000],
+        [0.9000,-0.3000,-0.2000,0.6000,0.2000,0.1000],
+        [0.8000,0.5000,0.3000,0.9000,-0.2000,0.1000],
+        [1.1000,-0.4000,-0.4000,0.3000,0,0],
+        [0.4000,-0.2000,-0.2000,1.1000,0.3000,-0.4000],
+        [1.2000,0.1000,-0.5000,0.9000,0.4000,0.2000],
+        [0.7000,0.5000,0.3000,0.9000,-0.2000,0.1000],
+        [0.9000,0,0.3000,0.7000,0.4000,0.2000],
+        [1.0000,-0.2000,0.2000,1.2000,-0.3000,-0.1000],
+        [1.2000,0,-0.4000,0.8000,-0.1000,-0.1000],
+        [0.7000,-0.4000,-0.3000,1.0000,-0.2000,-0.4000],
+        [0.8000,-0.4000,-0.1000,0.6000,0.2000,-0.5000],
+        [0.6000,-0.2000,0.5000,0.8000,0.1000,0.2000],
+        [0.9000,-0.4000,-0.4000,0.5000,-0.1000,0.2000],
+        [0.9000,-0.5000,-0.2000,1.0000,0,-0.4000],
+        [1.2000,-0.2000,0.5000,1.0000,0,-0.4000],
+        [1.1000,-0.3000,-0.4000,1.0000,-0.4000,0],
+        [1.1000,-0.2000,-0.1000,1.2000,0.2000,-0.4000],
+        [1.2000,0.4000,-0.2000,1.0000,0.4000,-0.3000],
+        [1.1000,-0.2000,0.4000,0.5000,0.1000,-0.4000],
+        [1.0000,-0.1000,-0.4000,0.8000,-0.1000,-0.3000],
+        [0.6000,0.5000,0.3000,1.1000,-0.2000,0.2000],
+        [1.8000,-0.2000,0.2000,1.3000,-0.2000,-0.4000],
+        [1.1000,-0.1000,-0.5000,0.9000,-0.2000,-0.2000],
+        [1.4000,-0.2000,0.1000,1.3000,-0.2000,-0.5000],
+        [1.0000,-0.1000,0,1.3000,-0.2000,-0.2000],
+        [1.1000,-0.3000,-0.4000,0.7000,-0.2000,0],
+        [1.1000,-0.3000,0.1000,1.1000,-0.3000,0],
+        ]
+
+    for p in xrange(len(paramsList)):
+        initParams = paramsList[p]
+        for i in xrange(len(initParams)):
+            print ('% 6.3f ') % initParams[i],
+
+        solv_initial_param_values = [initParams[0:3], initParams[3:6]]
+        solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, DEFAULT_CHANGEPOINT_TEST, DEFAULT_RESET_ALGORITHM, solv_param_types, solv_param_num_inputs)
+        (avg_metrics, metrics) = evaluateBatch(solver, eval_cases, repeats_per_setting, 1, 0)
+
+        print ('   %6d ') % (repeats_per_setting),
+        for i in xrange(len(avg_metrics)):
+            print (GLO_metrics_out_format[i]) % (avg_metrics[i]),
+        print '     ',
+        for c in xrange(eval_cases.num) :
+            print (GLO_metrics_out_format[DEFAULT_FITNESS_METRIC]) % metrics[DEFAULT_FITNESS_METRIC][c],
+        print ''
+
 
 def test_2014_11_11_linear_3inp_exploration_EVAL(allCases):
     eval_cases = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
