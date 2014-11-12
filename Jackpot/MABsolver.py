@@ -208,8 +208,10 @@ class MABsolver() :
         #UCBTMain C
         p1 = self.config.params[1].getValue()
         exploration_weight = ( ( p1 - p0 ) / ( self.max_pulls - self.total_rejected_pulls ) ) * (self.pulls - self.total_rejected_pulls) + p0
+        
         #Poker horizon
-        horizon = self.config.params[2].getValue()
+        if(len(self.config.params) > 2):
+            horizon = self.config.params[2].getValue()
         
         POKER_params = [self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum]
 
