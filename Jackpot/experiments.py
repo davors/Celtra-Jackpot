@@ -93,6 +93,55 @@ def test_2014_10_24_addedEvalCases(allCases):
     evaluateBatch(solver, eval_cases, eval_repeats, 0, eval_oracle_probablity)
 
 
+def test_Voter(allCases):
+
+    testBatch_Complete = BanditTestBatch( allCases, xrange(len(allCases)) ) #All
+    testBatch_01_10 = BanditTestBatch( allCases, xrange(10) )  #Celtra
+    testBatch_above10 = BanditTestBatch( allCases, xrange(10, len(allCases)) )  #Celtra-similar hand defined
+    testBatch_01_05 = BanditTestBatch( allCases, xrange(5) )
+    #-- change configuration here
+
+    #eval_cases = testBatch_01_10
+    #eval_cases = testBatch_above10
+    eval_cases = testBatch_Complete
+    #eval_cases = testBatch_01_10
+
+    #solv_selection_policy = GLODEF_SELECTION_EGREEDY
+    #solv_initial_param_values = [0.140, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+
+    #solv_selection_policy = GLODEF_SELECTION_SOFTMAX
+
+    #solv_selection_policy = GLODEF_SELECTION_UCB1
+    #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
+
+    solv_selection_policy = GLODEF_SELECTION_VOTER
+    solv_initial_param_values = [[1	-0.1	-0.4], [0.8	 -0.1	 -0.3], [0,1], 43, 1.0]     #if None: default will be used
+    #solv_selection_policy = GLODEF_SELECTION_POKER
+    #solv_initial_param_values = [1.0, 0., 50]     #if None: default will be used
+
+    solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_ZERO
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_ALL_TO_MOVING_AVERAGE_CUTOFF
+    #solv_reset_algorithm = GLODEF_RESET_ALGORITHM_RESET_TO_MOVING_AVERAGE
+
+    #solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
+    #solv_change_point_detector = GLODEF_CHANGEPOINT_DAVORTOM
+    solv_change_point_detector = GLODEF_CHANGEPOINT_HENKYPENKY
+
+    solv_change_point_test = DEFAULT_CHANGEPOINT_TEST
+    #solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR , GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT]
+    #solv_param_num_inputs = [1, 0, 0]
+
+    solv_param_types = [GLODEF_PARAM_FUNCTION_LINEAR , GLODEF_PARAM_FUNCTION_LINEAR, GLODEF_PARAM_FUNCTION_LINEAR, GLODEF_PARAM_FUNCTION_DIRECT, GLODEF_PARAM_FUNCTION_DIRECT]
+    solv_param_num_inputs = [2, 2, 1, 0, 0]
+
+    eval_repeats = 1000
+    eval_oracle_probablity = 0
+
+    #-- do not change values below here --#
+
+    solver = MABsolver(solv_initial_param_values, solv_selection_policy, solv_change_point_detector, solv_change_point_test, solv_reset_algorithm, solv_param_types, solv_param_num_inputs)
+    evaluateBatch(solver, eval_cases, eval_repeats, 0, eval_oracle_probablity)
 
 def test_2014_10_20_UCBTLinearC(allCases):
 
