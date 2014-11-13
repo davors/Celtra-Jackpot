@@ -283,7 +283,12 @@ def test_2014_11_11_linear_3inp_exploration_EVAL(allCases):
     #initParams = [1, -0.1, -0.4, 0.8, -0.1, -0.3]       #eval4
     #initParams = [0.7, -0.4, -0.3, 1, -0.2, -0.4]       #eval5
     #initParams = [0.9, -0.5, -0.2, 1, 0, -0.4]       #eval6
-    initParams = [0.90, -0.30, -0.20, 0.60, 0.20, 0.1]       #eval7
+    #initParams = [0.90, -0.30, -0.20, 0.60, 0.20, 0.1]       #eval7
+
+#IDENTIFIED AS BEST AFTER DEPTH ANALYSIS OF CASE-PERFORMANCE
+#BEST UCBT linear C1 to C2, with linear approx 2 inputs :       	1	-0.1	-0.4	0.8	 -0.1	 -0.3
+#stat BEST	UCBT linear C1 to C2, with linear approx 2 inputs : 	1.1	-0.4	-0.4	0.3 	0   	0
+#non-stat BEST	UCBT linear C1 to C2, with linear approx 2 inputs :	0.7	-0.4	-0.3	1	 -0.2	 -0.4
 
 
     solv_initial_param_values = [initParams[0:3], initParams[3:6]]
