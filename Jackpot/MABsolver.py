@@ -139,6 +139,7 @@ class MABsolver() :
 
     config = None
     machines = None
+    ucbt_machines = None
     numMachines = None
 
     pulls = None
@@ -172,6 +173,7 @@ class MABsolver() :
     # reset memory structures (preparation for new testcase)
     def resetState(self, num_bandits) :
         self.machines = [machine(m) for m in range(num_bandits)]
+        self.ucbt_machines = [machine(m) for m in range(num_bandits)]
         self.numMachines = num_bandits
 
         self.pulls = 0
@@ -221,7 +223,7 @@ class MABsolver() :
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_POKER : selected_machine = POKER(self.machines, POKER_params, horizon)
-        elif self.config.selectionPolicy == GLODEF_SELECTION_VOTER : selected_machine = self.voter.UCBTVoter(self.machines, self.pulls - self.total_rejected_pulls, [p0, p1, horizon])
+        elif self.config.selectionPolicy == GLODEF_SELECTION_VOTER : selected_machine = self.voter.UCBTVoter(self.machines, self.ucbt_machines, self.pulls, self.total_rejected_pulls, [p0, p1, horizon])
         self.pulls += increase_pulls
 
         return selected_machine.id
@@ -241,6 +243,7 @@ class MABsolver() :
         # self.config.params[2].lastInputs[0] = some_new_input3
 
         self.machines[machine_id].update(reward, self.pulls)
+        self.ucbt_machines[machine_id].update(reward, self.pulls)
         self.voter.update(self.machines, reward, self.pulls)
 
         # POKER stuff

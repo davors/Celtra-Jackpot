@@ -32,7 +32,7 @@ class ensemble():
         self.total_rejected_pulls = 0
 
     #params [voter C; main UCBT C; POKER param; POKER horizon]
-    def UCBTVoter(self,secondary_machines, all_pulls, params= [1.0, 1.0, 1.0]):
+    def UCBTVoter(self,secondary_machines,secondary_ucbt_machines, all_pulls, rejected_pulls, params= [1.0, 1.0, 1.0]):
 
         actions=self.machines
         bestVal = -1e30000
@@ -84,7 +84,7 @@ class ensemble():
         #0 - UCBT
         #1 - POKER
 
-        secondary_machine_selection=[UCBT(secondary_machines,all_pulls,params[1]), POKER(secondary_machines,[self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum], params[2])]
+        secondary_machine_selection=[UCBT(secondary_ucbt_machines,all_pulls,params[1]).id, POKER(secondary_machines,[self.lastPulledMachine, self.machineMeanSum, self.machineSigmaSum], params[2]).id]
         if secondary_machine_selection[0]==secondary_machine_selection[1]:
            self.lastPolicy=2
            selected_bandit=secondary_machine_selection[0]
@@ -95,9 +95,9 @@ class ensemble():
             self.lastPolicy=1
             selected_bandit=secondary_machine_selection[1]
         
-        self.lastPulledMachine=selected_bandit.id
+        self.lastPulledMachine=selected_bandit
         
-        return selected_bandit
+        return secondary_machines[selected_bandit]
         
     
     def resetState(self):
@@ -120,11 +120,9 @@ class ensemble():
             self.machines[0].update(reward,pull)
         elif self.lastPolicy==1:
             self.machines[1].update(reward,pull)
-        try:
+
             self.machineMeanSum += M[self.lastPulledMachine].mean
             self.machineSigmaSum += sqrt(M[self.lastPulledMachine].variance)
-        except:
-            print "lol"
         self.pulls+=1
             
 
