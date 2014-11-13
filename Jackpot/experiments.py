@@ -265,6 +265,7 @@ def test_2014_11_11_linear_3inp_exploration_EVAL(allCases):
     #eval_cases = BanditTestBatch( allCases, xrange(10) )  #Celtra
     solv_selection_policy = GLODEF_SELECTION_UCBTUNED
 
+    #first batch of evaluations, 2014_11_10_UCBT_linearC1C2_6par
     #initParams = [1.5000,   -0.3000,    0.3000,   1.0000,   -0.2000,   -0.4000] #eval1
     #initParams = [0.7000,    0.5000,    0.3000,   0.9000   ,-0.2000    ,0.1000] #eval2
     #initParams = [0.9000,   -0.2000,   -0.4000,   0.9000,   -0.3000,   -0.1000] #eval3
@@ -273,7 +274,22 @@ def test_2014_11_11_linear_3inp_exploration_EVAL(allCases):
     #initParams = [ 0.59, -0.40, -0.44, 0.56, -0.27, -0.47 ]         #eval6
     #initParams = [ 1.08, -0.13, 0.10, 1.00, -0.10, 0.00 ]         #eval7
     #initParams = [ 1.12, -0.06, 0.30, 1.06, 0.06, 0.10 ]         #eval8
-    initParams = [ 0.90, -0.20, -0.18, 0.90, -0.20, -0.25 ]         #eval9
+    #initParams = [ 0.90, -0.20, -0.18, 0.90, -0.20, -0.25 ]         #eval9
+
+    #second batch of evaluations, 2014_11_13_UCBT_linearC1C2_6par
+    #initParams = [1.1, -0.2, 0.4, 0.5, 0.1, -0.4]       #eval1
+    #initParams = [0.8, -0.4, -0.1, 0.6, 0.2, -0.5]       #eval2
+    #initParams = [1.10, -0.40, -0.40, 0.30, 0.00, 0]       #eval3
+    #initParams = [1, -0.1, -0.4, 0.8, -0.1, -0.3]       #eval4
+    #initParams = [0.7, -0.4, -0.3, 1, -0.2, -0.4]       #eval5
+    #initParams = [0.9, -0.5, -0.2, 1, 0, -0.4]       #eval6
+    #initParams = [0.90, -0.30, -0.20, 0.60, 0.20, 0.1]       #eval7
+
+#IDENTIFIED AS BEST AFTER DEPTH ANALYSIS OF CASE-PERFORMANCE
+#BEST UCBT linear C1 to C2, with linear approx 2 inputs :       	1	-0.1	-0.4	0.8	 -0.1	 -0.3
+#stat BEST	UCBT linear C1 to C2, with linear approx 2 inputs : 	1.1	-0.4	-0.4	0.3 	0   	0
+#non-stat BEST	UCBT linear C1 to C2, with linear approx 2 inputs :	0.7	-0.4	-0.3	1	 -0.2	 -0.4
+
 
     solv_initial_param_values = [initParams[0:3], initParams[3:6]]
     solv_change_point_detector = GLODEF_CHANGEPOINT_NONE
