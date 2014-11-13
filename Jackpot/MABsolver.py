@@ -255,6 +255,8 @@ class MABsolver() :
             # POKER reset to zero
             self.machineMeanSum = 0.0
             self.machineSigmaSum = 0.0
+            self.voter.machineSigmaSum = 0.0
+            self.voter.machineMeanSum = 0.0
 
             if not suppress_output :
                 print 'MABsolver: changePointDetector: Global pull at change point: %d' + i
