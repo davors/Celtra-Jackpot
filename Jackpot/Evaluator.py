@@ -24,7 +24,6 @@ def evaluateSingleCase(
         if solver.config.selectionPolicy == GLODEF_SELECTION_POKER or solver.config.selectionPolicy == GLODEF_SELECTION_VOTER:
             if solver.config.params[2].function != GLODEF_PARAM_FUNCTION_DIRECT :
                 solver.config.params[2].updateSingleInput ( 0 , case.maxPulls-p)
-        else:
             if solver.config.params[0].function != GLODEF_PARAM_FUNCTION_DIRECT :
                 solver.config.params[0].updateSingleInput ( 0 , case.maxPulls/30000.0)
                 solver.config.params[0].updateSingleInput ( 1 , case.numBandits/10.0)

@@ -115,7 +115,7 @@ def test_Voter(allCases):
     #solv_initial_param_values = [0.240, 2.0, 1.0, 50, 1.0]     #if None: default will be used
 
     solv_selection_policy = GLODEF_SELECTION_VOTER
-    solv_initial_param_values = [[1	-0.1	-0.4], [0.8	 -0.1	 -0.3], [0,1], 43, 1.0]     #if None: default will be used
+    solv_initial_param_values = [[1,	-0.1,	-0.4], [0.8,	 -0.1,	 -0.3], [0,1], 43, 1.0]     #if None: default will be used
     #solv_selection_policy = GLODEF_SELECTION_POKER
     #solv_initial_param_values = [1.0, 0., 50]     #if None: default will be used
 
