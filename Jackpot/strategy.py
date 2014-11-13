@@ -29,6 +29,7 @@ class ensemble():
         self.machineSigmaSum = 0.0
         self.machines = [machine(m) for m in xrange(self.numMachines)]
         self.lastPolicy=0
+        self.total_rejected_pulls = 0
 
     #params [voter C; main UCBT C; POKER param; POKER horizon]
     def UCBTVoter(self,secondary_machines, all_pulls, params= [1.0, 1.0, 1.0]):
