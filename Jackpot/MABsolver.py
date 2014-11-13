@@ -212,6 +212,7 @@ class MABsolver() :
         exploration_weight = ( ( p1 - p0 ) / ( self.max_pulls - self.total_rejected_pulls ) ) * (self.pulls - self.total_rejected_pulls) + p0
         
         voterC=self.config.params[4].getValue()
+
         #Poker horizon
         if(len(self.config.params) > 2):
             horizon = self.config.params[2].getValue()
@@ -224,7 +225,7 @@ class MABsolver() :
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCB1 :     selected_machine = UCB1(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_UCBTUNED : selected_machine = UCBT(self.machines, self.pulls - self.total_rejected_pulls, exploration_weight)
         elif self.config.selectionPolicy == GLODEF_SELECTION_POKER : selected_machine = POKER(self.machines, POKER_params, horizon)
-        elif self.config.selectionPolicy == GLODEF_SELECTION_VOTER : selected_machine = self.voter.UCBTVoter(self.machines, self.ucbt_machines, self.pulls, self.total_rejected_pulls, [voterC, exploration_weight, horizon])
+        elif self.config.selectionPolicy == GLODEF_SELECTION_VOTER : selected_machine = self.voter.UCBTVoter(self.machines, self.machines, self.pulls, self.total_rejected_pulls, [voterC, exploration_weight, horizon])
         self.pulls += increase_pulls
 
         return selected_machine.id
