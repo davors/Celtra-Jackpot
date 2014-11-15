@@ -117,8 +117,8 @@ def test_Voter(allCases):
     solv_selection_policy = GLODEF_SELECTION_VOTER
 
     #IDENTIFIED AS BEST AFTER DEPTH ANALYSIS OF CASE-PERFORMANCE
-    #linUCBTweights = [1  ,-0.1,-0.4,0.8,-0.1,-0.3]       #BEST : UCBT linear C1 to C2, with linear approx 2 inputs
-    linUCBTweights = [1.1,-0.4,-0.4,0.3,   0,   0]       #stat BEST	: UCBT linear C1 to C2, with linear approx 2 inputs : 	
+    linUCBTweights = [1  ,-0.1,-0.4,0.8,-0.1,-0.3]       #BEST : UCBT linear C1 to C2, with linear approx 2 inputs
+    #linUCBTweights = [1.1,-0.4,-0.4,0.3,   0,   0]       #stat BEST	: UCBT linear C1 to C2, with linear approx 2 inputs : 	
     #linUCBTweights = [0.7,-0.4,-0.3,  1,-0.2,-0.4]       #non-stat BEST : UCBT linear C1 to C2, with linear approx 2 inputs :
     
     solv_initial_param_values = [linUCBTweights[0:3], linUCBTweights[3:6], [0,1], 43, 1.0]     #if None: default will be used
