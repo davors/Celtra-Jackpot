@@ -101,9 +101,9 @@ def test_Voter(allCases):
     testBatch_01_05 = BanditTestBatch( allCases, xrange(5) )
     #-- change configuration here
 
-    #eval_cases = testBatch_01_10
+    eval_cases = testBatch_01_10
     #eval_cases = testBatch_above10
-    eval_cases = testBatch_Complete
+    #eval_cases = testBatch_Complete
     #eval_cases = testBatch_01_10
 
     #solv_selection_policy = GLODEF_SELECTION_EGREEDY
