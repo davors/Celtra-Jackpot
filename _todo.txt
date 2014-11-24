@@ -1,22 +1,7 @@
 Ta dokument vsebuje sklope projekta, ki jih še moramo narediti
 --------------------------------------------------------------
 
-- davor izboljšaj strukturo kode za change point detektorje
-	* glavna metoda, ki klièe ostale
-		- parametri ne grejo skozi funkcijo kot argumenti, ampak gre samo MABsolver	
-		- inputs in parametri se nastavijo znotraj procedure (updateInputs, getValue)	
-	* preimenuj changePoint v davorTom?
-
-- izmeri najboljše parametre na vseh celtra testcasih
-
-- preizkusi kot linearna funkcija:
-	*changePointDetector DavorTom parameter threshold kot funkcija: število vozcev v moving average in število potez od zadnjega reseta
-		- ostali parametri naj bodo fiksni (shring interval 1.0, minimum moving average samples = 10)
-		- preizkusi optimizacijo pri fiksnem UCB C, in še enkrat èe optimizraš tudi tega
-	* UCB parameter C kot funkcija: število potez od zadnjega reseta
-		- poskusi še opcijo, da changePointDetector v bistvu ne sploh resetira stanja, ampak samo uravnava parameter C
-
-- !NUJNO! naredit križne teste
+- naredit križne teste
 	* ugotovit je treba kateri change point detector in selection algoritm se bolj/preveè overfita na podatke: ali henkyPanky ali naš changePoint DavorTom??, ker sicer rezultati kažejo, da sta oba približno enako dobra na istih parametrih
 	- mogoèe: naredit generator random banditov, vhodi bi bili:
 		--- mogoèe vzameš bolj kakšno stvar iz èlankov?

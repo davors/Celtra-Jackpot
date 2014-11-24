@@ -1,15 +1,6 @@
 Ta dokument vsebuje možne ideje in nadaljnje delo, èe nam ostane še kaj èasa
 ----------------------------------------------------------------------------
 
-- exploration parameter (C, epsilon, ...) linearna funkcija naslednjih spremenljivk:
-	*število avtomatov/akcij/banditov
-	*število vseh potegov (max_pulls), se spremeni z resetom
-	*trenutno število potegov (tako lahko funkcija se linearno zmanjšuje od zaèetka do konca, na primer)
-	*število potegov od zadnjega reseta zaradi changePointDetection ... ta je lahko posebej ali tudi enaka zgornji, da se izognemo še enemu parametru
-		- ???: križni testi, da ni overfittanja!
-			* vzemi npr. pol primerov (pazi, da je enak delež tistih s fiksnimi avtomati in s spremenljivimi) in tam optimiziraj, na ostalih 5 pa evalviraj (mogoèe dodaj še 2 primera, da boš imel parno število obeh tipov)
-			* ponovi npr. najboljših 5 rešitev iz prejšnje toèke, in naredi npr. 10 križnih testov ~ 50 optimizacij in meritev
-
 - hevristike, ki veljajo v splošnem (razmisli kako bi jih kvantificiral/predstavil)
 	- ob spremembi okolja obièajno postane najboljši en drugi bandit (trenutno ni situacije, ko bi najboljši postal še boljši) ... to je zelo splošna heuristika, ki je pogosto najbolj verjetna, saj se je avtomat naèeloma nauèil izbirat najboljšega v preteklem intervalu
  

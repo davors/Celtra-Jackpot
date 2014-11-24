@@ -14,6 +14,9 @@ Non-stationary multi-armed bandit
 2007 http://lane.compbio.cmu.edu/courses/slides_ucb.pdf
 2007 http://hal.inria.fr/docs/00/16/40/33/PDF/cap07.pdf
 
+2005 http://link.springer.com/chapter/10.1007/11564096_42           -> POKER
+	
+	
 Overview
 2000 http://www.cs.mcgill.ca/~vkules/bandits.pdf
 
